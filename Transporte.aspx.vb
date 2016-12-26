@@ -14,7 +14,7 @@ Partial Class Transporte
         If IsPostBack = False Then
             Dim G As Glo = CType(Session("G"), Glo)
             Lbl_Compañia.Text = "Compañia: " & G.Empresa_Numero & " - " & G.RazonSocial
-            Lbl_Obra.Text = "Proyecto: " & G.Obra & " - " & G.Obra_Desc
+            Lbl_Obra.Text = "Proyecto: " & G.Obra & " - " & G.Obra
             Lbl_Usuario.Text = "Usuario: " & G.UsuarioReal
             G.Nombre_Catalogo = "Transporte"
             Session("dt") = New DataTable

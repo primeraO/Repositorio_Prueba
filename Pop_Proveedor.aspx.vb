@@ -13,7 +13,7 @@ Partial Class Pop_Proveedor
                 G.Tsql = "Select a.Lote,a.Fecha_Lote,a.Flete as Importe_Flete,a.Fletero,b.Razon_Social as Fletero_Desc,a.Iva_Flete,a.Descuento,a.ref_flete "
                 G.Tsql &= " From Movimientos_Entradas a left join Proveedor b on a.Fletero=b.Numero"
                 G.Tsql &= " where a.Compania=" & Session("Cia")
-                G.Tsql &= " and a.Obra=" & Pone_Apos(G.Sucursal)
+                G.Tsql &= " and a.Sucursal =" & Pone_Apos(G.Sucursal)
                 G.Tsql &= " and a.Almacen=" & Val(G.Almacen)
                 G.Tsql &= " and a.E_S='E' and a.Partida=0 "
                 G.Tsql &= " and a.Lote=" & Val(Request.QueryString("Lote"))
@@ -77,7 +77,7 @@ Partial Class Pop_Proveedor
             G.Tsql &= ",Descuento=" & Val(Elimina_Comas(T_Descuento.Text))
             G.Tsql &= ",ref_flete=" & Pone_Apos(T_Referencia.Text.Trim)
             G.Tsql &= " where Compania=" & Session("Cia")
-            G.Tsql &= " and Obra=" & Pone_Apos(G.Sucursal)
+            G.Tsql &= " and Sucursal =" & Pone_Apos(G.Sucursal)
             G.Tsql &= " and Almacen=" & Val(G.Almacen)
             G.Tsql &= " and E_S='E' "
             G.Tsql &= " and Lote=" & Val(Request.QueryString("Lote"))

@@ -67,8 +67,8 @@ Partial Class Catalogo_Lugar_Entrega
             Session("dt").Rows.clear()
             G.cn.Open()
             G.Tsql = "Select Numero,Descripcion from Lugar_Entrega"
-            G.Tsql &= " where Cia=" & Val(Session("Cia"))
-            G.Tsql &= " and Obra=" & Pone_Apos(Session("Obra"))
+            G.Tsql &= " where Cia =" & Val(Session("Cia"))
+            G.Tsql &= " and Sucursal =" & Pone_Apos(Session("Sucursal"))
             If Ch_Baja.Checked = True Then
                 G.Tsql &= " and Baja='*' "
             Else
@@ -102,7 +102,7 @@ Partial Class Catalogo_Lugar_Entrega
     Private Sub CrearCamposTabla()
         'Tabla Frente'
         Session("dt").Columns.Add("Cia", Type.GetType("System.Int64")) : Session("dt").Columns("Cia").DefaultValue = 0
-        Session("dt").Columns.Add("Obra", Type.GetType("System.String")) : Session("dt").Columns("Obra").DefaultValue = ""
+        Session("dt").Columns.Add("Sucursal", Type.GetType("System.String")) : Session("dt").Columns("Sucursal").DefaultValue = ""
         Session("dt").Columns.Add("Numero", Type.GetType("System.Int64")) : Session("dt").Columns("Numero").DefaultValue = 0
         Session("dt").Columns.Add("Descripcion", Type.GetType("System.String")) : Session("dt").Columns("Descripcion").DefaultValue = ""
         Session("dt").Columns.Add("Aplicacion", Type.GetType("System.Int64")) : Session("dt").Columns("Aplicacion").DefaultValue = 0
@@ -280,20 +280,20 @@ Partial Class Catalogo_Lugar_Entrega
                 T_Numero.Text = Siguiente()
                 G.cn.Open()
                 Tsql = "Select Numero from Lugar_Entrega where Numero=" & Val(T_Numero.Text)
-                Tsql &= " and Cia=" & Val(Session("Cia"))
-                Tsql &= " and Obra=" & Pone_Apos(Session("Obra"))
+                Tsql &= " and Cia =" & Val(Session("Cia"))
+                Tsql &= " and Sucursal =" & Pone_Apos(Session("Obra"))
                 G.com.CommandText = Tsql
                 If Not G.com.ExecuteScalar Is Nothing Then
                     Msg_Error("Ya existe un Registro con el numero: " & T_Numero.Text) : Exit Sub
                 End If
                 Tsql = "Select Descripcion from Lugar_Entrega where Descripcion=" & Pone_Apos(T_Descripcion.Text)
-                Tsql &= " and Cia=" & Val(Session("Cia"))
-                Tsql &= " and Obra=" & Pone_Apos(Session("Obra"))
+                Tsql &= " and Cia =" & Val(Session("Cia"))
+                Tsql &= " and Sucursal =" & Pone_Apos(Session("Obra"))
                 G.com.CommandText = Tsql
                 If Not G.com.ExecuteScalar Is Nothing Then
                     Msg_Error("Ya existe un Registro con esta Descripción") : Exit Sub
                 End If
-                G.Tsql = "Insert into Lugar_Entrega (Cia,Obra,Numero,Descripcion,Cve_Seg,Fecha_Seg,Hora_Seg,Baja) values ("
+                G.Tsql = "Insert into Lugar_Entrega (Cia,Sucursal,Numero,Descripcion,Cve_Seg,Fecha_Seg,Hora_Seg,Baja) values ("
                 G.Tsql &= Val(Session("Cia"))
                 G.Tsql &= "," & Pone_Apos(Session("Obra"))
                 G.Tsql &= "," & Val(T_Numero.Text.Trim)
@@ -310,15 +310,15 @@ Partial Class Catalogo_Lugar_Entrega
             If Movimiento.Value = "Cambio" Then
                 G.cn.Open()
                 G.Tsql = "Update Lugar_Entrega set Cia=" & Val(Session("Cia"))
-                G.Tsql &= ",Obra=" & Pone_Apos(Session("Obra"))
+                G.Tsql &= ",Sucursal =" & Pone_Apos(Session("Obra"))
                 G.Tsql &= ",Descripcion=" & Pone_Apos(T_Descripcion.Text.Trim)
                 G.Tsql &= ",Cve_Seg=" & Pone_Apos(Session("Contraseña"))
                 G.Tsql &= ",Fecha_Seg=" & Pone_Apos(Fecha_AMD(DateTime.Now().ToShortDateString()))
                 G.Tsql &= ",Hora_Seg=" & Pone_Apos(DateTime.Now.ToString("H:mm:ss", CultureInfo.InvariantCulture))
                 G.Tsql &= ",Baja=" & "''"
                 G.Tsql &= " Where Numero=" & Val(T_Numero.Text.Trim)
-                G.Tsql &= " and Cia=" & Val(Session("Cia"))
-                G.Tsql &= " and Obra=" & Pone_Apos(Session("Obra"))
+                G.Tsql &= " and Cia =" & Val(Session("Cia"))
+                G.Tsql &= " and Sucursal =" & Pone_Apos(Session("Obra"))
                 G.com.CommandText = G.Tsql
                 G.com.ExecuteNonQuery()
                 If Ch_Baja.Checked = True Then
@@ -330,15 +330,15 @@ Partial Class Catalogo_Lugar_Entrega
             If Movimiento.Value = "Baja" Then
                 G.cn.Open()
                 G.Tsql = "Update Lugar_Entrega set Cia=" & Val(Session("Cia"))
-                G.Tsql &= ",Obra=" & Pone_Apos(Session("Obra"))
+                G.Tsql &= ",Sucursal =" & Pone_Apos(Session("Obra"))
                 G.Tsql &= ",Descripcion=" & Pone_Apos(T_Descripcion.Text.Trim)
                 G.Tsql &= ",Cve_Seg=" & Pone_Apos(Session("Contraseña"))
                 G.Tsql &= ",Fecha_Seg=" & Pone_Apos(Fecha_AMD(DateTime.Now().ToShortDateString()))
                 G.Tsql &= ",Hora_Seg=" & Pone_Apos(DateTime.Now.ToString("H:mm:ss", CultureInfo.InvariantCulture))
                 G.Tsql &= ",Baja=" & "'*'"
                 G.Tsql &= " Where Numero=" & Val(T_Numero.Text.Trim)
-                G.Tsql &= " and Cia=" & Val(Session("Cia"))
-                G.Tsql &= " and Obra=" & Pone_Apos(Session("Obra"))
+                G.Tsql &= " and Cia =" & Val(Session("Cia"))
+                G.Tsql &= " and Sucursal =" & Pone_Apos(Session("Obra"))
                 G.com.CommandText = G.Tsql
                 G.com.ExecuteNonQuery()
                 EliminaFilaGrid(T_Numero.Text.Trim)
@@ -360,7 +360,7 @@ Partial Class Catalogo_Lugar_Entrega
             G.cn.Open()
             G.Tsql = "Select Max(Numero) from Lugar_Entrega"
             G.Tsql &= " where Cia=" & Val(Session("Cia"))
-            G.Tsql &= " and Obra=" & Pone_Apos(Session("Obra"))
+            G.Tsql &= " and Sucursal =" & Pone_Apos(Session("Obra"))
             G.com.CommandText = G.Tsql
             Siguiente = Val(G.com.ExecuteScalar.ToString) + 1
         Catch ex As Exception
