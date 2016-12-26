@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv32.xsd http://www.sat.gob.mx/nomina http://www.sat.gob.mx/sitio_internet/cfd/nomina/nomina11.xsd" version="3.2" xmlns:nomina="http://www.sat.gob.mx/nomina" serie="NOM" folio="12600001" fecha="2016-07-05T19:57:16" formaDePago="Pago en una sola exibicion" subTotal="899.6" descuento="224.82" total="623.99" metodoDePago="EFECTIVO" tipoDeComprobante="egreso" LugarExpedicion="TORREON COAHUILA" NumCtaPago="NO APLICA" noCertificado="00001000000202694738" certificado="MIIEejCCA2KgAwIBAgIUMDAwMDEwMDAwMDAyMDI2OTQ3MzgwDQYJKoZIhvcNAQEFBQAwggGVMTgwNgYDVQQDDC9BLkMuIGRlbCBTZXJ2aWNpbyBkZSBBZG1pbmlzdHJhY2nDs24gVHJpYnV0YXJpYTEvMC0GA1UECgwmU2VydmljaW8gZGUgQWRtaW5pc3RyYWNpw7NuIFRyaWJ1dGFyaWExODA2BgNVBAsML0FkbWluaXN0cmFjacOzbiBkZSBTZWd1cmlkYWQgZGUgbGEgSW5mb3JtYWNpw7NuMSEwHwYJKoZIhvcNAQkBFhJhc2lzbmV0QHNhdC5nb2IubXgxJjAkBgNVBAkMHUF2LiBIaWRhbGdvIDc3LCBDb2wuIEd1ZXJyZXJvMQ4wDAYDVQQRDAUwNjMwMDELMAkGA1UEBhMCTVgxGTAXBgNVBAgMEERpc3RyaXRvIEZlZGVyYWwxFDASBgNVBAcMC0N1YXVodMOpbW9jMRUwEwYDVQQtEwxTQVQ5NzA3MDFOTjMxPjA8BgkqhkiG9w0BCQIML1Jlc3BvbnNhYmxlOiBDZWNpbGlhIEd1aWxsZXJtaW5hIEdhcmPDrWEgR3VlcnJhMB4XDTEyMTIyNjIxMDc0N1oXDTE2MTIyNjIxMDc0N1owgbsxJTAjBgNVBAMTHEJFUk5BUkRPIEZFUk5BTkRFWiBGRVJOQU5ERVoxJTAjBgNVBCkTHEJFUk5BUkRPIEZFUk5BTkRFWiBGRVJOQU5ERVoxJTAjBgNVBAoTHEJFUk5BUkRPIEZFUk5BTkRFWiBGRVJOQU5ERVoxFjAUBgNVBC0TDUZFRkI1OTAzMjE3VDExGzAZBgNVBAUTEkZFRkI1OTAzMjFIREZSUlIwNTEPMA0GA1UECxMGTUFUUklaMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDOCH5mFMgRYXa4MyZ4d0Wnyn6xCpoIjOw4MbOgoBDAI30dfOevrs+5cwXv2MiXjS5XhQE0S7R+CTvLq11D1JSiQ3UAsb7Lfs+XanEOECC6FplesS1cQnNgYgzOi859AwWDn/lMV8/DlGfWj3AH+HaAlFQ2/NEnJw6LUy2xEVAHQwIDAQABox0wGzAMBgNVHRMBAf8EAjAAMAsGA1UdDwQEAwIGwDANBgkqhkiG9w0BAQUFAAOCAQEAFVH9aky/aKgxxvJdE1OmJbiwSTrFWOKRlHR4xSp2H+X2IM82youN+f3HMeF7BR+PDOdh/ngCdKBumdx15Og2vH+ntD3o07J5e2ZllsMlaWNaYoe0Xy09Avd+Jb0v4hxXIPYFASOciDJioS+OrclBc9TBOSTovqHIFNq2nKOr1KKh3AP1JMG2oz79gjiUxNCp7CoCJRn5t6YldRSvSVU7e69d7Jxl0BYpth7+oqJ7gYH0ry2aTkIwO5S3o0sbzZWheZFtONWPpiHG8O7xpoWVZxyGQSHluR3Z1YYxOHyKelr4uRkZzjlSvLz7Z7/JFJShIqdv+ie0zUcNJOAcqnf4kg==" sello="dV1srbqBoAcNClgWQ6NG7PpRbAISRmdEDsw/91dqZ1frbzgKoqYoePxjuY/31OTmmBFhdB4BwiF8Q3CdjCd+aitUwutaMun1qMa3SSdGLWDp8shMI5b6Pa220pkzG7hlT8ZG09fVGX98kHYvKhapXiy+LGl/pIpX2l8mAF/xAYE=">
+  <cfdi:Emisor rfc="FEFB5903217T1" nombre="BERNARDO FERNANDEZ FERNANDEZ">
+    <cfdi:DomicilioFiscal calle="PRESIDENTE CARANZA OTE" noExterior="1978" colonia="CENTRO" municipio="TORREON" estado="COAHUILA" pais="MEXICO" codigoPostal="27000" />
+    <cfdi:ExpedidoEn calle="AV PDTE CARRANZA OTE" noExterior="1978" colonia="CENTRO" municipio="TORREON" estado="COAHUILA" pais="MEXICO" codigoPostal="27000" />
+    <cfdi:RegimenFiscal Regimen="PERSONA FISICA ACTIVIDAD EMPRESARIAL" />
+  </cfdi:Emisor>
+  <cfdi:Receptor rfc="AIFE770720SY0" nombre="ARRIAGA FERNANDEZ ELIZABETH ALEJANDRA" />
+  <cfdi:Conceptos>
+    <cfdi:Concepto cantidad="1.00" unidad="SERVICIO" descripcion="SEMANA 26/2016" valorUnitario="899.6000" importe="899.6" />
+  </cfdi:Conceptos>
+  <cfdi:Impuestos totalImpuestosRetenidos="50.79">
+    <cfdi:Retenciones>
+      <cfdi:Retencion impuesto="ISR" importe="50.79" />
+    </cfdi:Retenciones>
+  </cfdi:Impuestos>
+  <cfdi:Complemento>
+    <nomina:Nomina xmlns:nomina="http://www.sat.gob.mx/nomina" Version="1.1" RegistroPatronal="A4067453100" NumEmpleado="1" CURP="AIFE770720MMSRRL09" TipoRegimen="2" NumSeguridadSocial="32987711655" FechaPago="2016-06-24" FechaInicialPago="2016-06-20" FechaFinalPago="2016-06-26" NumDiasPagados="7" Departamento="KOALAS" FechaInicioRelLaboral="2013-02-15" Antiguedad="175" Puesto="AYUDANTE DE COCINA" TipoContrato="Base" TipoJornada="Diurna" PeriodicidadPago="Semanal" SalarioBaseCotApor="108.84" RiesgoPuesto="1" SalarioDiarioIntegrado="104.00">
+      <nomina:Percepciones TotalGravado="728" TotalExento="171.6">
+        <nomina:Percepcion TipoPercepcion="001" Clave="100" Concepto="SUELDO" ImporteGravado="728" ImporteExento="0" />
+        <nomina:Percepcion TipoPercepcion="010" Clave="132" Concepto="PREMIO POR PUNTUALIDAD" ImporteGravado="0" ImporteExento="72.8" />
+        <nomina:Percepcion TipoPercepcion="038" Clave="133" Concepto="PREMIO POR ASISTENCIA" ImporteGravado="0" ImporteExento="72.8" />
+        <nomina:Percepcion TipoPercepcion="020" Clave="165" Concepto="PRIMA DOMINICAL EXENTA" ImporteGravado="0" ImporteExento="26" />
+      </nomina:Percepciones>
+      <nomina:Deducciones TotalGravado="267.04" TotalExento="0">
+        <nomina:Deduccion TipoDeduccion="010" Clave="430" Concepto="CREDITO INFONAVIT" ImporteGravado="275.61" ImporteExento="0" />
+        <nomina:Deduccion TipoDeduccion="002" Clave="500" Concepto="I.S.P.T." ImporteGravado="50.79" ImporteExento="0" />
+        <nomina:Deduccion TipoDeduccion="002" Clave="510" Concepto="SUBSIDIO AL EMPLEO" ImporteGravado="-68.88" ImporteExento="0" />
+        <nomina:Deduccion TipoDeduccion="001" Clave="515" Concepto="I.M.S.S. E.M.I. Y V." ImporteGravado="9.52" ImporteExento="0" />
+        <nomina:Deduccion TipoDeduccion="001" Clave="516" Concepto="I.M.S.S. CESANTIA" ImporteGravado="8.57" ImporteExento="0" />
+      </nomina:Deducciones>
+    </nomina:Nomina>
+    <tfd:TimbreFiscalDigital xmlns:tfd="http://www.sat.gob.mx/TimbreFiscalDigital" xsi:schemaLocation="http://www.sat.gob.mx/TimbreFiscalDigital http://www.sat.gob.mx/TimbreFiscalDigital/TimbreFiscalDigital.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0" UUID="39D898BB-AADD-7D46-877D-63C60A3CE7B9" FechaTimbrado="2016-07-05T19:57:29" selloCFD="dV1srbqBoAcNClgWQ6NG7PpRbAISRmdEDsw/91dqZ1frbzgKoqYoePxjuY/31OTmmBFhdB4BwiF8Q3CdjCd+aitUwutaMun1qMa3SSdGLWDp8shMI5b6Pa220pkzG7hlT8ZG09fVGX98kHYvKhapXiy+LGl/pIpX2l8mAF/xAYE=" noCertificadoSAT="00001000000401041203" selloSAT="m0wsyEOsz/WVwNCmTFT8Ma96W5F6857yZGJJ48gtJOkCnNrj+D9jIPsBLW17GQcCJlEaEPxZJOphwOdm2K2c16O5G+CP80lRZr81Sa5bTyqxBwtbgXioMRIdC+2VLmj/EGm60Se7oQ2CIP2swwzQd2lGLsUmWGx8nYwuXBL+woPgKQllAQHd46wUOCYyVW+pWRwOueLFJ2ZkerB6RqRtNo8hytUX1gJDiFOuobpCugOyMTbaQ84zKdh5N2BRVbEGRUAcx//I7xZBj9Dpvyv6pysrXfZGpBMZjvP6GajOEaYn71k+U4K72TQUrn1tA/SZk6jK2jVngrLSJdjIEyCTYw==" />
+  </cfdi:Complemento>
+</cfdi:Comprobante>

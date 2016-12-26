@@ -1,0 +1,31 @@
+﻿        Dim G As Glo = CType(Session("G"), Glo)
+		Else
+		 Div.Attributes.Remove("Class")
+            Dim Imprime As New Impresora
+            Imprime.Imprime("ALMACEN_DETALLE", G, "file:" & MapPath("Trabajo/" & Session("Imagen")))
+        End If
+
+
+		                Dim dtGen As New DataTable
+                dtGen.Load(G.dr)
+
+		                Dim imp As New Tipo_Imprime
+                Dim report As New Microsoft.Reporting.WinForms.LocalReport()
+                report.DataSources.Clear()
+                report.DataSources.Add(RD)
+                report.EnableExternalImages = True
+                report.ReportEmbeddedResource = HttpContext.Current.Server.MapPath("~/R_Resguardo_Salidas.rdlc")
+                report.ReportPath = HttpContext.Current.Server.MapPath("~/R_Resguardo_Salidas.rdlc")
+                report.SetParameters(Parametros)
+                imp.Report = report
+                imp.Run()
+
+
+				TpCos
+				Elem_F
+				Elem_I
+				Act
+				Art_I
+				Art_F
+				Pro_F
+				Pro_I

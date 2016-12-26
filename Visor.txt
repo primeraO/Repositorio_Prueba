@@ -1,0 +1,134 @@
+                    Case "R_MOVIMIENTOS_S"
+                        ReportViewer1.LocalReport.EnableExternalImages = True
+                        Dim dt As New ds_Movimientos.MovimientosDataTable
+                        Dim RD As New ReportDataSource
+                        Dim Hora As String = Format(Now, "HH:mm:ss")
+                        Dim Parametros(4) As ReportParameter
+                        Dim Image1 As String = "file:" & MapPath("~/Trabajo/" & Session("Imagen"))
+                        Parametros(0) = New ReportParameter("Imagen", Image1)
+                        Parametros(1) = New ReportParameter("Fecha", Fecha_AMD(Now))
+                        Parametros(2) = New ReportParameter("Hora", Hora)
+                        Parametros(3) = New ReportParameter("Compañia", G.RazonSocial)
+                        Parametros(4) = New ReportParameter("Usuario", G.UsuarioReal)
+                        G.Tsql = "Select a.Lote,a.Partida,a.Fecha_Lote,a.Articulo,a.Descripcion,a.Cantidad,a.Almacen,a.Centro_Costos,a.Referencia,a.Numero_Documento as Orden_Compra,"
+                        G.Tsql &= "(Select top 1 UUID from Movimientos_Inventario Where Compania=a.Compania and Obra=a.Obra and Almacen=a.Almacen and E_S='E' and Lote=a.Lote and Partida=0) as UUID"
+                        G.Tsql &= ",(Select Razon_Social from Proveedor Where Numero=a.Proveedor) as Proveedor_Desc"
+                        G.Tsql &= ",(Select Nombre from Solicitante Where Solicitante=a.Solicitante and Cia=a.Compania and Obra=a.Obra) as Solicitante_Desc"
+                        G.Tsql &= " from Movimientos_Inventario a Where a.E_S='S' and a.Compania=" & Session("Cia") & " and Obra=" & Pone_Apos(Session("Obra"))
+                        If Val(G.Ini_Salida) > 0 And Val(G.Fin_Salida) > 0 Then
+                            G.Tsql &= " and a.Lote>=" & Val(G.Ini_Salida)
+                            G.Tsql &= " and a.Lote<=" & Val(G.Fin_Salida)
+                        End If
+                        If Val(G.Ini_Almacen) > 0 And Val(G.Fin_Almacen) > 0 Then
+                            G.Tsql &= " and a.Almacen>=" & Val(G.Ini_Almacen)
+                            G.Tsql &= " and a.Almacen<=" & Val(G.Fin_Almacen)
+                        End If
+                        If G.Ch_Fechas = True Then
+                            If G.Fecha_Ini <> "" And G.Fecha_Fin <> "" Then
+                                G.Tsql &= " and a.Fecha_Lote>=" & Pone_Apos(G.Fecha_Ini)
+                                G.Tsql &= " and a.Fecha_Lote<=" & Pone_Apos(G.Fecha_Fin)
+                            End If
+                        End If
+                        G.cn.Open()
+                        G.com.CommandText = G.Tsql
+                        G.dr = G.com.ExecuteReader()
+                        Dim Solicitante_Desc As String = ""
+                        If G.dr.HasRows Then
+                            Do While G.dr.Read
+                                If G.dr!Partida = 0 Then
+                                    Solicitante_Desc = G.dr!Solicitante_Desc.ToString
+                                Else
+                                    Dim nf As DataRow = dt.NewRow
+                                    nf("Lote") = G.dr!Lote
+                                    nf("Partida") = G.dr!Partida
+                                    nf("Fecha_Lote") = G.dr!Fecha_Lote
+                                    nf("Articulo") = G.dr!Articulo
+                                    nf("Descripcion") = G.dr!Descripcion
+                                    nf("Cantidad") = G.dr!Cantidad
+                                    nf("Almacen") = G.dr!Almacen
+                                    nf("Centro_Costos") = G.dr!Centro_Costos
+                                    nf("Referencia") = G.dr!Referencia
+                                    nf("UUID") = G.dr!UUID
+                                    nf("Proveedor_Desc") = G.dr!Proveedor_Desc.ToString
+                                    nf("Orden_Compra") = G.dr!Orden_Compra
+                                    nf("Solicitante_Desc") = Solicitante_Desc
+                                    dt.Rows.Add(nf)
+                                End If
+                            Loop
+                        End If
+                        RD.Value = dt
+                        RD.Name = "DataSet1"
+                        ReportViewer1.LocalReport.DataSources.Clear()
+                        ReportViewer1.LocalReport.DataSources.Add(RD)
+                        ReportViewer1.LocalReport.ReportEmbeddedResource = "R_Impresion_Salidas.rdlc"
+                        ReportViewer1.LocalReport.ReportPath = "R_Impresion_Salidas.rdlc"
+                        ReportViewer1.LocalReport.SetParameters(Parametros)
+                        ReportViewer1.LocalReport.Refresh()
+
+                    Case "R_MOVIMIENTOS"
+                        ReportViewer1.LocalReport.EnableExternalImages = True
+                        Dim dt As New ds_Movimientos.MovimientosDataTable
+                        Dim RD As New ReportDataSource
+                        Dim Hora As String = Format(Now, "HH:mm:ss")
+                        Dim Parametros(4) As ReportParameter
+                        Dim Image1 As String = "file:" & MapPath("~/Trabajo/" & Session("Imagen"))
+                        Parametros(0) = New ReportParameter("Imagen", Image1)
+                        Parametros(1) = New ReportParameter("Fecha", Fecha_AMD(Now))
+                        Parametros(2) = New ReportParameter("Hora", Hora)
+                        Parametros(3) = New ReportParameter("Compañia", G.RazonSocial)
+                        Parametros(4) = New ReportParameter("Usuario", G.UsuarioReal)
+                        G.Tsql = "Select a.Lote,a.Partida,a.Fecha_Lote,a.Articulo,a.Descripcion,a.Cantidad,a.Almacen,a.Centro_Costos,a.Referencia,a.Numero_Documento as Orden_Compra,"
+                        G.Tsql &= "(Select top 1 UUID from Movimientos_Entradas Where Compania=a.Compania and Obra=a.Obra and Almacen=a.Almacen and E_S='E' and Lote=a.Lote and Partida=0) as UUID"
+                        G.Tsql &= ",(Select Razon_Social from Proveedor Where Numero=a.Proveedor) as Proveedor_Desc"
+                        G.Tsql &= ",(Select Nombre from Solicitante Where Solicitante=a.Solicitante and Cia=a.Compania and Obra=a.Obra) as Solicitante_Desc"
+                        G.Tsql &= " from Movimientos_Entradas a "
+                        G.Tsql &= " Where a.E_S='E' and a.Compania=" & Session("Cia") & " and a.Obra=" & Pone_Apos(Session("Obra"))
+                        If Val(G.Ini_Entrada) > 0 And Val(G.Fin_Entrada) > 0 Then
+                            G.Tsql &= " and a.Lote>=" & Val(G.Ini_Entrada)
+                            G.Tsql &= " and a.Lote<=" & Val(G.Fin_Entrada)
+                        End If
+                        If Val(G.Ini_Almacen) > 0 And Val(G.Fin_Almacen) > 0 Then
+                            G.Tsql &= " and a.Almacen>=" & Val(G.Ini_Almacen)
+                            G.Tsql &= " and a.Almacen<=" & Val(G.Fin_Almacen)
+                        End If
+                        If G.Ch_Fechas = True Then
+                            If G.Fecha_Ini <> "" And G.Fecha_Fin <> "" Then
+                                G.Tsql &= " and a.Fecha_Lote>=" & Pone_Apos(G.Fecha_Ini)
+                                G.Tsql &= " and a.Fecha_Lote<=" & Pone_Apos(G.Fecha_Fin)
+                            End If
+                        End If
+                        G.cn.Open()
+                        G.com.CommandText = G.Tsql
+                        G.dr = G.com.ExecuteReader()
+                        Dim Solicitante_Desc As String = ""
+                        If G.dr.HasRows Then
+                            Do While G.dr.Read
+                                If G.dr!Partida = 0 Then
+                                    Solicitante_Desc = G.dr!Solicitante_Desc
+                                Else
+                                    Dim nf As DataRow = dt.NewRow
+                                    nf("Lote") = G.dr!Lote
+                                    nf("Partida") = G.dr!Partida
+                                    nf("Fecha_Lote") = G.dr!Fecha_Lote
+                                    nf("Articulo") = G.dr!Articulo
+                                    nf("Descripcion") = G.dr!Descripcion
+                                    nf("Cantidad") = G.dr!Cantidad
+                                    nf("Almacen") = G.dr!Almacen
+                                    nf("Centro_Costos") = G.dr!Centro_Costos
+                                    nf("Referencia") = G.dr!Referencia
+                                    nf("UUID") = G.dr!UUID
+                                    nf("Proveedor_Desc") = G.dr!Proveedor_Desc
+                                    nf("Orden_Compra") = G.dr!Orden_Compra
+                                    nf("Solicitante_Desc") = Solicitante_Desc
+                                    dt.Rows.Add(nf)
+                                End If
+                            Loop
+                        End If
+                        RD.Value = dt
+                        RD.Name = "DataSet1"
+                        ReportViewer1.LocalReport.DataSources.Clear()
+                        ReportViewer1.LocalReport.DataSources.Add(RD)
+                        ReportViewer1.LocalReport.ReportEmbeddedResource = "R_Impresion_Entradas.rdlc"
+                        ReportViewer1.LocalReport.ReportPath = "R_Impresion_Entradas.rdlc"
+                        ReportViewer1.LocalReport.SetParameters(Parametros)
+                        ReportViewer1.LocalReport.Refresh()

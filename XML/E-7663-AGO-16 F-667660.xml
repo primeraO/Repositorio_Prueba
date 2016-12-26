@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cfdi:Comprobante LugarExpedicion="XALOSTOC ECATEPEC, EDO. DE MEXICO" metodoDePago="03" tipoDeComprobante="ingreso" total="27318" Moneda="MXN" descuento="0" subTotal="23550" condicionesDePago="CREDITO    30 DIAS" certificado="MIIEoDCCA4igAwIBAgIUMDAwMDEwMDAwMDAzMDA1MjE1NDgwDQYJKoZIhvcNAQEFBQAwggGKMTgwNgYDVQQDDC9BLkMuIGRlbCBTZXJ2aWNpbyBkZSBBZG1pbmlzdHJhY2nDs24gVHJpYnV0YXJpYTEvMC0GA1UECgwmU2VydmljaW8gZGUgQWRtaW5pc3RyYWNpw7NuIFRyaWJ1dGFyaWExODA2BgNVBAsML0FkbWluaXN0cmFjacOzbiBkZSBTZWd1cmlkYWQgZGUgbGEgSW5mb3JtYWNpw7NuMR8wHQYJKoZIhvcNAQkBFhBhY29kc0BzYXQuZ29iLm14MSYwJAYDVQQJDB1Bdi4gSGlkYWxnbyA3NywgQ29sLiBHdWVycmVybzEOMAwGA1UEEQwFMDYzMDAxCzAJBgNVBAYTAk1YMRkwFwYDVQQIDBBEaXN0cml0byBGZWRlcmFsMRQwEgYDVQQHDAtDdWF1aHTDqW1vYzEVMBMGA1UELRMMU0FUOTcwNzAxTk4zMTUwMwYJKoZIhvcNAQkCDCZSZXNwb25zYWJsZTogQ2xhdWRpYSBDb3ZhcnJ1YmlhcyBPY2hvYTAeFw0xMzA3MTkxNTM4NTVaFw0xNzA3MTkxNTM4NTVaMIHsMSYwJAYDVQQDEx1GRVJSRVRFUklBIFNBTlRBTkRFUiBTQSBERSBDVjEmMCQGA1UEKRMdRkVSUkVURVJJQSBTQU5UQU5ERVIgU0EgREUgQ1YxJjAkBgNVBAoTHUZFUlJFVEVSSUEgU0FOVEFOREVSIFNBIERFIENWMSUwIwYDVQQtExxGU0E2ODA2MThSRTMgLyBNQUNPNTYwOTA2R0w3MR4wHAYDVQQFExUgLyBNQUNPNTYwOTA2SERGVE5NMDExKzApBgNVBAsTIkZFUlJFVEVSSUEgU0FOVEFOREVSLCBTLkEuIERFIEMuVi4wgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBALR5ax2VhVTT+bwShieLoaN4F3/16Dtz40WXKxM9OBw+SIYzq70W/yXEkrn/vCZt1qbZypG4AaDk5djaaKE1PjisgODdZDLnprJHHOGp35kb2Zmzt7plorp0MDJu0RMESyhjUaCwEZe2GT0E/8/wP/lJu0tJV47JnAP4A5jWSP6rAgMBAAGjHTAbMAwGA1UdEwEB/wQCMAAwCwYDVR0PBAQDAgbAMA0GCSqGSIb3DQEBBQUAA4IBAQAJmo6xckXdeKrjzRlxy2AXxdNVv3/DM2Xy7dABF/IMmR1MEe4mp1xPO2bKmBSUcDIZJpVW95rJDspbb+TAenaZJLZMK2oGXWzmCWeGWl2lNtA0wYP4FvOZMuvV2jS90uN8RrEhTs6hX+adoXr+5welJB5PcbFzayVFpalmUlAUs0PWqfoO/IFtJi8+O4TDM5JqX464pe09mhVHCTXxLGaEAFAPmM/e4NacU8GQ4Gsmt0G0Js3ZlYbWf+mvuwadYjI9iIooj3ArgxstE22UicQJTsE49+9k1VO/sszJzvTT9ywdaDYSbu4/b4TNihj4zURRte5QawbTxWpg2SRfjjMA" noCertificado="00001000000300521548" formaDePago="PAGO EN UNA SOLA EXHIBICION" sello="L+0RQFXScnqKnxz5+4NRs9VCMNsgny1LD0J4S/4JtVZ1N8XKvI9I3xF1pDq7wNWurXPEkmWDvVjMhEgJGsb+uZhdLblF0pcWtduWOoYQ6OvX8d/CPqihREADQdQzJR+k5dvDMNqL9YCH2nMYg3iKZewP4UFp1eLLoRGf4PBBDQY=" fecha="2016-07-06T08:42:37" folio="667660" serie="C" version="3.2" xsi:schemaLocation="http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv32.xsd http://www.buzonfiscal.com/ns/addenda/bf/2 http://www.buzonfiscal.com/schema/xsd/Addenda_BF_v20.xsd" xmlns:bfa2="http://www.buzonfiscal.com/ns/addenda/bf/2" xmlns:cfdi="http://www.sat.gob.mx/cfd/3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <cfdi:Emisor nombre="FERRETERIA SANTANDER SA DE CV" rfc="FSA680618RE3">
+        <cfdi:DomicilioFiscal codigoPostal="55348" pais="México" estado="ESTADO DE MEXICO" municipio="ECATEPEC" colonia="INDUSTRIAL XALOSTOC" noExterior="S/N" calle="VIA MORELOS KM 11"/>
+        <cfdi:ExpedidoEn pais="MEXICO" localidad="XALOSTOC ECATEPEC, EDO. DE MEXICO"/>
+        <cfdi:RegimenFiscal Regimen="REGIMEN GENERAL DE LEY PERSONAS MORALES"/>
+    </cfdi:Emisor>
+    <cfdi:Receptor nombre="COCONAL, S.A.P.I. DE C.V." rfc="COC000315HY4">
+        <cfdi:Domicilio codigoPostal="14210" pais="MEXICO" estado="DISTRITO FEDERAL" municipio="DELEGACION TLALPAN" localidad="DELEGACION TLALPAN" colonia="JARDINES EN LA MONTAA" noInterior="P-3" noExterior="4249" calle="AV. PERIFERICO SUR"/>
+    </cfdi:Receptor>
+    <cfdi:Conceptos>
+        <cfdi:Concepto importe="6300" valorUnitario="105" descripcion="SOLDADURA UTP 82AS DE 1/8&quot;" noIdentificacion="960103990" unidad="KILOS" cantidad="60"/>
+        <cfdi:Concepto importe="8250" valorUnitario="825" descripcion="SOLDADURA UTP 65 DE 3/32&quot;" noIdentificacion="960103991" unidad="KILOS" cantidad="10"/>
+        <cfdi:Concepto importe="9000" valorUnitario="75" descripcion="SOLDADURA UTP 7018 DE 1/8&quot;" noIdentificacion="960103992" unidad="KILOS" cantidad="120"/>
+    </cfdi:Conceptos>
+    <cfdi:Impuestos totalImpuestosTrasladados="3768">
+        <cfdi:Traslados>
+            <cfdi:Traslado importe="3768.00" tasa="16.00" impuesto="IVA"/>
+        </cfdi:Traslados>
+    </cfdi:Impuestos>
+    <cfdi:Complemento>
+        <tfd:TimbreFiscalDigital xmlns:tfd="http://www.sat.gob.mx/TimbreFiscalDigital" xsi:schemaLocation="http://www.sat.gob.mx/TimbreFiscalDigital http://www.sat.gob.mx/sitio_internet/cfd/TimbreFiscalDigital/TimbreFiscalDigital.xsd"  selloSAT="KUMGrGW4HjODwJhfBCz06DVD2el0qY1xea7dRNQdUvOiLbflCPM7y8sz6ZxPFXa+ia+IWSlZ9CuPDVzxvHTITDtLMBibu1ynqEuUjQ/HQbWmEq3wwpIGLg+MpOPT2u7wjEvSdHCQUA/dXajuAFOo66TH6n8GYRPr8Z0W6FPaReg=" noCertificadoSAT="00001000000202693892" selloCFD="L+0RQFXScnqKnxz5+4NRs9VCMNsgny1LD0J4S/4JtVZ1N8XKvI9I3xF1pDq7wNWurXPEkmWDvVjMhEgJGsb+uZhdLblF0pcWtduWOoYQ6OvX8d/CPqihREADQdQzJR+k5dvDMNqL9YCH2nMYg3iKZewP4UFp1eLLoRGf4PBBDQY=" FechaTimbrado="2016-07-06T08:42:37" UUID="f523fd5a-0026-4793-8f6c-7db3367a7fc6" version="1.0"/>
+    </cfdi:Complemento>
+    <cfdi:Addenda>
+        <bfa2:AddendaBuzonFiscal version="2.0">
+            <bfa2:Receptor noCliente="COC20033"/>
+            <bfa2:Destino calle="CALLE ORIENTE 2 NO.3 PARQUE IND ATITALAQUIA"/>
+            <bfa2:TipoDocumento descripcion="Factura" nombreCorto="FAC"/>
+            <bfa2:CFD cargos="0" refID="FACC667660" totalConLetra="*(   VEINTISIETE MIL TRESCIENTOS DIECIOCHO  PESOS 00/100 M.N. )*" agenteVentas="200" tipoCambio="0.00" tipoMoneda="MXN" noOrden="*" porcentajeDescuento="0"/>
+            <bfa2:Extra valor="FALSE" atributo="asignaFolio"/>
+            <bfa2:Extra valor="699605" atributo="LeyendaEspecial1"/>
+            <bfa2:Extra valor="*" atributo="LeyendaEspecial2"/>
+            <bfa2:Extra valor="4" atributo="LeyendaEspecial3"/>
+            <bfa2:Extra valor="R-6  REV:1     COB:1" atributo="LeyendaEspecial12"/>
+            <bfa2:ExtraConceptos mensaje="."/>
+            <bfa2:ExtraConceptos mensaje="."/>
+            <bfa2:ExtraConceptos mensaje="."/>
+        </bfa2:AddendaBuzonFiscal>
+    </cfdi:Addenda>
+</cfdi:Comprobante>

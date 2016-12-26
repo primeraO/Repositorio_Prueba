@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tfd="http://www.sat.gob.mx/TimbreFiscalDigital" xmlns:leyendasFisc="http://www.sat.gob.mx/leyendasFiscales" xsi:schemaLocation="http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv32.xsd http://www.sat.gob.mx/TimbreFiscalDigital http://www.sat.gob.mx/TimbreFiscalDigital/TimbreFiscalDigital.xsd http://www.sat.gob.mx/leyendasFiscales http://www.sat.gob.mx/sitio_internet/cfd/leyendasFiscales/leyendasFisc.xsd" version="3.2"  serie="IFP" folio="1364782" fecha="2016-09-30T18:00:44" sello="VSELCU8OXWNjFj9FeYb2Jica6ABL6uswBcBe4pRKcg94fvbIJfzUHx5jQwQZpDi31VcpnJ0kdh8wSa5Ivplld1DGjFuoK14yqGwJx2Pi092406wfJrqEbNmxLL9V2WcHd5YiBZGjAieORQuxq1Hug8nA0Jj6TQ7iZ/9r2GdtKXQCsQs+iwcBNIsEJLso/+z7CjChVvDgwGtEF7i3OVTAL7ONSovD/9FnNPLBjZYgyuBIH8huXIx3vNnUuGxe5j1PTYw1uTXA1jQL9fXfem/z6suxCsYa+ycMP0bvcTnFZ/VhVqMYMwtUBQQNANvRoD1i/luMiA9U8ToRKCkk2URCTA==" tipoDeComprobante="ingreso" formaDePago="PAGO EN UNA SOLA EXHIBICION" condicionesDePago="CREDITO" subTotal="3503.83" TipoCambio="19.50020" Moneda="USD" total="4064.44" metodoDePago="NA" LugarExpedicion="TLALNEPANTLA ESTADO DE MEXICO" NumCtaPago="1907"  certificado="MIIGJjCCBA6gAwIBAgIUMDAwMDEwMDAwMDA0MDMzODUwMTUwDQYJKoZIhvcNAQELBQAwggGyMTgwNgYDVQQDDC9BLkMuIGRlbCBTZXJ2aWNpbyBkZSBBZG1pbmlzdHJhY2nDs24gVHJpYnV0YXJpYTEvMC0GA1UECgwmU2VydmljaW8gZGUgQWRtaW5pc3RyYWNpw7NuIFRyaWJ1dGFyaWExODA2BgNVBAsML0FkbWluaXN0cmFjacOzbiBkZSBTZWd1cmlkYWQgZGUgbGEgSW5mb3JtYWNpw7NuMR8wHQYJKoZIhvcNAQkBFhBhY29kc0BzYXQuZ29iLm14MSYwJAYDVQQJDB1Bdi4gSGlkYWxnbyA3NywgQ29sLiBHdWVycmVybzEOMAwGA1UEEQwFMDYzMDAxCzAJBgNVBAYTAk1YMRkwFwYDVQQIDBBEaXN0cml0byBGZWRlcmFsMRQwEgYDVQQHDAtDdWF1aHTDqW1vYzEVMBMGA1UELRMMU0FUOTcwNzAxTk4zMV0wWwYJKoZIhvcNAQkCDE5SZXNwb25zYWJsZTogQWRtaW5pc3RyYWNpw7NuIENlbnRyYWwgZGUgU2VydmljaW9zIFRyaWJ1dGFyaW9zIGFsIENvbnRyaWJ1eWVudGUwHhcNMTYwODE1MTUxOTEwWhcNMjAwODE1MTUxOTEwWjCBxjEhMB8GA1UEAxMYTUFRVUlOQVMgRElFU0VMIFNBIERFIENWMSEwHwYDVQQpExhNQVFVSU5BUyBESUVTRUwgU0EgREUgQ1YxITAfBgNVBAoTGE1BUVVJTkFTIERJRVNFTCBTQSBERSBDVjElMCMGA1UELRMcTURJOTMxMDE0RDM3IC8gSEVDQTY3MDkwM0g1MDEeMBwGA1UEBRMVIC8gSEVDQTY3MDkwM0hWWlJSRzA3MRQwEgYDVQQLEwtGQUNUVVJBQ0lPTjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALYoJi4ninCS6hNgiqkDSX6TZ39oTcp8MaxbhgsG5ovpEJ3APIDDEsAt5o6DxiJmZPZTk15W9UvKpI1cysoYrC/RTRILFI/IBMl83dECdw6hIKLNjn9L94Cvs2mXxyAj6wZd3Crud4lazJd1YdFgHLBMJM2GEi+0OTQCw4wAYE3nNWUxN2sN9qkrPrdUgdYrw9b5IRRIJ6B8Jnx1+fu8HrrVojqt1nC3RmPp8k6463o8c7bzZz5STFkt58+LOdJMVplAHhKc1JnRtsG+3lt/dYjDLKhGWZ9Wm90l6/WDdx7qKVZpgv3inxwcuScCFJUZqfzzRoGmeiQvqdjXXMaxDl8CAwEAAaMdMBswDAYDVR0TAQH/BAIwADALBgNVHQ8EBAMCBsAwDQYJKoZIhvcNAQELBQADggIBABuxVHqNzJDu9PBpvwgipBNo3bNoKKgshcl0PTOcIshfR98gkOmvUJ4TctJFE1KHXfmyEOJa449AUtehSz7GGTdz2cvbicxp3mXWb6+zH7iChNtopUmpmvPc2lLPcWhY1Mw+ftUCF5G1S/pk6+cOhqmcG5OtQnPg3zpuGMCf754WUHh2NzUUvZ2vcesvhk4wLKDxo2VWoDJPOcSjrzVogmGINAOgMsVA3DVXWMM80c/wo0GiQUo423XkhZIB7yL5tL2I2MfmYexDqjzP1yeRecuAskx4nSbnvqGwE0QABNUkhudPd4pkwUgdXj9lg2lek4coJWILDM+q4Cy+kxND1o1s+QnbHg9fo/ugvKWz0rW6Bb2rQQcxlV4VhkGHZ6g7DnOvWrHKaoTBYDh4ZGoPyFxxHiY4uixeAIzmQGMyH+7bUEH+kQxkwcVsL7VKpZy5utoilrTqfO1Xcb+A16R49B7Q7eTUl3v293jgzYC/72OTABnKwVyhg7SsLSSM+qV2wsbZwyjamnVJrQwMXRDzdAaE2dfYbu2yMp+nOWWbTuiKWnW2uY6BIDIcwiyHRreHHeSj+KksiXkntsJBpbkC+J1C/v8bNHbFLsmZbul07JukTEZZBRRl2TcYay+ZPDgLRv8j+b465ptHKDnoa9DiV1yv2xv1vU67VuB1rrTJNeZl" noCertificado="00001000000403385015"><cfdi:Emisor rfc="MDI931014D37" nombre="MAQUINAS DIESEL, S.A. DE C.V."><cfdi:DomicilioFiscal calle="AV. INDUSTRIALES DEL PONIENTE" noExterior="2300" colonia="CENTRO" referencia="FVP01006548" municipio="SANTA CATARINA" estado="NUEVO LEON" pais="MEXICO" codigoPostal="66350"/>
+<cfdi:ExpedidoEn calle="RIO LERMA" noExterior="15" noInterior="A Y B" colonia="CENTRO INDUSTRIAL" localidad="TLALNEPANTLA" municipio="TLALNEPANTLA" estado="ESTADO DE MEXICO" pais="MEXICO" codigoPostal="54030"/>
+<cfdi:RegimenFiscal Regimen="REGIMEN GENERAL DE LEY PERSONAS MORALES" />
+</cfdi:Emisor>
+<cfdi:Receptor rfc="COC000315HY4" nombre="COCONAL S.A.P.I DE C.V."><cfdi:Domicilio calle="PERIFERICO SUR 3ER PISO" noExterior="4249" colonia="JARDINES DE LA MONTA#A" localidad="D.F." municipio="DF" estado="MEXICO" pais="MEXICO" codigoPostal="14210"/>
+</cfdi:Receptor>
+<cfdi:Conceptos>
+<cfdi:Concepto cantidad="1" unidad="PIEZA" noIdentificacion="5J1086" descripcion="ANILLO S" valorUnitario="8.16" importe="8.16"/>
+<cfdi:Concepto cantidad="1" unidad="PIEZA" noIdentificacion="4F7390" descripcion="SELLO S" valorUnitario="4.33" importe="4.33"/>
+<cfdi:Concepto cantidad="1" unidad="PIEZA" noIdentificacion="7D8436" descripcion="SELLO S" valorUnitario="7.38" importe="7.38"/>
+<cfdi:Concepto cantidad="6" unidad="PIEZA" noIdentificacion="7G0437" descripcion="PLATO S" valorUnitario="187.14" importe="1122.84"/>
+<cfdi:Concepto cantidad="5" unidad="PIEZA" noIdentificacion="6Y5352" descripcion="DISCO S" valorUnitario="49.64" importe="248.20"/>
+<cfdi:Concepto cantidad="1" unidad="PIEZA" noIdentificacion="2J6274" descripcion="ANILLO S" valorUnitario="1.70" importe="1.70"/>
+<cfdi:Concepto cantidad="1" unidad="PIEZA" noIdentificacion="8D8795" descripcion="SELLO S" valorUnitario="9.40" importe="9.40"/>
+<cfdi:Concepto cantidad="1" unidad="PIEZA" noIdentificacion="4H9105" descripcion="ANILLO S" valorUnitario="5.12" importe="5.12"/>
+<cfdi:Concepto cantidad="1" unidad="PIEZA" noIdentificacion="1M3003" descripcion="SEAL-LIP TYP S" valorUnitario="23.11" importe="23.11"/>
+<cfdi:Concepto cantidad="1" unidad="PIEZA" noIdentificacion="2J0157" descripcion="SELLO S" valorUnitario="2.14" importe="2.14"/>
+<cfdi:Concepto cantidad="1" unidad="PIEZA" noIdentificacion="5M6200" descripcion="SELLO S" valorUnitario="12.32" importe="12.32"/>
+<cfdi:Concepto cantidad="1" unidad="PIEZA" noIdentificacion="6L1650" descripcion="SELLO S" valorUnitario="8.82" importe="8.82"/>
+<cfdi:Concepto cantidad="1" unidad="PIEZA" noIdentificacion="5P3863" descripcion="ANILLO S" valorUnitario="5.56" importe="5.56"/>
+<cfdi:Concepto cantidad="2" unidad="PIEZA" noIdentificacion="9X4600" descripcion="SEAL S" valorUnitario="32.93" importe="65.86"/>
+<cfdi:Concepto cantidad="1" unidad="PIEZA" noIdentificacion="1B0936" descripcion="SEAL-LIP TYP S" valorUnitario="48.15" importe="48.15"/>
+<cfdi:Concepto cantidad="2" unidad="PIEZA" noIdentificacion="8E8319" descripcion="DISC THRUS S" valorUnitario="23.01" importe="46.02"/>
+<cfdi:Concepto cantidad="8" unidad="PIEZA" noIdentificacion="8E5742" descripcion="RING S" valorUnitario="23.09" importe="184.72"/>
+<cfdi:Concepto cantidad="4" unidad="PIEZA" noIdentificacion="9W9371" descripcion="RING-SEAL S" valorUnitario="25.63" importe="102.52"/>
+<cfdi:Concepto cantidad="12" unidad="PIEZA" noIdentificacion="7G4822" descripcion="RING S" valorUnitario="76.46" importe="917.52"/>
+<cfdi:Concepto cantidad="14" unidad="PIEZA" noIdentificacion="8F3469" descripcion="SELLO S" valorUnitario="1.89" importe="26.46"/>
+<cfdi:Concepto cantidad="4" unidad="PIEZA" noIdentificacion="8E5734" descripcion="RING SEAL S" valorUnitario="28.84" importe="115.36"/>
+<cfdi:Concepto cantidad="2" unidad="PIEZA" noIdentificacion="8E5736" descripcion="RING SEAL S" valorUnitario="29.61" importe="59.22"/>
+<cfdi:Concepto cantidad="1" unidad="PIEZA" noIdentificacion="9W9905" descripcion="RING LOCK S" valorUnitario="32.03" importe="32.03"/>
+<cfdi:Concepto cantidad="3" unidad="PIEZA" noIdentificacion="2D8009" descripcion="SELLO S" valorUnitario="5.55" importe="16.65"/>
+<cfdi:Concepto cantidad="1" unidad="PIEZA" noIdentificacion="4F7952" descripcion="SELLO S" valorUnitario="3.85" importe="3.85"/>
+<cfdi:Concepto cantidad="1" unidad="PIEZA" noIdentificacion="7F8268" descripcion="SELLO S" valorUnitario="5.02" importe="5.02"/>
+<cfdi:Concepto cantidad="1" unidad="PIEZA" noIdentificacion="5F8000" descripcion="SELLO S" valorUnitario="4.80" importe="4.80"/>
+<cfdi:Concepto cantidad="1" unidad="PIEZA" noIdentificacion="1737252" descripcion="SWITCH AS-PR S" valorUnitario="93.48" importe="93.48"/>
+<cfdi:Concepto cantidad="12" unidad="PIEZA" noIdentificacion="7M8485" descripcion="SELLO S" valorUnitario="2.86" importe="34.32"/>
+<cfdi:Concepto cantidad="6" unidad="PIEZA" noIdentificacion="5F9144" descripcion="SELLO S" valorUnitario="1.32" importe="7.92"/>
+<cfdi:Concepto cantidad="2" unidad="PIEZA" noIdentificacion="4J2506" descripcion="SELLO S" valorUnitario="1.45" importe="2.90"/>
+<cfdi:Concepto cantidad="10" unidad="PIEZA" noIdentificacion="6F4855" descripcion="SELLO S" valorUnitario="1.81" importe="18.10"/>
+<cfdi:Concepto cantidad="1" unidad="PIEZA" noIdentificacion="3215658" descripcion="COIL AS S" valorUnitario="27.23" importe="27.23"/>
+<cfdi:Concepto cantidad="8" unidad="PIEZA" noIdentificacion="7T4515" descripcion="JOG JUNTAS S" valorUnitario="11.17" importe="89.36"/>
+<cfdi:Concepto cantidad="1" unidad="PIEZA" noIdentificacion="8F6230" descripcion="SELLO S" valorUnitario="6.79" importe="6.79"/>
+<cfdi:Concepto cantidad="4" unidad="PIEZA" noIdentificacion="4D6695" descripcion="SELLO S" valorUnitario="8.26" importe="33.04"/>
+<cfdi:Concepto cantidad="10" unidad="PIEZA" noIdentificacion="3J1907" descripcion="SELLO S" valorUnitario="1.53" importe="15.30"/>
+<cfdi:Concepto cantidad="1" unidad="PIEZA" noIdentificacion="4S5879" descripcion="ANILLO S" valorUnitario="8.63" importe="8.63"/>
+<cfdi:Concepto cantidad="3" unidad="PIEZA" noIdentificacion="29031" descripcion="LOCTITE FIJADOR S" valorUnitario="26.50" importe="79.50"/>
+</cfdi:Conceptos>
+<cfdi:Impuestos totalImpuestosTrasladados="560.61" >
+<cfdi:Traslados>
+<cfdi:Traslado impuesto="IVA" tasa="16.00" importe="560.61"/>
+</cfdi:Traslados>
+</cfdi:Impuestos>
+<cfdi:Complemento>
+<tfd:TimbreFiscalDigital version="1.0" UUID="E2D4C4FF-87FD-4E80-ABCE-3C6D0D2C68DF" FechaTimbrado="2016-09-30T18:01:23" selloCFD="VSELCU8OXWNjFj9FeYb2Jica6ABL6uswBcBe4pRKcg94fvbIJfzUHx5jQwQZpDi31VcpnJ0kdh8wSa5Ivplld1DGjFuoK14yqGwJx2Pi092406wfJrqEbNmxLL9V2WcHd5YiBZGjAieORQuxq1Hug8nA0Jj6TQ7iZ/9r2GdtKXQCsQs+iwcBNIsEJLso/+z7CjChVvDgwGtEF7i3OVTAL7ONSovD/9FnNPLBjZYgyuBIH8huXIx3vNnUuGxe5j1PTYw1uTXA1jQL9fXfem/z6suxCsYa+ycMP0bvcTnFZ/VhVqMYMwtUBQQNANvRoD1i/luMiA9U8ToRKCkk2URCTA==" noCertificadoSAT="00001000000202864530" selloSAT="ohY5vhuPxNsO+PnoQPfQqhqXAKdNEJ88Vp0ANnuVMNnyUCM6ZpuZ7kdaNyRUlhz57s9JDcj8UhJFuLCbRYe4QJdvj5gTkMqMzsag9E3QWpqjp8lh3a+3FzSCKZ3Pos84fP6LRvdVnIAMriT5juejIobvcKQyfW+TOocZspFirUk=" xmlns:tfd="http://www.sat.gob.mx/TimbreFiscalDigital" xsi:schemaLocation="http://www.sat.gob.mx/TimbreFiscalDigital http://www.sat.gob.mx/TimbreFiscalDigital/TimbreFiscalDigital.xsd"/>
+</cfdi:Complemento>
+</cfdi:Comprobante>
