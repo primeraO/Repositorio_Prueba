@@ -397,8 +397,8 @@ Public Module Cla_Inf
                 Case "MARCA"
                     Tsql = "Select Descripcion from Marca where Marca=" & Pone_Apos(Clave)
                 Case "LINEA"
-                    Tsql = "Select Descripcion from Linea where Linea=" & Pone_Apos(Clave)
-                    Tsql &= " and Obra=" & Pone_Apos(G.Sucursal)
+                    Tsql = "Select Descripcion from Linea where Numero=" & Pone_Apos(Clave)
+                    Tsql &= " and Sucursal=" & Pone_Apos(G.Sucursal)
                 Case "SOLICITANTE"
                     Tsql = "Select Nombre from Solicitante where Solicitante=" & Pone_Apos(Clave)
                     Tsql &= " and Obra=" & Pone_Apos(G.Sucursal)

@@ -105,6 +105,15 @@ Partial Class Catalogo_Economico
         TB_Numero.Enabled = True
         TB_Descripcion.Enabled = True
         Ch_Baja.Enabled = True
+        Ch_Baja.Enabled = True
+        Ch_Baja.Enabled = True
+        Ch_Baja.Enabled = True
+        Ch_Baja.Enabled = True
+        Ch_Baja.Enabled = True
+        Ch_Baja.Enabled = True
+        Ch_Baja.Enabled = True
+        Ch_Baja.Enabled = True
+        Ch_Baja.Enabled = True
     End Sub
     Private Sub Habilita()
         Pnl_Busqueda.Visible = False

@@ -30,7 +30,7 @@ Partial Class Catalogo_Articulos
             End Try
             TB_SubGrupo.Enabled = False
             HB_SubLinea.Attributes.Add("style", "cursor:not-allowed;")
-            RB_Opciones.Visible = False
+            'RB_Opciones.Visible = False
         End If
         Msg_Err.Visible = False
         DibujaSpan()
@@ -94,8 +94,8 @@ Partial Class Catalogo_Articulos
         Session("dt").Columns.Add("IVA", Type.GetType("System.Int64")) : Session("dt").Columns("IVA").DefaultValue = 0
         Session("dt").Columns.Add("Unidad_Medida", Type.GetType("System.String")) : Session("dt").Columns("Unidad_Medida").DefaultValue = ""
         Session("dt").Columns.Add("Ref_Sub_Num", Type.GetType("System.String")) : Session("dt").Columns("Ref_Sub_Num").DefaultValue = ""
-        Session("dt").Columns.Add("Clas_Corta", Type.GetType("System.String")) : Session("dt").Columns("Clas_Corta").DefaultValue = ""
-        Session("dt").Columns.Add("IEPS", Type.GetType("System.String")) : Session("dt").Columns("IEPS").DefaultValue = ""
+        'Session("dt").Columns.Add("Clas_Corta", Type.GetType("System.String")) : Session("dt").Columns("Clas_Corta").DefaultValue = ""
+        'Session("dt").Columns.Add("IEPS", Type.GetType("System.String")) : Session("dt").Columns("IEPS").DefaultValue = ""
         Session("dt").Columns.Add("Baja", Type.GetType("System.String")) : Session("dt").Columns("Baja").DefaultValue = ""
         Dim clave(0) As DataColumn
         clave(0) = Session("dt").Columns("Numero")
@@ -192,7 +192,7 @@ Partial Class Catalogo_Articulos
         Try
             Session("dt").Rows.Clear()
             G.cn.Open()
-            G.Tsql = "Select top 200 a.Numero,b.Clas_Corta,a.Art_Descripcion,a.Lin_Numero,a.Sub_Numero,a.IVA,a.Unidad_Medida,a.IEPS,a.Ref_Sub_Num"
+            G.Tsql = "Select top 200 a.Numero,a.Art_Descripcion,a.Lin_Numero,a.Sub_Numero,a.IVA,a.Unidad_Medida,a.Ref_Sub_Num"
             G.Tsql &= " from Articulos a inner join Sub_Linea b on a.Lin_Numero=b.Lin_Numero and a.Sub_Numero=b.Numero"
             If Ch_Baja.Checked = True Then
                 G.Tsql &= " where a.Baja='*'"
@@ -205,17 +205,13 @@ Partial Class Catalogo_Articulos
             If TB_Descripcion.Text.Trim <> "" Then
                 G.Tsql &= " and a.Art_Descripcion like '%" & TB_Descripcion.Text.Trim & "%'"
             End If
-            If TB_Clas_Corta.Text.Trim <> "" Then
-                G.Tsql &= " and b.Clas_Corta=" & Pone_Apos(TB_Clas_Corta.Text.Trim)
-            End If
             If Val(TB_Grupo.Text) > 0 Then
                 G.Tsql &= " and a.Lin_Numero=" & Val(TB_Grupo.Text)
                 If Val(TB_SubGrupo.Text) > 0 Then
                     G.Tsql &= " and a.Sub_Numero=" & Val(TB_SubGrupo.Text)
                 End If
             End If
-            G.Tsql &= " and a.Cia=" & Val(Session("Cia"))
-            G.Tsql &= " and a.Obra=" & Pone_Apos(G.Sucursal)
+            G.Tsql &= " and a.Empresa=" & Val(G.Empresa_Numero)
             G.Tsql &= " Order by a.Numero"
             'Label50.Text = G.Tsql
             G.com.CommandText = G.Tsql
@@ -273,7 +269,7 @@ Partial Class Catalogo_Articulos
         f("IVA") = IVA
         f("Lin_Numero") = T_Linea.Text
         f("Sub_Numero") = T_SubLinea.Text
-        If CH_IEPS.Checked = True Then f("IEPS") = RB_Opciones.SelectedValue.ToString
+        'If CH_IEPS.Checked = True Then f("IEPS") = RB_Opciones.SelectedValue.ToString
         Session("dt").Rows.Add(f)
         GridView1.PageIndex = Int((Session("dt").Rows.Count) / 10)
         GridView1.DataSource = Session("dt")
@@ -288,9 +284,9 @@ Partial Class Catalogo_Articulos
             f("Unidad_Medida") = Unidad_Medida
             f("IVA") = IVA
             f("Lin_Numero") = T_Linea.Text
-            f("IEPS") = RB_Opciones.SelectedValue.ToString
+
             f("Sub_Numero") = T_SubLinea.Text
-            If CH_IEPS.Checked = True Then f("IEPS") = RB_Opciones.SelectedValue.ToString
+
         End If
         GridView1.DataSource = Session("dt")
         GridView1.DataBind()
@@ -351,14 +347,13 @@ Partial Class Catalogo_Articulos
                 'If Not G.com.ExecuteScalar Is Nothing Then
                 '    Msg_Error("Ya existe el Nombre del Articulos") : Exit Sub
                 'End If
-                Tsql = "Select Numero from Articulos where Numero=" & Pone_Apos(T_Numero.Text) & "and Obra=" & Pone_Apos(G.Sucursal) & " and Cia=" & Val(Session("Cia"))
+                Tsql = "Select Numero from Articulos where Numero=" & Pone_Apos(T_Numero.Text) & " and Empresa=" & Val(G.Empresa_Numero)
                 G.com.CommandText = Tsql
                 If Not G.com.ExecuteScalar Is Nothing Then
                     Msg_Error("Ya existe el articulo: " & Pone_Apos(T_Numero.Text)) : Exit Sub
                 End If
-                G.Tsql = "Insert into Articulos (Cia,Obra,Numero,Art_Descripcion,Mar_Numero,Lin_Numero,Sub_Numero,IVA,Unidad_Medida,Ref_Sub_Num,IEPS,Baja) values ("
-                G.Tsql &= Pone_Apos(Session("Cia"))
-                G.Tsql &= "," & Pone_Apos(G.Sucursal)
+                G.Tsql = "Insert into Articulos (Empresa,Numero,Art_Descripcion,Mar_Numero,Lin_Numero,Sub_Numero,IVA,Unidad_Medida,Ref_Sub_Num,Baja) values ("
+                G.Tsql &= Val(G.Empresa_Numero)
                 G.Tsql &= "," & Pone_Apos(T_Numero.Text.Trim)
                 G.Tsql &= "," & Pone_Apos(T_Descripcion.Text.Trim)
                 G.Tsql &= "," & Val(T_Marca.Text.Trim)
@@ -367,12 +362,6 @@ Partial Class Catalogo_Articulos
                 G.Tsql &= "," & Val(T_IVA.Text.Trim)
                 G.Tsql &= "," & Pone_Apos(T_UMedida.Text.Trim)
                 G.Tsql &= "," & Pone_Apos(T_Codigo.Text.Trim)
-                If CH_IEPS.Checked = True Then
-                    G.Tsql &= "," & Pone_Apos(RB_Opciones.SelectedValue.ToString)
-                Else
-                    G.Tsql &= ",''"
-
-                End If
                 G.Tsql &= "," & "''" & ")"
                 G.com.CommandText = G.Tsql
                 G.com.ExecuteNonQuery()
@@ -388,13 +377,9 @@ Partial Class Catalogo_Articulos
                 G.Tsql &= ",IVA=" & Val(T_IVA.Text.Trim)
                 G.Tsql &= ",Unidad_Medida=" & Pone_Apos(T_UMedida.Text.Trim)
                 G.Tsql &= ",Ref_Sub_Num=" & Pone_Apos(T_Codigo.Text.Trim)
-                If CH_IEPS.Checked = True Then
-                    G.Tsql &= ",IEPS=" & Pone_Apos(RB_Opciones.SelectedValue.ToString)
-                End If
                 G.Tsql &= ",Baja=" & "''"
                 G.Tsql &= " WHERE Numero = " & Pone_Apos(T_Numero.Text.Trim)
-                G.Tsql &= " and Obra = " & Pone_Apos(G.Sucursal)
-                G.Tsql &= " and Cia = " & Val(Session("Cia"))
+                G.Tsql &= " and Empresa = " & Val(G.Empresa_Numero)
                 G.com.CommandText = G.Tsql
                 G.com.ExecuteNonQuery()
                 CambiaFilaGrid(T_Numero.Text.Trim, T_Descripcion.Text.Trim, T_UMedida.Text.Trim, T_IVA.Text.Trim)
@@ -406,9 +391,8 @@ Partial Class Catalogo_Articulos
             If Movimiento.Value = "Baja" Then
                 G.cn.Open()
                 G.Tsql = "Update Articulos set Baja=" & "'*'"
-                G.Tsql &= " where Numero = " & Pone_Apos(T_Numero.Text.Trim)
-                G.Tsql &= " and Obra = " & Pone_Apos(G.Sucursal)
-                G.Tsql &= " and Cia = " & Val(Session("Cia"))
+                G.Tsql &= " WHERE Numero = " & Pone_Apos(T_Numero.Text.Trim)
+                G.Tsql &= " and Empresa = " & Val(G.Empresa_Numero)
                 G.com.CommandText = G.Tsql
                 G.com.ExecuteNonQuery()
                 EliminaFilaGrid(T_Numero.Text.Trim)
@@ -443,8 +427,8 @@ Partial Class Catalogo_Articulos
             Clave(0) = (GridView1.Rows(ind).Cells(1).Text)
             Dim f As DataRow = Session("dt").Rows.Find(Clave)
             If Not f Is Nothing Then
-                CH_IEPS.Checked = False
-                RB_Opciones.Visible = False
+                'CH_IEPS.Checked = False
+                'RB_Opciones.Visible = False
                 T_Numero.Text = f.Item("Numero").ToString
                 T_Descripcion.Text = f.Item("Art_Descripcion").ToString
                 T_Marca.Text = f.Item("Mar_Numero").ToString
@@ -457,15 +441,7 @@ Partial Class Catalogo_Articulos
                 'T_Desc_Marca.Text = Busca_Cat(CType(Session("G"), Glo), "MARCA", f("Mar_Numero"))
                 T_Desc_Linea.Text = Busca_Cat(CType(Session("G"), Glo), "LINEA", f("Lin_Numero"))
                 T_Desc_SubLinea.Text = Busca_Cat(CType(Session("G"), Glo), "SUBLINEA", f("Sub_Numero"), f("Lin_Numero"))
-                If f.Item("IEPS").ToString > "" Then
-                    CH_IEPS.Checked = True
-                    RB_Opciones.SelectedValue = f.Item("IEPS").ToString
-                    RB_Opciones.Visible = True
-                Else
-                    CH_IEPS.Checked = False
-                    RB_Opciones.Visible = False
-
-                End If
+               
 
             End If
             If (e.CommandName.Equals("Baja")) Then
@@ -541,9 +517,9 @@ Partial Class Catalogo_Articulos
         Dim G As Glo = CType(Session("G"), Glo)
         G.cn.Open()
         G.Tsql = "Select Descripcion from Marca"
-        G.Tsql &= " where Marca=" & Val(T_Marca.Text.Trim)
-        G.Tsql &= " and Cia=" & Val(Session("Cia"))
-        G.Tsql &= " and Obra=" & Pone_Apos(Session("Obra"))
+        G.Tsql &= " where Numero=" & Val(T_Marca.Text.Trim)
+        G.Tsql &= " and Empresa=" & Val(G.Empresa_Numero)
+        G.Tsql &= " and Sucursal=" & Pone_Apos(G.Sucursal)
         G.com.CommandText = G.Tsql
         Dim Desc_Mar As String = G.com.ExecuteScalar
         T_Desc_Marca.Text = Desc_Mar
@@ -596,11 +572,5 @@ Partial Class Catalogo_Articulos
         Pnl_Grids.Visible = True
     End Sub
 
-    Protected Sub CH_IEPS_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles CH_IEPS.CheckedChanged
-        If CH_IEPS.Checked = True Then
-            RB_Opciones.Visible = True
-        Else
-            RB_Opciones.Visible = False
-        End If
-    End Sub
+   
 End Class

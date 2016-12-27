@@ -208,7 +208,7 @@
                         </div>
                         <div style="overflow-y:scroll; overflow-x:hidden; width:100%; height:500px;">
                             <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" 
-                                CellPadding="1" CellSpacing="4" DataKeyNames="Linea" Font-Size="Small" 
+                                CellPadding="1" CellSpacing="4" DataKeyNames="Numero" Font-Size="Small" 
                                 ForeColor="#333333" GridLines="None" Height="16px" ShowHeader="False" 
                                 style="top: 152px; left: 86px; " Visible="False" Width="964px">
                                 <RowStyle BackColor="#EFF3FB" Height="22px" />
@@ -216,7 +216,7 @@
                                     <asp:CommandField ShowSelectButton="True" Visible="False">
                                     <ItemStyle Width="50px" />
                                     </asp:CommandField>
-                                    <asp:BoundField DataField="Linea" HeaderText="Linea">
+                                    <asp:BoundField DataField="Numero" HeaderText="Linea">
                                     <ItemStyle HorizontalAlign="Right" Width="60px" />
                                     </asp:BoundField>
                                     <asp:BoundField DataField="Descripcion" HeaderText="Descripcion">
@@ -224,10 +224,6 @@
                                     </asp:BoundField>
                                     <asp:BoundField DataField="Aplicacion" HeaderText="Aplicación" Visible="False">
                                     <ItemStyle Width="200px" />
-                                    </asp:BoundField>
-                                    <asp:BoundField DataField="Nombre" HeaderText="Nombre Responsable" 
-                                        Visible="False">
-                                    <ItemStyle HorizontalAlign="Left" Width="200px" />
                                     </asp:BoundField>
                                     <asp:ButtonField ButtonType="Image" CommandName="Seleccion" HeaderText="Ver" 
                                         ImageUrl="~/Imagenes/M_Selecciona_50.png" Text="Ver" Visible="False">

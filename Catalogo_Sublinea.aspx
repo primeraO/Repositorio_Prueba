@@ -328,14 +328,9 @@
                                     TabIndex="17" Width="205px"></asp:TextBox>
                             </td>
                             <td height="40px" style="text-align: left" width="10%">
-                                <asp:Label ID="Label27" runat="server" BorderStyle="None" 
-                                    CssClass="Textos_Azules" Text="Clasificación Corta:"></asp:Label>
-                            </td>
+                                &nbsp;</td>
                             <td height="40px" style="text-align: right" width="370">
-                                <asp:TextBox ID="T_Clasificacion_Corta" runat="server" CssClass="form-control" 
-                                    MaxLength="5" style="top: 550px; left: 155px; right: 66px; bottom: 70px;" 
-                                    TabIndex="17" Width="93px"></asp:TextBox>
-                            </td>
+                                &nbsp;</td>
                             <td style="text-align: left" width="100px">
                                 &nbsp;</td>
                         </tr>
