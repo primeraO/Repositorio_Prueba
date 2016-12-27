@@ -359,7 +359,6 @@ Partial Class Bus_Cat
                     If T_Descipcion.Text.Trim <> "" Then
                         G.Tsql &= " and Nombre like '%" & T_Descipcion.Text & "%'"
                     End If
-                    'comentario
                 Case "EMPLEADOS"
                     G.Tsql = "Select TOP(200) Numero,Nombre as Descripcion "
                     G.Tsql &= "from Empleados "
@@ -371,10 +370,11 @@ Partial Class Bus_Cat
                         G.Tsql &= " and Nombre like '%" & T_Descipcion.Text & "%'"
                     End If
                 Case "LINEA"
-                    G.Tsql = "Select TOP(200) Linea as Numero, Descripcion, Aplicacion"
-                    G.Tsql &= " from Linea Where Cia=" & Val(Session("Cia"))
+                    G.Tsql = "Select TOP(200) Numero, Descripcion, Aplicacion"
+                    G.Tsql &= " from Linea Where Empresa=" & Val(G.Empresa_Numero)
+                    G.Tsql &= " and Sucursal=" & Val(G.Sucursal)
                     If Val(T_Numero.Text) > 0 Then
-                        G.Tsql &= " and Linea=" & Val(T_Numero.Text)
+                        G.Tsql &= " and Numero=" & Val(T_Numero.Text)
                     End If
                     If T_Descipcion.Text.Trim <> "" Then
                         G.Tsql &= " and Descripcion like '%" & T_Descipcion.Text & "%'"
@@ -663,15 +663,15 @@ Partial Class Bus_Cat
                     If T_Descipcion.Text.Trim <> "" Then
                         G.Tsql &= " and Descripcion like '%" & T_Descipcion.Text & "%'"
                     End If
-                Case "LINEA"
-                    G.Tsql = "Select TOP(200)  Linea as Numero, Descripcion, Aplicacion"
-                    G.Tsql &= " from Linea Where Cia=" & Val(Session("Cia"))
-                    If Val(T_Numero.Text) > 0 Then
-                        G.Tsql &= " and Linea=" & Val(T_Numero.Text)
-                    End If
-                    If T_Descipcion.Text.Trim <> "" Then
-                        G.Tsql &= " and Descripcion like '%" & T_Descipcion.Text & "%'"
-                    End If
+                    'Case "LINEA"
+                    '    G.Tsql = "Select TOP(200)  Linea as Numero, Descripcion, Aplicacion"
+                    '    G.Tsql &= " from Linea Where Cia=" & Val(Session("Cia"))
+                    '    If Val(T_Numero.Text) > 0 Then
+                    '        G.Tsql &= " and Linea=" & Val(T_Numero.Text)
+                    '    End If
+                    '    If T_Descipcion.Text.Trim <> "" Then
+                    '        G.Tsql &= " and Descripcion like '%" & T_Descipcion.Text & "%'"
+                    '    End If
                 Case "MARCA"
                     G.Tsql = "Select TOP(200)  Marca as Numero, Descripcion"
                     G.Tsql &= " from Marca Where Cia=" & Val(Session("Cia"))
