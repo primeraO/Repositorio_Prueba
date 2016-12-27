@@ -253,9 +253,6 @@
                                     <asp:BoundField DataField="Sub_Numero" HeaderText="Subgrupo">
                                     <HeaderStyle Width="40px" />
                                     </asp:BoundField>
-                                    <asp:BoundField DataField="" HeaderText="Clas.">
-                                    <HeaderStyle Width="40px" />
-                                    </asp:BoundField>
                                     <asp:BoundField HeaderText="Ver">
                                     <HeaderStyle Width="49px" />
                                     </asp:BoundField>
@@ -294,9 +291,6 @@
                                     </asp:BoundField>
                                     <asp:BoundField DataField="Sub_Numero" HeaderText="Subgrupo">
                                     <ItemStyle HorizontalAlign="Right" Width="53px" />
-                                    </asp:BoundField>
-                                    <asp:BoundField DataField="Clas_Corta" HeaderText="">
-                                    <ItemStyle HorizontalAlign="Right" Width="38px" />
                                     </asp:BoundField>
                                     <asp:ButtonField ButtonType="Image" CommandName="Seleccion" HeaderText="Ver" 
                                         ImageUrl="~/Imagenes/M_Selecciona_50.png" Text="Ver">
@@ -485,17 +479,9 @@
                             <td width="11%">
                                 &nbsp;</td>
                             <td style="text-align: left" width="120">
-                                <asp:CheckBox ID="CH_IEPS" runat="server" Text="Es IEPS" AutoPostBack="True" 
-                                    CssClass="Textos_Azules" />
-                            </td>
+                                &nbsp;</td>
                             <td>
-                                <asp:RadioButtonList ID="RB_Opciones" runat="server" 
-                                    RepeatDirection="Horizontal" Visible="False">
-                                    <asp:ListItem Selected="True" Value="M">Magna</asp:ListItem>
-                                    <asp:ListItem Value="P">Premium</asp:ListItem>
-                                    <asp:ListItem Value="D">Diesel</asp:ListItem>
-                                </asp:RadioButtonList>
-                            </td>
+                                &nbsp;</td>
                             <td>
                                 &nbsp;</td>
                             <td width="11%">

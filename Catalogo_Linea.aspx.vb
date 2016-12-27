@@ -66,16 +66,14 @@ Partial Class Catalogo_Linea
     End Sub
     Private Sub CrearCamposTabla()
         'Tabla Linea'
-        Session("dt").Columns.Add("Linea", Type.GetType("System.Int64")) : Session("dt").Columns("Linea").DefaultValue = 0
+        Session("dt").Columns.Add("Numero", Type.GetType("System.Int64")) : Session("dt").Columns("Numero").DefaultValue = 0
         Session("dt").Columns.Add("Descripcion", Type.GetType("System.String")) : Session("dt").Columns("Descripcion").DefaultValue = ""
         Session("dt").Columns.Add("Aplicacion", Type.GetType("System.String")) : Session("dt").Columns("Aplicacion").DefaultValue = ""
         Session("dt").Columns.Add("Nombre", Type.GetType("System.String")) : Session("dt").Columns("Nombre").DefaultValue = ""
-        Session("dt").Columns.Add("Cve_Seg", Type.GetType("System.String")) : Session("dt").Columns("Cve_Seg").DefaultValue = ""
-        Session("dt").Columns.Add("Fecha_Seg", Type.GetType("System.String")) : Session("dt").Columns("Fecha_Seg").DefaultValue = ""
-        Session("dt").Columns.Add("Hora_Seg", Type.GetType("System.String")) : Session("dt").Columns("Hora_Seg").DefaultValue = ""
+        Session("dt").Columns.Add("Fec_cambio", Type.GetType("System.String")) : Session("dt").Columns("Fec_cambio").DefaultValue = ""
         Session("dt").Columns.Add("Baja", Type.GetType("System.String")) : Session("dt").Columns("Baja").DefaultValue = ""
         Dim clave(0) As DataColumn
-        clave(0) = Session("dt").Columns("Linea")
+        clave(0) = Session("dt").Columns("Numero")
         Session("dt").PrimaryKey = clave
     End Sub
     Private Function validar() As Boolean
@@ -89,7 +87,7 @@ Partial Class Catalogo_Linea
     Private Sub AñadeFilaGrid(ByVal LineaNumero As String, ByVal Nombre As String, ByVal Aplicacion As String)
         Dim f As DataRow = Session("dt").NewRow()
         'f("EmpresaNumero") = EmpresaNumero
-        f("Linea") = LineaNumero
+        f("Numero") = LineaNumero
         f("Descripcion") = Nombre
         f("Aplicacion") = Aplicacion
         Session("dt").Rows.Add(f)
@@ -134,9 +132,9 @@ Partial Class Catalogo_Linea
         Try
             Session("dt").Rows.Clear()
             G.cn.Open()
-            G.Tsql = "Select Linea.Linea,Linea.Descripcion,Linea.Aplicacion from Linea"
-            G.Tsql &= " Where Linea.Cia=" & Val(Session("Cia"))
-            G.Tsql &= " and Linea.Obra=" & Pone_Apos(Session("Obra"))
+            G.Tsql = "Select Linea.Numero,Linea.Descripcion,Linea.Aplicacion from Linea"
+            G.Tsql &= " Where Linea.Empresa=" & Val(G.Empresa_Numero)
+            G.Tsql &= " and Linea.Sucursal=" & Pone_Apos(G.Sucursal)
             If Ch_Baja.Checked = True Then
                 G.Tsql &= " and Linea.Baja='*' "
             Else
@@ -146,9 +144,9 @@ Partial Class Catalogo_Linea
                 G.Tsql &= " and Linea.Descripcion like '%" & TB_Descripcion.Text.Trim & "%'"
             End If
             If TB_Numero.Text <> "" Then
-                G.Tsql &= " and Linea=" & Val(TB_Numero.Text.Trim)
+                G.Tsql &= " and Numero=" & Val(TB_Numero.Text.Trim)
             End If
-            G.Tsql &= " Order by Linea.Linea"
+            G.Tsql &= " Order by Linea.Numero"
             G.com.CommandText = G.Tsql
             G.dr = G.com.ExecuteReader
             Session("dt").Load(G.dr)
@@ -169,17 +167,17 @@ Partial Class Catalogo_Linea
             Clave(0) = (GridView1.Rows(ind).Cells(1).Text)
             Dim f As DataRow = Session("dt").Rows.Find(Clave)
             If Not f Is Nothing Then
-                T_Numero.Text = f("Linea")
+                T_Numero.Text = f("Numero")
                 T_Aplicacion.Text = f("Aplicacion")
                 T_Descripcion.Text = f("Descripcion")
                 Dim G As Glo = CType(Session("G"), Glo)
-                G.cn.Open()
-                G.Tsql = "Select Responsable.Responsable from Responsable inner join Linea on Linea.Responsable=Responsable.Responsable"
-                G.Tsql &= " where Responsable.Nombre=" & Pone_Apos(f("Nombre"))
-                G.Tsql &= "And Linea.Linea=" & Pone_Apos(f("Linea"))
-                G.com.CommandText = G.Tsql
-                Dim Valor As String = G.com.ExecuteScalar
-                G.cn.Close()
+                'G.cn.Open()
+                'G.Tsql = "Select Responsable.Responsable from Responsable inner join Linea on Linea.Responsable=Responsable.Responsable"
+                'G.Tsql &= " where Responsable.Nombre=" & Pone_Apos(f("Nombre"))
+                'G.Tsql &= "And Linea.Numero=" & Pone_Apos(f("Numero"))
+                'G.com.CommandText = G.Tsql
+                'Dim Valor As String = G.com.ExecuteScalar
+                'G.cn.Close()
 
             End If
             If (e.CommandName.Equals("Baja")) Then
@@ -317,21 +315,19 @@ Partial Class Catalogo_Linea
                 T_Numero.Text = Siguiente()
                 G.cn.Open()
                 Tsql = "Select Descripcion from Linea where Descripcion=" & Pone_Apos(T_Descripcion.Text)
-                Tsql &= " and Cia=" & Val(Session("Cia"))
-                Tsql &= " and Obra=" & Pone_Apos(G.Sucursal)
+                Tsql &= " and Empresa=" & Val(G.Empresa_Numero)
+                Tsql &= " and Sucursal=" & Pone_Apos(G.Sucursal)
                 G.com.CommandText = Tsql
                 If Not G.com.ExecuteScalar Is Nothing Then
                     Msg_Error("Ya existe una Linea con esa Descripción") : Exit Sub
                 End If
-                G.Tsql = "Insert into Linea (Cia,Obra,Linea,Descripcion,Aplicacion,Cve_Seg,Fecha_Seg,Hora_Seg,Baja) values ("
-                G.Tsql &= Val(Session("Cia"))
-                G.Tsql &= "," & Pone_Apos(Session("Obra"))
+                G.Tsql = "Insert into Linea (Empresa,Sucursal,Numero,Descripcion,Aplicacion,Fec_cambio,Baja) values ("
+                G.Tsql &= Val(G.Empresa_Numero)
+                G.Tsql &= "," & Pone_Apos(G.Sucursal)
                 G.Tsql &= "," & T_Numero.Text.Trim
                 G.Tsql &= "," & Pone_Apos(T_Descripcion.Text.Trim)
                 G.Tsql &= "," & Pone_Apos(T_Aplicacion.Text.Trim)
-                G.Tsql &= "," & Pone_Apos(Session("Contraseña"))
                 G.Tsql &= "," & Pone_Apos(Fecha_AMD(DateTime.Now().ToShortDateString()))
-                G.Tsql &= "," & Pone_Apos(DateTime.Now.ToString("H:mm:ss", CultureInfo.InvariantCulture))
                 G.Tsql &= "," & "''" & ")"
                 G.com.CommandText = G.Tsql
                 G.com.ExecuteNonQuery()
@@ -343,13 +339,11 @@ Partial Class Catalogo_Linea
                 G.cn.Open()
                 G.Tsql = "Update Linea set Descripcion=" & Pone_Apos(T_Descripcion.Text.Trim)
                 G.Tsql &= ",Aplicacion=" & Pone_Apos(T_Aplicacion.Text.Trim)
-                G.Tsql &= ",Cve_Seg=" & Pone_Apos(Session("Contraseña"))
-                G.Tsql &= ",Fecha_Seg=" & Pone_Apos(Fecha_AMD(DateTime.Now().ToShortDateString()))
-                G.Tsql &= ",Hora_Seg=" & Pone_Apos(DateTime.Now.ToString("H:mm:ss", CultureInfo.InvariantCulture))
+                G.Tsql &= ",Fec_cambio=" & Pone_Apos(Fecha_AMD(DateTime.Now().ToShortDateString()))
                 G.Tsql &= ",Baja=" & "''"
-                G.Tsql &= " Where Cia=" & Val(Session("Cia"))
-                G.Tsql &= " and Obra=" & Pone_Apos(Session("Obra"))
-                G.Tsql &= " and Linea=" & Val(T_Numero.Text.Trim)
+                G.Tsql &= " Where Empresa=" & Val(G.Empresa_Numero)
+                G.Tsql &= " and Sucursal=" & Pone_Apos(G.Sucursal)
+                G.Tsql &= " and Numero=" & Val(T_Numero.Text.Trim)
                 G.com.CommandText = G.Tsql
                 G.com.ExecuteNonQuery()
                 If Ch_Baja.Checked = True Then
@@ -361,9 +355,9 @@ Partial Class Catalogo_Linea
             If Movimiento.Value = "Baja" Then
                 G.cn.Open()
                 G.Tsql = "Update Linea set Baja=" & "'*'"
-                G.Tsql &= " Where Cia=" & Val(Session("Cia"))
-                G.Tsql &= " and Obra=" & Pone_Apos(Session("Obra"))
-                G.Tsql &= " and Linea=" & Val(T_Numero.Text.Trim)
+                G.Tsql &= " Where Empresa=" & Val(G.Empresa_Numero)
+                G.Tsql &= " and Sucursal=" & Pone_Apos(G.Sucursal)
+                G.Tsql &= " and Numero=" & Val(T_Numero.Text.Trim)
                 G.com.CommandText = G.Tsql
                 G.com.ExecuteNonQuery()
                 EliminaFilaGrid(T_Numero.Text.Trim)
@@ -383,9 +377,9 @@ Partial Class Catalogo_Linea
         Siguiente = 0
         Try
             G.cn.Open()
-            G.Tsql = "Select Max(Linea) from Linea "
+            G.Tsql = "Select Max(Numero) from Linea "
             'G.Tsql &= "inner join Responsable on Responsable.Responsable=Linea.Responsable"
-            G.Tsql &= " Where Linea.Cia=" & Val(Session("Cia")) & " and Linea.Obra=" & Pone_Apos(Session("Obra"))
+            G.Tsql &= " Where Linea.Empresa=" & Val(G.Empresa_Numero) & " and Linea.Sucursal=" & Pone_Apos(G.Sucursal)
             G.com.CommandText = G.Tsql
             Siguiente = Val(G.com.ExecuteScalar.ToString) + 1
         Catch ex As Exception

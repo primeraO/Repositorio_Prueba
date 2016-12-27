@@ -115,8 +115,8 @@ Partial Class Catalogo_Sublinea
         Session("dt").Columns.Add("Numero_Linea", Type.GetType("System.Int64")) : Session("dt").Columns("Numero_Linea").DefaultValue = 0
         Session("dt").Columns.Add("Lin_Descripcion", Type.GetType("System.String")) : Session("dt").Columns("Lin_Descripcion").DefaultValue = ""
         Session("dt").Columns.Add("Numero_Sub_Linea", Type.GetType("System.Int64")) : Session("dt").Columns("Numero_Sub_Linea").DefaultValue = 0
-        Session("dt").Columns.Add("Fecha_Cambio", Type.GetType("System.String")) : Session("dt").Columns("Fecha_Cambio").DefaultValue = ""
-        Session("dt").Columns.Add("Clas_Corta", Type.GetType("System.String")) : Session("dt").Columns("Clas_Corta").DefaultValue = ""
+        Session("dt").Columns.Add("Fec_cambio", Type.GetType("System.String")) : Session("dt").Columns("Fec_cambio").DefaultValue = ""
+        'Session("dt").Columns.Add("Clas_Corta", Type.GetType("System.String")) : Session("dt").Columns("Clas_Corta").DefaultValue = ""
         Dim clave(1) As DataColumn
         clave(0) = Session("dt").Columns("Numero_Linea")
         clave(1) = Session("dt").Columns("Numero_Sub_Linea")
@@ -136,7 +136,7 @@ Partial Class Catalogo_Sublinea
         f("Lin_Descripcion") = Nombre_Linea
         f("Numero_Sub_Linea") = Sublinea_Numero
         f("Numero_Linea") = Numero_Linea
-        f("Clas_Corta") = T_Clasificacion_Corta.Text.Trim
+        'f("Clas_Corta") = T_Clasificacion_Corta.Text.Trim
         Session("dt").Rows.Add(f)
         GridView1.PageIndex = Int((Session("dt").Rows.Count) / 10)
         GridView1.DataSource = Session("dt")
@@ -149,7 +149,7 @@ Partial Class Catalogo_Sublinea
         Dim f As DataRow = Session("dt").Rows.Find(clave)
         If Not f Is Nothing Then
             f("Descripcion") = Descripcion
-            f("Clas_Corta") = T_Clasificacion_Corta.Text.Trim
+            'f("Clas_Corta") = T_Clasificacion_Corta.Text.Trim
 
         End If
         GridView1.DataSource = Session("dt")
@@ -182,8 +182,8 @@ Partial Class Catalogo_Sublinea
         Try
             Session("dt").Rows.Clear()
             G.cn.Open()
-            G.Tsql = "Select Sub_Linea.Numero as Numero_Sub_Linea,Sub_Linea.Clas_Corta, Sub_Linea.Descripcion,Sub_Linea.Lin_Numero as Numero_Linea, Linea.Descripcion as Lin_Descripcion from Sub_Linea"
-            G.Tsql &= " left join Linea on Linea.Linea=Sub_Linea.Lin_Numero"
+            G.Tsql = "Select Sub_Linea.Numero as Numero_Sub_Linea, Sub_Linea.Descripcion,Sub_Linea.Lin_Numero as Numero_Linea, Linea.Descripcion as Lin_Descripcion from Sub_Linea"
+            G.Tsql &= " left join Linea on Linea.Numero=Sub_Linea.Lin_Numero"
             If Ch_Baja.Checked = True Then
                 G.Tsql &= " where Sub_Linea.Baja='*' "
             Else
@@ -197,7 +197,7 @@ Partial Class Catalogo_Sublinea
 
             End If
             If Val(TB_Grupo.Text) > 0 Then
-                G.Tsql &= " and Linea.Linea=" & Val(TB_Grupo.Text)
+                G.Tsql &= " and Linea.Numero=" & Val(TB_Grupo.Text)
             End If
             If TB_Grupo_Descripcion.Text <> "" Then
                 G.Tsql &= " and Linea.Descripcion like'%" & TB_Grupo_Descripcion.Text.Trim & "%'"
@@ -229,7 +229,7 @@ Partial Class Catalogo_Sublinea
                 T_Descripcion.Text = f.Item("Descripcion").ToString
                 T_Lin_Descripcion.Text = f.Item("Lin_Descripcion").ToString
                 T_Lin_Numero.Text = f.Item("Numero_Linea").ToString
-                T_Clasificacion_Corta.Text = f.Item("Clas_Corta").ToString
+                'T_Clasificacion_Corta.Text = f.Item("Clas_Corta").ToString
             End If
             If (e.CommandName.Equals("Baja")) Then
                 Movimiento.Value = "Baja"
@@ -336,13 +336,12 @@ Partial Class Catalogo_Sublinea
                 If Not G.com.ExecuteScalar Is Nothing Then
                     Msg_Error("Ya existe una Sub_Linea con esa Descripción") : Exit Sub
                 End If
-                G.Tsql = "Insert into Sub_Linea (Baja,Descripcion,Lin_Numero,Numero,Fecha_Cambio,Clas_Corta) values ("
+                G.Tsql = "Insert into Sub_Linea (Baja,Descripcion,Lin_Numero,Numero,Fec_cambio) values ("
                 G.Tsql &= "''"
                 G.Tsql &= "," & Pone_Apos(T_Descripcion.Text.Trim)
                 G.Tsql &= "," & Val(T_Lin_Numero.Text)
                 G.Tsql &= "," & Val(T_Numero.Text)
                 G.Tsql &= "," & Pone_Apos(Fecha_AMD(DateTime.Now().ToShortDateString()))
-                G.Tsql &= "," & Pone_Apos(T_Clasificacion_Corta.Text.Trim)
                 G.Tsql &= ")"
                 G.com.CommandText = G.Tsql
                 G.com.ExecuteNonQuery()
@@ -352,8 +351,7 @@ Partial Class Catalogo_Sublinea
             If Movimiento.Value = "Cambio" Then
                 G.Tsql = "Update Sub_Linea set Baja=''"
                 G.Tsql &= ",Descripcion=" & Pone_Apos(T_Descripcion.Text.Trim)
-                G.Tsql &= ",Fecha_Cambio=" & Pone_Apos(Fecha_AMD(DateTime.Now().ToShortDateString()))
-                G.Tsql &= ",Clas_Corta=" & Pone_Apos(T_Clasificacion_Corta.Text.Trim)
+                G.Tsql &= ",Fec_cambio=" & Pone_Apos(Fecha_AMD(DateTime.Now().ToShortDateString()))
                 G.Tsql &= " Where Numero=" & Val(T_Numero.Text.Trim)
                 G.Tsql &= " and Lin_Numero=" & Val(T_Lin_Numero.Text)
                 G.com.CommandText = G.Tsql
@@ -366,7 +364,7 @@ Partial Class Catalogo_Sublinea
             End If
             If Movimiento.Value = "Baja" Then
                 G.Tsql = "Update Sub_Linea set Baja='*'"
-                G.Tsql &= ",Fecha_Cambio=" & Pone_Apos(Fecha_AMD(DateTime.Now().ToShortDateString()))
+                G.Tsql &= ",Fec_cambio=" & Pone_Apos(Fecha_AMD(DateTime.Now().ToShortDateString()))
                 G.Tsql &= " Where Numero=" & Val(T_Numero.Text.Trim)
                 G.Tsql &= " and Lin_Numero=" & Val(T_Lin_Numero.Text)
                 G.com.CommandText = G.Tsql
