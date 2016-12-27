@@ -5,6 +5,7 @@ Partial Class Empresa
     Private Num_Renglon As Integer
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Response.AddHeader("Refresh", Convert.ToString((Session.Timeout * 60) + 5))
+        'Prueba de ver si jala
         If Session("SesionActiva") Is Nothing Then
             Response.Redirect("Default.aspx")
         End If
