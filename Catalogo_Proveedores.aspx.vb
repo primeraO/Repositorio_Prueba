@@ -259,35 +259,38 @@ Partial Class Catalogo_Proveedores
             G.Tsql = "Select Rfc from Proveedor where Rfc=" & Pone_Apos(T_RFC.Text.Trim)
             G.com.CommandText = G.Tsql
             If G.com.ExecuteReader.HasRows Then
-                Msg_Error("Ya ha sido registrado el RFC") : G.cn.Close() : Exit Function
+                Msg_Error("Ya ha sido registrado el RFC") : G.cn.Close() : Return False
+            End If
+            If (T_RFC.Text Like "[A-Z][A-Z][A-Z]######*") = False Then
+                Msg_Error("RFC Inválido") : Return False
             End If
         End If
         If T_RFC.Text = "" Or T_RFC.Text.Trim.Length < 12 Then
-            Msg_Error("RFC Inválido")
+            Msg_Error("RFC Inválido") : Return False
         End If
         If Val(T_Numero.Text.Trim) = 0 Then
-            Msg_Error("Numero Inválido") : Exit Function
+            Msg_Error("Numero Inválido") : Return False
         End If
         If T_RazonSocial.Text.Trim = "" Then
-            Msg_Error("Razón Social Inválida") : Exit Function
+            Msg_Error("Razón Social Inválida") : Return False
         End If
         If T_Colonia.Text.Trim = "" Then
-            Msg_Error("Colonia Inválido") : Exit Function
+            Msg_Error("Colonia Inválido") : Return False
         End If
         'If Val(T_Comprador.Text.Trim) = 0 Then
         '    Msg_Error("Comprador Inválido") : Exit Function
         'End If
         If Val(T_CondPago.Text.Trim) = 0 Then
-            Msg_Error("Condicion de Pago Inválida") : Exit Function
+            Msg_Error("Condicion de Pago Inválida") : Return False
         End If
         If T_Direccion.Text.Trim = "" Then
-            Msg_Error("Direccion Inválida") : Exit Function
+            Msg_Error("Direccion Inválida") : Return False
         End If
         If T_Estado.Text.Trim = "" Then
-            Msg_Error("Estado Inválido") : Exit Function
+            Msg_Error("Estado Inválido") : Return False
         End If
         If Val(T_Pais.Text.Trim) = 0 Then
-            Msg_Error("Pais Inválido") : Exit Function
+            Msg_Error("Pais Inválido") : Return False
         End If
 
         'If T_Tel1.Text.Trim = "" Then
@@ -614,6 +617,9 @@ Partial Class Catalogo_Proveedores
 
     Protected Sub T_Pais_TextChanged(sender As Object, e As System.EventArgs) Handles T_Pais.TextChanged
         T_Desc_Pais.Text = Busca_Cat(CType(Session("G"), Glo), "PAIS", T_Pais.Text)
+        If T_Desc_Pais.Text = "" Then
+            Msg_Error("No existe Pais") : Exit Sub
+        End If
         T_Mail.Focus()
     End Sub
 
@@ -623,11 +629,17 @@ Partial Class Catalogo_Proveedores
 
     Protected Sub T_CondPago_TextChanged(sender As Object, e As System.EventArgs) Handles T_CondPago.TextChanged
         T_Desc_CondPago.Text = Busca_Cat(CType(Session("G"), Glo), "CONDICION_PAGO", T_CondPago.Text)
+        If T_Desc_CondPago.Text = "" Then
+            Msg_Error("No existe Condicion de Pago") : Exit Sub
+        End If
         T_Transporte.Focus()
     End Sub
 
     Protected Sub T_Comprador_TextChanged(sender As Object, e As System.EventArgs) Handles T_Comprador.TextChanged
         T_Desc_Comprador.Text = Busca_Cat(CType(Session("G"), Glo), "COMPRADOR", T_Comprador.Text)
+        If T_Desc_Comprador.Text = "" Then
+            Msg_Error("No existe Comprador") : Exit Sub
+        End If
         T_CondPago.Focus()
     End Sub
 

@@ -693,7 +693,7 @@ Partial Class Bus_Cat
                 Case "COND_PAGO"
                     G.Tsql = "Select TOP(200) Condicion as Numero, Descripcion"
                     G.Tsql &= " from Condicion_Pago Where Cia=" & Val(Session("Cia"))
-                    G.Tsql &= " and Obra=" & Val(Session("Obra"))
+                    G.Tsql &= " and Sucursal =" & Val(Session("Obra"))
                     If Val(T_Numero.Text) > 0 Then
                         G.Tsql &= " and Condicion=" & Val(T_Numero.Text)
                     End If

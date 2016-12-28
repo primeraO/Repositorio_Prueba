@@ -391,7 +391,7 @@ Public Module Cla_Inf
                     Tsql = "Select Nombre from Comprador where Comprador=" & Pone_Apos(Clave)
                 Case "CONDICION_PAGO"
                     Tsql = "Select Descripcion from Condicion_Pago where Condicion=" & Pone_Apos(Clave)
-                    Tsql &= " and Obra=" & Pone_Apos(G.Sucursal)
+                    Tsql &= " and Sucursal =" & Pone_Apos(G.Sucursal)
                 Case "TRANSPORTE"
                     Tsql = "Select Descripcion from Transporte where Transporte=" & Pone_Apos(Clave)
                 Case "MARCA"
