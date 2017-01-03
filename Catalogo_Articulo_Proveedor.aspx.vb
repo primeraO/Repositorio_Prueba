@@ -149,7 +149,7 @@ Partial Class Catalogo_Articulo_Proveedor
                 G.Tsql &= " and Pro_Numero=" & Val(TB_Proveedor.Text)
             End If
             G.Tsql &= " and Cia=" & Val(Session("Cia"))
-            G.Tsql &= " and Obra=" & Pone_Apos(G.Sucursal)
+            G.Tsql &= " and Sucursal=" & Pone_Apos(G.Sucursal)
             G.Tsql &= " Order by Art_Numero"
             G.com.CommandText = G.Tsql
             Session("dt").rows.clear()
@@ -335,7 +335,7 @@ Partial Class Catalogo_Articulo_Proveedor
                 G.Tsql &= ",''"
                 G.Tsql &= "," & Pone_Apos(T_Unidad_Medida.Text)
                 G.Tsql &= "," & Val(Session("Cia"))
-                G.Tsql &= "," & Pone_Apos(Session("Obra"))
+                G.Tsql &= "," & Pone_Apos(Session("Sucursal"))
                 G.Tsql &= ")"
                 G.com.CommandText = G.Tsql
                 G.com.ExecuteNonQuery()
@@ -375,7 +375,7 @@ Partial Class Catalogo_Articulo_Proveedor
                 G.Tsql &= " Where Pro_Numero=" & Val(T_Proveedor.Text.Trim)
                 G.Tsql &= " and Art_Numero=" & Pone_Apos(T_Articulo.Text)
                 G.Tsql &= " and Cia=" & Val(Session("Cia"))
-                G.Tsql &= " and Obra=" & Pone_Apos(Session("Obra"))
+                G.Tsql &= " and Sucursal=" & Pone_Apos(Session("Obra"))
                 G.com.CommandText = G.Tsql
                 G.com.ExecuteNonQuery()
                 CambiaFilaGrid(T_Articulo.Text)
@@ -404,7 +404,7 @@ Partial Class Catalogo_Articulo_Proveedor
                 G.Tsql &= " Where Pro_Numero=" & Val(T_Proveedor.Text.Trim)
                 G.Tsql &= " and Art_Numero=" & Pone_Apos(T_Articulo.Text)
                 G.Tsql &= " and Cia=" & Val(Session("Cia"))
-                G.Tsql &= " and Obra=" & Pone_Apos(Session("Obra"))
+                G.Tsql &= " and Sucursal=" & Pone_Apos(Session("Obra"))
                 G.com.CommandText = G.Tsql
                 G.com.ExecuteNonQuery()
                 EliminaFilaGrid(T_Articulo.Text)

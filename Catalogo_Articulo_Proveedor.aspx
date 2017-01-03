@@ -158,9 +158,7 @@
                     </tr>
                 </table>
             </div>
-            
-                <asp:ScriptManager ID="ScriptManager1" runat="server">
-                </asp:ScriptManager>
+            <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
         <asp:UpdatePanel ID="UpdatePanel1" runat="server">
        <%-- <Triggers>
         <asp:PostBackTrigger ControlID="Movimiento" />
@@ -181,16 +179,16 @@
                 </div>  
                 </asp:Panel>
                 
-                <div style="height: 8px">
-                </div>
+                <div style="height: 8px"></div>
+
                 <div>
                     <asp:Label ID="Msg_Err" runat="server" BackColor="#FFFF99" BorderColor="Black" 
                         BorderStyle="Solid" ForeColor="#FF3300" 
                         style="float: none; text-align: center;" Text="Label" Visible="False" 
                         Width="96%"></asp:Label>
                 </div>
-                <div style="height: 8px">
-                </div>
+                <div style="height: 8px"></div>
+
                 <asp:Panel ID="P_Buscar" runat="server">
                     <div>
                         <table style="width:100%;">
@@ -431,8 +429,8 @@
                         </table>
                 </asp:Panel>
                             
-                                        <div style="height: 15px"></div>
-            <asp:Panel ID="Pnl_Grids" runat="server" HorizontalAlign="Left" Visible="False">
+                <div style="height: 15px"></div>
+                 <asp:Panel ID="Pnl_Grids" runat="server" HorizontalAlign="Left" Visible="False">
                                   <div style="overflow:hidden; height:35px; width:100%; float:left" >
                              <asp:GridView id="Cabecera" runat="server" 
                                 AutoGenerateColumns="False" CellPadding="1" ForeColor="#333333" 
@@ -480,7 +478,7 @@
                                             <asp:BoundField HeaderText="Articulo" DataField="Art_Numero" >
                                             <ItemStyle HorizontalAlign="Left" Width="150px" />
                                             </asp:BoundField>
-                                            <asp:BoundField DataField="Articulo_Descripcion" HeaderText="Descripción" >
+                                            <asp:BoundField DataField="Art_Descripcion" HeaderText="Descripción" >
                                             <ItemStyle HorizontalAlign="Left" Width="300px" />
                                             </asp:BoundField>
                                             <asp:ButtonField ButtonType="Image" CommandName="Cambio" HeaderText="Cambio" 
@@ -502,7 +500,7 @@
                                 </div>
                                 </asp:Panel>
                                 
-                        <asp:HiddenField ID="Movimiento" runat="server" />
+                <asp:HiddenField ID="Movimiento" runat="server" />
                    
             </ContentTemplate>
         </asp:UpdatePanel>
