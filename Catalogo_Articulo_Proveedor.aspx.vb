@@ -53,7 +53,7 @@ Partial Class Catalogo_Articulo_Proveedor
         T_Proveedor.Attributes.Add("onkeypress", "javascript: ValidaSoloNumeros('" & T_Proveedor.ClientID & "');")
         TB_Proveedor.Attributes.Add("onkeypress", "javascript: ValidaSoloNumeros('" & TB_Proveedor.ClientID & "');")
         T_IVA.Attributes.Add("onkeypress", "javascript: ValidaSoloNumero('" & T_IVA.ClientID & "');")
-        T_Dias_Entrega.Attributes.Add("onkeypress", "javascript: ValidaSoloNumero('" & T_Dias_Entrega.ClientID & "');")
+        T_Dias_Entrega.Attributes.Add("onkeypress", "javascript: ValidaSoloNumeros('" & T_Dias_Entrega.ClientID & "');")
         T_Moneda.Attributes.Add("onkeypress", "javascript: ValidaSoloNumero('" & T_Moneda.ClientID & "');")
 
         T_Proveedor.Attributes.Add("onkeydown", "javascript: PierdeFoco('" & T_Unidad_Medida.ClientID & "');")
@@ -375,7 +375,7 @@ Partial Class Catalogo_Articulo_Proveedor
                 G.Tsql &= " Where Pro_Numero=" & Val(T_Proveedor.Text.Trim)
                 G.Tsql &= " and Art_Numero=" & Pone_Apos(T_Articulo.Text)
                 G.Tsql &= " and Cia=" & Val(Session("Cia"))
-                G.Tsql &= " and Sucursal=" & Pone_Apos(Session("Obra"))
+                G.Tsql &= " and Sucursal=" & Pone_Apos(Session("Sucursal"))
                 G.com.CommandText = G.Tsql
                 G.com.ExecuteNonQuery()
                 CambiaFilaGrid(T_Articulo.Text)
@@ -492,7 +492,7 @@ Partial Class Catalogo_Articulo_Proveedor
             G.Tsql &= " where Pro_Numero=" & Val(T_Proveedor.Text)
             G.Tsql &= " and Art_Numero=" & Pone_Apos(T_Articulo.Text)
             G.Tsql &= " and Cia=" & Val(Session("Cia"))
-            G.Tsql &= " and Sucursal =" & Pone_Apos(Session("Obra"))
+            G.Tsql &= " and Sucursal =" & Pone_Apos(Session("Sucursal"))
             G.com.CommandText = G.Tsql
             G.dr = G.com.ExecuteReader
             If G.dr.HasRows Then
@@ -545,5 +545,3 @@ Partial Class Catalogo_Articulo_Proveedor
     End Sub
 
 End Class
-
-

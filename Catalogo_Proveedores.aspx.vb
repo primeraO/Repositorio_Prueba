@@ -646,8 +646,6 @@ Partial Class Catalogo_Proveedores
         T_CondPago.Focus()
     End Sub
 
-   
-
     Protected Sub CH_Corporativo_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles CH_Corporativo.CheckedChanged
         GridView1.Visible = True
         Pnl_Grids.Visible = True

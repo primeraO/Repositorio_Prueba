@@ -9,9 +9,7 @@
     <link href="Ejemplo_Estilos1.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="jquery.min.js"></script>
      <script language="javascript" src="bootstrapjs.min.js" type="text/javascript"></script>
-        <script language="javascript" src="CodigoJS.js" type="text/javascript">
-            alert("Error al abrir archivo.js");
-    </script>
+     <script language="javascript" src="CodigoJS.js" type="text/javascript">alert("Error al abrir archivo.js");</script>
     
     <%--<script type="text/javascript">
         document.onkeydown = function (evt) { return (evt ? evt.which : event.keyCode) != 13; }
