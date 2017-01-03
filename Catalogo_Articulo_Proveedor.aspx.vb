@@ -133,7 +133,7 @@ Partial Class Catalogo_Articulo_Proveedor
         Dim G As Glo = CType(Session("G"), Glo)
         Try
             G.cn.Open()
-            G.Tsql = "Select Art_Numero,Art_Descripcion,Pro_Numero,Unidad_Medida,Dias_Entrega,Garantia,Precio1,Costo1,Fecha_Precio1,Moneda,Impuesto,Catalogo,Figura,Pagina,Numero "
+            G.Tsql = "Select top 200 Art_Numero,Art_Descripcion,Pro_Numero,Unidad_Medida,Dias_Entrega,Garantia,Precio1,Costo1,Fecha_Precio1,Moneda,Impuesto,Catalogo,Figura,Pagina,Numero "
             G.Tsql &= " ,(Select top 1 Razon_Social From Proveedor Where Numero=a.Pro_Numero) As Prov_Nombre"
             G.Tsql &= " ,(Select top 1 Art_Descripcion From Articulos  Where Numero=a.Art_Numero) As Articulo_Descripcion"
             G.Tsql &= "  From Articulo_Proveedor a"
