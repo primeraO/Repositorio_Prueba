@@ -1,10 +1,15 @@
 ﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="Catalogo_Articulos.aspx.vb" Inherits="Catalogo_Articulos" %>
+<%@ Register assembly="RJS.Web.WebControl.PopCalendar.Net.2010" namespace="RJS.Web.WebControl" tagprefix="rjs" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <link href="Ejemplo_Estilos.css" rel="stylesheet" type="text/css" />
+    <link href="Ejemplo_Estilos1.css" rel="stylesheet" type="text/css" />
+    <link href="Ejemplo_Estilos1.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="jquery.min.js"></script>
+     <script language="javascript" src="bootstrapjs.min.js" type="text/javascript"></script>
+ 
     <title></title>
     <script language="javascript" src="CodigoJS.js" type="text/javascript">
         alert("Error al abrir archivo.js");
@@ -92,8 +97,7 @@
         <form id="form1" runat="server" style="width: 984px">
            <asp:ScriptManager ID="ScriptManager1" runat="server">
                 </asp:ScriptManager>
-        <asp:UpdatePanel   ID="UpdatePanel1" runat="server">
-            <ContentTemplate>
+        
             <div>
             <div>
 
@@ -317,7 +321,48 @@
                 </asp:Panel>
                 <br />
                 <asp:Panel ID="Pnl_Registro" CssClass="Paneles" runat="server">
-                    <table style="width:100%;">
+                   
+                    <br />
+                  <asp:Panel ID="Proveedores" runat="server" Visible="true" 
+                CssClass="Paneles" Height="650px">
+                    <div>
+                        <table style="width: 100%;">
+                            <tr>
+                                <td width="150px">
+                                    <asp:Label ID="Lbl_Articulo" runat="server" Text="Articulo:" 
+                                        CssClass="Textos_Azules"></asp:Label>
+                                </td>
+                                <td width="464px">
+                                    <asp:Label ID="Lbl_DescArticulo" runat="server" 
+                                        Text="Descripción: RADIO TRANSMISOR PORTATIL KENWOOD MOD.TK-2102GDS" 
+                                        CssClass="Textos_Azules"></asp:Label>
+                                </td>
+                                <td width="150px">
+                                    <asp:Label ID="Lbl_CantArticulo" runat="server" Text="Cantidad: 5000" 
+                                        CssClass="Textos_Azules"></asp:Label>
+                                </td>
+                                <td width="220px">
+                                    <asp:Label ID="Lbl_PreConArticulo" runat="server" 
+                                        Text="Precio Concurso: $50,000.00" CssClass="Textos_Azules"></asp:Label>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div style="height: 15px">
+                    </div>
+                <div class="">
+	                <ul class="nav nav-tabs" id="">
+		                <li class="active"><a href="#Protab1" data-toggle="tab">Articulos</a></li>
+		                <li><a href="#Protab2" data-toggle="tab">Ventas</a></li>
+                    </ul>
+
+	                <div class="tab-content">
+                        <%--PROVEEDOR 1--%>
+		                <div class="tab-pane fade" id="Protab1">
+                        <div class="panel-body">
+                        <asp:UpdatePanel ID="UpdatePane2" runat="server" UpdateMode="Conditional">
+                                            <ContentTemplate>
+                                <table style="width:100%;">
                         <tr>
                             <td width="11%">
                                 &nbsp;</td>
@@ -474,6 +519,116 @@
                             </td>
                         </tr>
                     </table>
+                               
+                                            </ContentTemplate>
+                                    </asp:UpdatePanel>
+                              </div>
+                        </div>
+                        <%--FINAL PROVEEDOR 1--%>
+
+                        <%--PROVEEDOR 2--%>
+                        <div class="tab-pane fade in active " id="Protab2">
+                        <div class="panel-body">
+        
+                          <asp:UpdatePanel ID="UpdatePanel3" runat="server">
+                            <ContentTemplate>
+                                <div>
+                                    <table style="width: 100%; border-bottom-style: solid; border-bottom-color: #3366FF;">
+                                        <tr>
+                                            <td width="432px">
+                                                &nbsp;
+                                            </td>
+                                            <td class="style23">
+                                                <asp:Label ID="Label8" runat="server" CssClass="Textos_Azules" 
+                                                    Text="Ventas"></asp:Label>
+                                                &nbsp;
+                                            </td>
+                                            <td width="432px">
+                                                &nbsp;
+                                            </td>
+                                        </tr>
+                                    </table>
+                                   <td width="10%">
+                                                <table style="width:100%;">
+                                                    <tr>
+                                                        <td>
+                                                            &nbsp;</td>
+                                                        <td>
+                                                            <asp:Label ID="Label50" runat="server" CssClass="Textos_Azules" Text="1"></asp:Label>
+                                                        </td>
+                                                        <td>
+                                                            &nbsp;</td>
+                                                        <td>
+                                                            <asp:Label ID="Label51" runat="server" CssClass="Textos_Azules" Text="2"></asp:Label>
+                                                        </td>
+                                                        <td>
+                                                            &nbsp;</td>
+                                                        <td>
+                                                            <asp:Label ID="Label52" runat="server" CssClass="Textos_Azules" Text="3"></asp:Label>
+                                                        </td>
+                                                        <td>
+                                                            &nbsp;</td>
+                                                        <td>
+                                                            <asp:Label ID="Label53" runat="server" CssClass="Textos_Azules" Text="4"></asp:Label>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <asp:Label ID="Label54" runat="server" CssClass="Textos_Azules" Text="CO/IVA"></asp:Label>
+                                                        </td>
+                                                        <td>
+                                                            <asp:TextBox ID="TB_Grupo0" runat="server" CssClass="form-control" 
+                                                                placeholder="Grupo" TabIndex="13" Width="63px"></asp:TextBox>
+                                                        </td>
+                                                        <td>
+                                                            <asp:Label ID="Label55" runat="server" CssClass="Textos_Azules" Text="CO/IVA"></asp:Label>
+                                                        </td>
+                                                        <td>
+                                                            <asp:TextBox ID="TB_Grupo1" runat="server" CssClass="form-control" 
+                                                                placeholder="Grupo" TabIndex="13" Width="63px"></asp:TextBox>
+                                                        </td>
+                                                        <td>
+                                                            <asp:Label ID="Label56" runat="server" CssClass="Textos_Azules" Text="CO/IVA"></asp:Label>
+                                                        </td>
+                                                        <td>
+                                                            <asp:TextBox ID="TB_Grupo2" runat="server" CssClass="form-control" 
+                                                                placeholder="Grupo" TabIndex="13" Width="63px"></asp:TextBox>
+                                                        </td>
+                                                        <td>
+                                                            <asp:Label ID="Label57" runat="server" CssClass="Textos_Azules" Text="CO/IVA"></asp:Label>
+                                                        </td>
+                                                        <td>
+                                                            &nbsp;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            &nbsp;</td>
+                                                        <td>
+                                                            &nbsp;</td>
+                                                        <td>
+                                                            &nbsp;</td>
+                                                        <td>
+                                                            &nbsp;</td>
+                                                        <td>
+                                                            &nbsp;</td>
+                                                        <td>
+                                                            &nbsp;</td>
+                                                        <td>
+                                                            &nbsp;</td>
+                                                        <td>
+                                                            &nbsp;</td>
+                                                    </tr>
+                                                </table>
+                                                </td>
+                                </div>
+                                  </ContentTemplate>
+                                </asp:UpdatePanel>
+                            </div>
+                        </div>
+                        <%--FINAL PROVEEDOR 2--%>
+
+                    
+                </asp:Panel>
                     <table style="width:100%;">
                         <tr>
                             <td width="11%">
@@ -515,9 +670,8 @@
             </div>
         
         </div>
-            </ContentTemplate>
-        </asp:UpdatePanel>
-           <asp:UpdateProgress ID="UpdateProgress1" runat="server" DisplayAfter="0" AssociatedUpdatePanelID="UpdatePanel1">
+          
+         <%--  <asp:UpdateProgress ID="UpdateProgress1" runat="server" DisplayAfter="0" AssociatedUpdatePanelID="UpdatePanel1">
         <ProgressTemplate>
             <div class="overlay" />
             <div class="overlayContent">
@@ -525,7 +679,7 @@
                 <img src="Imagenes/cargando.gif" alt="Loading"/>
             </div>
         </ProgressTemplate>
-    </asp:UpdateProgress>
+    </asp:UpdateProgress>--%>
         </form>
     </center>
     
