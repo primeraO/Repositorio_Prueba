@@ -44,7 +44,8 @@ Partial Class Catalogo_Articulos
         TB_Clas_Corta.Attributes.Add("onkeydown", "javascript: PierdeFoco_1('" & TB_Numero.ClientID & "','" & TB_Clas_Corta.ClientID & "');")
         TB_Numero.Attributes.Add("onkeydown", "javascript: PierdeFoco_1('" & TB_Descripcion.ClientID & "','" & TB_Numero.ClientID & "');")
         TB_Descripcion.Attributes.Add("onkeydown", "javascript: PierdeFoco_1('" & TB_Grupo.ClientID & "','" & TB_Descripcion.ClientID & "');")
-
+        Btn_Moneda1.Attributes.Add("onclick", "window.open('Bus_Cat.aspx?Catalogo=MONEDA&Num=1',null,'left=400, top=100, height=450, width= 800, status=no, resizable=no, scrollbars=no, toolbar=no,location= no, menubar=no');")
+        Btn_Moneda1.Attributes.Add("style", "cursor:pointer;")
         HB_Linea.Attributes.Add("onclick", "window.open('Bus_Cat.aspx?Catalogo=LINEA&Num=2',null,'left=400, top=100, height=450, width= 800, status=no, resizable=no, scrollbars=no, toolbar=no,location= no, menubar=no');")
         H_Linea.Attributes.Add("style", "cursor:pointer;")
         TB_Numero.Attributes.Add("onfocus", "this.select();")
@@ -573,4 +574,19 @@ Partial Class Catalogo_Articulos
     End Sub
 
    
+    Protected Sub T_Contado_TextChanged(sender As Object, e As System.EventArgs) Handles T_Contado.TextChanged, T_Credito.TextChanged, T_Mayoreo.TextChanged, T_Filial.TextChanged
+        If T_IVA_v.Text > "" Then
+            T_Contado_IVA.Text = Val(T_Contado.Text * Val(T_IVA.Text / 100))
+            T_Credito_Iva.Text = Val(T_Credito.Text * Val(T_IVA.Text / 100))
+            T_Mayoreo_IVA.Text = Val(T_Mayoreo.Text * Val(T_IVA.Text / 100))
+            T_Filial_IVA.Text = Val(T_Filial.Text * Val(T_IVA.Text / 100))
+        End If
+    End Sub
+
+    Protected Sub T_IVA_v_TextChanged(sender As Object, e As System.EventArgs) Handles T_IVA_v.TextChanged
+        If T_Contado.Text > 0 Then T_Contado_IVA.Text = Val(T_Contado.Text * Val(T_IVA.Text / 100))
+        T_Credito_Iva.Text = Val(T_Credito.Text * Val(T_IVA.Text / 100))
+        T_Mayoreo_IVA.Text = Val(T_Mayoreo.Text * Val(T_IVA.Text / 100))
+        T_Filial_IVA.Text = Val(T_Filial.Text * Val(T_IVA.Text / 100))
+    End Sub
 End Class

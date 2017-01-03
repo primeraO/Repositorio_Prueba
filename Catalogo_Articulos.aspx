@@ -43,6 +43,14 @@
                document.getElementById('<%= TB_SubGrupo.ClientID %>').value = elemValue1;
                __doPostBack("TB_SubGrupo", "TextChanged");
            }
+          function Monedas(elemValue1, elemValue2, Num_Prov) {
+            if (Num_Prov == "1") {
+                document.getElementById('<%= T_Moneda1.ClientID %>').value = elemValue1;
+                document.getElementById('<%= T_Moneda_Desc1.ClientID %>').value = elemValue2;
+                __doPostBack("T_Moneda1", "TextChanged");
+            } 
+
+        }
     </script>
     
       <script type="text/javascript" src="jquery.min.js"></script>
@@ -89,6 +97,10 @@
         {
     	    width: 150px;
     	    height: 150px;
+        }
+           .style3
+        {
+            height: 26px;
         }
            </style>
     </head>
@@ -549,10 +561,108 @@
                                         </tr>
                                     </table>
                                    <td width="10%">
+                                                <table style="width: 100%;">
+                                                </table>
                                                 <table style="width:100%;">
                                                     <tr>
-                                                        <td>
+                                                        <td width="90px">
                                                             &nbsp;</td>
+                                                        <td width="110px">
+                                                            <asp:TextBox ID="T_Descuento_1" runat="server" CssClass="form-control" 
+                                                                placeholder="Grupo" TabIndex="13" Width="63px"></asp:TextBox>
+                                                        </td>
+                                                        <td width="20">
+                                                            <asp:Label ID="Label63" runat="server" CssClass="Textos_Azules" Text="2"></asp:Label>
+                                                        </td>
+                                                        <td width="110">
+                                                            <asp:TextBox ID="T_Descuento_2" runat="server" CssClass="form-control" 
+                                                                placeholder="Grupo" TabIndex="13" Width="63px"></asp:TextBox>
+                                                        </td>
+                                                        <td>
+                                                            <asp:Label ID="Label64" runat="server" CssClass="Textos_Azules" Text="IVA"></asp:Label>
+                                                        </td>
+                                                        <td width="110">
+                                                            <asp:TextBox ID="T_IVA_v" runat="server" CssClass="form-control" 
+                                                                placeholder="Grupo" TabIndex="13" Width="63px"></asp:TextBox>
+                                                        </td>
+                                                        <td style="text-align: left" width="130">
+                                                            <asp:Label ID="Label65" runat="server" CssClass="Textos_Azules" 
+                                                                Text="Precio Contado"></asp:Label>
+                                                        </td>
+                                                        <td>
+                                                            <asp:TextBox ID="T_precio_Contado" runat="server" CssClass="form-control" 
+                                                                placeholder="Grupo" TabIndex="13" Width="63px"></asp:TextBox>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="text-align: left">
+                                                            <asp:Label ID="Label58" runat="server" CssClass="Textos_Azules" Text="Contado"></asp:Label>
+                                                        </td>
+                                                        <td>
+                                                            <asp:TextBox ID="T_Contado" runat="server" CssClass="form-control" 
+                                                                placeholder="Grupo" TabIndex="13" Width="63px"></asp:TextBox>
+                                                        </td>
+                                                        <td>
+                                                            <asp:Label ID="Label59" runat="server" CssClass="Textos_Azules" Text="Credito"></asp:Label>
+                                                        </td>
+                                                        <td>
+                                                            <asp:TextBox ID="T_Credito" runat="server" CssClass="form-control" 
+                                                                placeholder="Grupo" TabIndex="13" Width="63px"></asp:TextBox>
+                                                        </td>
+                                                        <td>
+                                                            <asp:Label ID="Label60" runat="server" CssClass="Textos_Azules" Text="Mayoreo"></asp:Label>
+                                                        </td>
+                                                        <td>
+                                                            <asp:TextBox ID="T_Mayoreo" runat="server" CssClass="form-control" 
+                                                                placeholder="Grupo" TabIndex="13" Width="63px"></asp:TextBox>
+                                                        </td>
+                                                        <td>
+                                                            <asp:Label ID="Label61" runat="server" CssClass="Textos_Azules" Text="Filial"></asp:Label>
+                                                        </td>
+                                                        <td>
+                                                            <asp:TextBox ID="T_Filial" runat="server" CssClass="form-control" 
+                                                                placeholder="Grupo" TabIndex="13" Width="63px"></asp:TextBox>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="text-align: left">
+                                                            <asp:Label ID="Label54" runat="server" CssClass="Textos_Azules" Text="CO/IVA"></asp:Label>
+                                                        </td>
+                                                        <td>
+                                                            <asp:TextBox ID="T_Contado_IVA" runat="server" BackColor="SkyBlue" 
+                                                                CssClass="form-control" Enabled="False" placeholder="Grupo" TabIndex="13" 
+                                                                Width="63px">0.00</asp:TextBox>
+                                                        </td>
+                                                        <td>
+                                                            <asp:Label ID="Label55" runat="server" CssClass="Textos_Azules" Text="CR/IVA"></asp:Label>
+                                                        </td>
+                                                        <td>
+                                                            <asp:TextBox ID="T_Credito_Iva" runat="server" BackColor="SkyBlue" 
+                                                                CssClass="form-control" Enabled="False" placeholder="Grupo" TabIndex="13" 
+                                                                Width="63px">0.00</asp:TextBox>
+                                                        </td>
+                                                        <td>
+                                                            <asp:Label ID="Label56" runat="server" CssClass="Textos_Azules" Text="MA/IVA"></asp:Label>
+                                                        </td>
+                                                        <td>
+                                                            <asp:TextBox ID="T_Mayoreo_IVA" runat="server" BackColor="SkyBlue" 
+                                                                CssClass="form-control" Enabled="False" placeholder="Grupo" TabIndex="13" 
+                                                                Width="63px">0.00</asp:TextBox>
+                                                        </td>
+                                                        <td>
+                                                            <asp:Label ID="Label57" runat="server" CssClass="Textos_Azules" Text="FI/IVA"></asp:Label>
+                                                        </td>
+                                                        <td>
+                                                            <asp:TextBox ID="T_Filial_IVA" runat="server" BackColor="SkyBlue" 
+                                                                CssClass="form-control" Enabled="False" placeholder="Grupo" TabIndex="13" 
+                                                                Width="63px">0.00</asp:TextBox>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="90px">
+                                                            <asp:Label ID="Label62" runat="server" CssClass="Textos_Azules" 
+                                                                Text="Descuento 1"></asp:Label>
+                                                        </td>
                                                         <td>
                                                             <asp:Label ID="Label50" runat="server" CssClass="Textos_Azules" Text="1"></asp:Label>
                                                         </td>
@@ -572,39 +682,74 @@
                                                             <asp:Label ID="Label53" runat="server" CssClass="Textos_Azules" Text="4"></asp:Label>
                                                         </td>
                                                     </tr>
+                                                </table>
+                                                <table style="width: 100%;">
+                                                    <tr>
+                                                        <td style="text-align: left" width="90px">
+                                                            <asp:Label ID="Label27" runat="server" CssClass="Textos_Azules" 
+                                                                Text="Moneda            "></asp:Label>
+                                                        </td>
+                                                        <td width="130">
+                                                            <asp:TextBox ID="T_Moneda1" runat="server" AutoPostBack="True" 
+                                                                CssClass="form-control" style="text-align: right" TabIndex="1" Width="85px"></asp:TextBox>
+                                                        </td>
+                                                        <td style="text-align: left" width="40">
+                                                            <asp:ImageButton ID="Btn_Moneda1" runat="server" BorderStyle="None" 
+                                                                BorderWidth="1px" ImageUrl="~/Imagenes/M_Buscar_50.png" TabIndex="4565" />
+                                                        </td>
+                                                        <td>
+                                                            <asp:TextBox ID="T_Moneda_Desc1" runat="server" 
+                                                                CssClass="form-control-Readonly" TabIndex="4552" Width="180px"></asp:TextBox>
+                                                        </td>
+                                                        <td>
+                                                            &nbsp;</td>
+                                                        <td>
+                                                            &nbsp;
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <table style="width: 100%; margin-top: 0px;">
                                                     <tr>
                                                         <td>
-                                                            <asp:Label ID="Label54" runat="server" CssClass="Textos_Azules" Text="CO/IVA"></asp:Label>
-                                                        </td>
-                                                        <td>
-                                                            <asp:TextBox ID="TB_Grupo0" runat="server" CssClass="form-control" 
+                                                            <asp:TextBox ID="T_Unidad_Medida" runat="server" CssClass="form-control" 
                                                                 placeholder="Grupo" TabIndex="13" Width="63px"></asp:TextBox>
                                                         </td>
                                                         <td>
-                                                            <asp:Label ID="Label55" runat="server" CssClass="Textos_Azules" Text="CO/IVA"></asp:Label>
-                                                        </td>
+                                                            &nbsp;</td>
                                                         <td>
-                                                            <asp:TextBox ID="TB_Grupo1" runat="server" CssClass="form-control" 
+                                                            &nbsp;</td>
+                                                        <td>
+                                                            &nbsp;</td>
+                                                        <td>
+                                                            &nbsp;</td>
+                                                        <td>
+                                                            &nbsp;</td>
+                                                        <td style="text-align: left" width="90px">
+                                                            <asp:Label ID="Label66" runat="server" CssClass="Textos_Azules" 
+                                                                Text="Lote Minimo"></asp:Label>
+                                                        </td>
+                                                        <td width="110">
+                                                            <asp:TextBox ID="T_Multiplos" runat="server" CssClass="form-control" 
                                                                 placeholder="Grupo" TabIndex="13" Width="63px"></asp:TextBox>
                                                         </td>
-                                                        <td>
-                                                            <asp:Label ID="Label56" runat="server" CssClass="Textos_Azules" Text="CO/IVA"></asp:Label>
+                                                        <td width="90">
+                                                            <asp:Label ID="Label68" runat="server" CssClass="Textos_Azules" 
+                                                                Text="Uni. Med."></asp:Label>
                                                         </td>
-                                                        <td>
-                                                            <asp:TextBox ID="TB_Grupo2" runat="server" CssClass="form-control" 
+                                                        <td width="110">
+                                                            <asp:TextBox ID="T_Lote_Minimo" runat="server" CssClass="form-control" 
                                                                 placeholder="Grupo" TabIndex="13" Width="63px"></asp:TextBox>
                                                         </td>
-                                                        <td>
-                                                            <asp:Label ID="Label57" runat="server" CssClass="Textos_Azules" Text="CO/IVA"></asp:Label>
+                                                        <td width="90">
+                                                            <asp:Label ID="Label67" runat="server" CssClass="Textos_Azules" 
+                                                                Text="Multiplos"></asp:Label>
                                                         </td>
                                                         <td>
                                                             &nbsp;</td>
                                                     </tr>
                                                     <tr>
-                                                        <td>
-                                                            &nbsp;</td>
-                                                        <td>
-                                                            &nbsp;</td>
+                                                    </tr>
+                                                    <tr>
                                                         <td>
                                                             &nbsp;</td>
                                                         <td>
