@@ -45,7 +45,7 @@
                             <a href="C_Acceso.aspx?form=Catalogo_Moneda">Moneda</a>                            
                             <a href="C_Acceso.aspx?form=Catalogo_Pais">País</a>        
                             <a href="C_Acceso.aspx?form=Catalogo_Tipo_Cambio">Tipo de Cambio</a>
-                            <a href="C_Acceso.aspx?form=Catalogo_Cuenta_IEPS">Cuenta IEPS</a>
+                          <%--  <a href="C_Acceso.aspx?form=Catalogo_Cuenta_IEPS">Cuenta IEPS</a>--%>
                             
                         <%--<a href="C_Acceso.aspx?form=C_Entradas_Detalle_IEPS">Cuenta IEPS</a>--%>
 
@@ -90,18 +90,18 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Obra  </a>
                     <ul class="dropdown-menu">
                         <li class="menu-item ">                                                         
-                           <a href="C_Acceso.aspx?form=Catalogo_Actividad_Frente" >Actividad - Frente</a>
+                          <%-- <a href="C_Acceso.aspx?form=Catalogo_Actividad_Frente" >Actividad - Frente</a>--%>
                            <a href="C_Acceso.aspx?form=Catalogo_Area">Area</a>
                            <a href="C_Acceso.aspx?form=Catalogo_Actividad_Area" >Concepto</a>
-                           <a href="C_Acceso.aspx?form=Catalogo_Concepto_Costo">Concepto de Costo MAQ</a>
-                           <a href="C_Acceso.aspx?form=Catalogo_Economico">Economico</a>
-                           <a href="C_Acceso.aspx?form=Catalogo_Frente">Frente</a>                           
+                           <%--<a href="C_Acceso.aspx?form=Catalogo_Concepto_Costo">Concepto de Costo MAQ</a>--%>
+                          <%-- <a href="C_Acceso.aspx?form=Catalogo_Economico">Economico</a>--%>
+                           <%--<a href="C_Acceso.aspx?form=Catalogo_Frente">Frente</a>  --%>                         
                            <a href="C_Acceso.aspx?form=Catalogo_Gasto">Gasto</a>
-                           <a href="C_Acceso.aspx?form=Catalogo_Gasto_19">Gasto 19</a>
+                          <%-- <a href="C_Acceso.aspx?form=Catalogo_Gasto_19">Gasto 19</a>--%>
                            <a href="C_Acceso.aspx?form=Catalogo_Solicitante">Solicitante</a>                                                      
                            <a href="C_Acceso.aspx?form=Catalogo_Terceros">Tercero</a>
                            <a href="C_Acceso.aspx?form=Catalogo_Tipo_Salida">Tipo de Salida</a>
-                           <a href="C_Acceso.aspx?form=Catalogo_Tipo_Obra">Tipo de Obra</a>
+                           <a href="C_Acceso.aspx?form=Catalogo_Tipo_Obra">Tipo de Sucursal</a>
                         </li>
                     </ul>
               </li>
