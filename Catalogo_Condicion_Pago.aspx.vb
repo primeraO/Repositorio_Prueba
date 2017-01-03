@@ -230,10 +230,11 @@ Partial Class Catalogo_Condicion_Pago
         LimpiaCampos()
         Movimiento.Value = "Alta"
         'T_Numero.Text = Siguiente()
-        T_Numero.Focus()
+        T_Descripcion.Focus()
         GridView1.Enabled = False
         Pnl_Registro.Enabled = True
-
+        T_Numero.Enabled = False
+        T_Numero.Text = Siguiente()
     End Sub
 
     Protected Sub Ima_Restaura_Click(sender As Object, e As System.EventArgs) Handles Ima_Restaura.Click
@@ -261,14 +262,14 @@ Partial Class Catalogo_Condicion_Pago
                 If Not G.com.ExecuteScalar Is Nothing Then
                     Msg_Error("Ya existe un registro con el Numero: " & T_Numero.Text) : Exit Sub
                 End If
-                G.Tsql = "Insert into Condicion_Pago (Cia,Sucursal,Numero,Descripcion,Fec_cambio,Baja) values ("
+                G.Tsql = "Insert into Condicion_Pago (Cia,Sucursal,Numero,Descripcion,Cve_Seg,Fecha_Seg,Hora_Seg,Baja) values ("
                 G.Tsql &= Val(Session("Cia"))
                 G.Tsql &= "," & Pone_Apos(Session("Obra"))
                 G.Tsql &= "," & T_Numero.Text.Trim
                 G.Tsql &= "," & Pone_Apos(T_Descripcion.Text.Trim)
-
+                G.Tsql &= "," & Pone_Apos(Session("Contraseña"))
                 G.Tsql &= "," & Pone_Apos(DateTime.Now.ToString("yyyy/mm/dd"))
-
+                G.Tsql &= "," & Pone_Apos(DateTime.Now.ToString("H:mm:ss", CultureInfo.InvariantCulture))
                 G.Tsql &= "," & "''" & ")"
                 G.com.CommandText = G.Tsql
                 G.com.ExecuteNonQuery()
@@ -280,9 +281,9 @@ Partial Class Catalogo_Condicion_Pago
                 G.Tsql = "Update Condicion_Pago set Cia=" & Val(Session("Cia"))
                 G.Tsql &= ",Sucursal=" & Pone_Apos(Session("Obra"))
                 G.Tsql &= ",Descripcion=" & Pone_Apos(T_Descripcion.Text.Trim)
-                'G.Tsql &= ",Cve_Seg=" & Pone_Apos(Session("Contraseña"))
-                G.Tsql &= ",Fec_cambio=" & Pone_Apos(DateTime.Now.ToString("yyyy/mm/dd"))
-                'G.Tsql &= ",Hora_Seg=" & Pone_Apos(DateTime.Now.ToString("H:mm:ss", CultureInfo.InvariantCulture))
+                G.Tsql &= ",Cve_Seg=" & Pone_Apos(Session("Contraseña"))
+                G.Tsql &= ",Fecha_Seg=" & Pone_Apos(DateTime.Now.ToString("yyyy/mm/dd"))
+                G.Tsql &= ",Hora_Seg=" & Pone_Apos(DateTime.Now.ToString("H:mm:ss", CultureInfo.InvariantCulture))
                 G.Tsql &= ",Baja=" & "''"
                 G.Tsql &= " Where Cia=" & Val(Session("Cia"))
                 G.Tsql &= " and Sucursal=" & Pone_Apos(Session("Obra"))
@@ -300,9 +301,9 @@ Partial Class Catalogo_Condicion_Pago
                 G.Tsql = "Update Condicion_Pago set Cia=" & Val(Session("Cia"))
                 G.Tsql &= ",Sucursal=" & Pone_Apos(Session("Obra"))
                 G.Tsql &= ",Descripcion=" & Pone_Apos(T_Descripcion.Text.Trim)
-                'G.Tsql &= ",Cve_Seg=" & Pone_Apos(Session("Contraseña"))
-                G.Tsql &= ",Fec_cambio=" & Pone_Apos(DateTime.Now.ToString("yyyy/mm/dd"))
-                'G.Tsql &= ",Hora_Seg=" & Pone_Apos(DateTime.Now.ToString("H:mm:ss", CultureInfo.InvariantCulture))
+                G.Tsql &= ",Cve_Seg=" & Pone_Apos(Session("Contraseña"))
+                G.Tsql &= ",Fecha_Seg=" & Pone_Apos(DateTime.Now.ToString("yyyy/mm/dd"))
+                G.Tsql &= ",Hora_Seg=" & Pone_Apos(DateTime.Now.ToString("H:mm:ss", CultureInfo.InvariantCulture))
                 G.Tsql &= ",Baja=" & "'*'"
                 G.Tsql &= " Where Cia=" & Val(Session("Cia"))
                 G.Tsql &= " and Sucursal=" & Pone_Apos(Session("Obra"))

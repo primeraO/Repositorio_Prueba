@@ -119,7 +119,7 @@ Partial Class Catalogo_Tipo_Cambio
             Select Case Catalogo.ToUpper
                 Case "MONEDA"
                     G.Tsql = "Select a.Descripcion "
-                    G.Tsql &= " from Moneda a Where a.Baja<>'*' and a.Moneda=" & Val(Clave)
+                    G.Tsql &= " from Moneda a Where a.Baja<>'*' and a.Numero=" & Val(Clave)
                     G.com.CommandText = G.Tsql
                     G.dr = G.com.ExecuteReader
                     If G.dr.Read Then
@@ -177,7 +177,7 @@ Partial Class Catalogo_Tipo_Cambio
             Session("dt").rows.Clear()
             G.cn.Open()
             G.Tsql = "Select a.Mon_Numero,b.Descripcion as Moneda_Desc,a.Fecha,a.Cambio,a.Cambio_Compras from Tipo_Cambio a "
-            G.Tsql &= " left join Moneda b on a.Mon_Numero=b.Moneda "
+            G.Tsql &= " left join Moneda b on a.Mon_Numero=b.Numero "
             G.Tsql &= " where a.Mon_Numero>=0 "
             If Ch_Baja.Checked = True Then
                 G.Tsql &= " and a.Baja='*' "
@@ -376,11 +376,14 @@ Partial Class Catalogo_Tipo_Cambio
                 If Not G.com.ExecuteScalar Is Nothing Then
                     Msg_Error("Ya existe el Tipo Cambio") : Exit Sub
                 End If
-                G.Tsql = "Insert into Tipo_Cambio (Mon_Numero,Fecha,Cambio,Cambio_Compras,Baja) values ("
+                G.Tsql = "Insert into Tipo_Cambio (Mon_Numero,Fecha,Cambio,Cambio_Compras,Cve_Seg,Fecha_Seg,Hora_Seg,Baja) values ("
                 G.Tsql &= Val(T_Moneda.Text)
                 G.Tsql &= "," & Pone_Apos(T_Fecha.Text)
                 G.Tsql &= "," & Val(Elimina_Comas(T_Cambio.Text.Trim))
                 G.Tsql &= "," & Val(Elimina_Comas(T_Cambio_Compras.Text.Trim))
+                G.Tsql &= "," & Pone_Apos(Session("Contraseña"))
+                G.Tsql &= "," & Pone_Apos(DateTime.Now.ToString("yyyy/mm/dd"))
+                G.Tsql &= "," & Pone_Apos(DateTime.Now.ToString("H:mm:ss", CultureInfo.InvariantCulture))
                 G.Tsql &= "," & "''" & ")"
                 G.com.CommandText = G.Tsql
                 G.com.ExecuteNonQuery()
@@ -392,7 +395,11 @@ Partial Class Catalogo_Tipo_Cambio
                 G.cn.Open()
                 G.Tsql = "Update Tipo_Cambio set Cambio=" & Val(Elimina_Comas(T_Cambio.Text))
                 G.Tsql &= ",Cambio_Compras=" & Val(Elimina_Comas(T_Cambio_Compras.Text))
+                G.Tsql &= ",Cve_Seg=" & Pone_Apos(Session("Contraseña"))
+                G.Tsql &= ",Fecha_Seg=" & Pone_Apos(DateTime.Now.ToString("yyyy/mm/dd"))
+                G.Tsql &= ",Hora_Seg=" & Pone_Apos(DateTime.Now.ToString("H:mm:ss", CultureInfo.InvariantCulture))
                 G.Tsql &= ",Baja=" & "''"
+               
                 G.Tsql &= " Where Mon_Numero=" & Val(T_Moneda.Text.Trim)
                 G.Tsql &= " and Fecha= " & Pone_Apos(T_Fecha.Text.Trim)
                 G.com.CommandText = G.Tsql
@@ -406,7 +413,11 @@ Partial Class Catalogo_Tipo_Cambio
             If Movimiento.Value = "Baja" Then
                 G.cn.Open()
                 G.Tsql = "Update Tipo_Cambio set Baja=" & "'*'"
+                G.Tsql &= ",Cve_Seg=" & Pone_Apos(Session("Contraseña"))
+                G.Tsql &= ",Fecha_Seg=" & Pone_Apos(DateTime.Now.ToString("yyyy/mm/dd"))
+                G.Tsql &= ",Hora_Seg=" & Pone_Apos(DateTime.Now.ToString("H:mm:ss", CultureInfo.InvariantCulture))
                 G.Tsql &= " Where Mon_Numero=" & Val(T_Moneda.Text.Trim)
+               
                 G.Tsql &= " and Fecha= " & Pone_Apos(T_Fecha.Text.Trim)
                 G.com.CommandText = G.Tsql
                 G.com.ExecuteNonQuery()

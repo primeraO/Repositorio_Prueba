@@ -134,7 +134,7 @@ Partial Class Catalogo_Area
             G.cn.Open()
             G.Tsql = "Select Area,Descripcion from Area "
             G.Tsql &= " Where Cia=" & Val(Session("Cia"))
-            G.Tsql &= " and Obra=" & Pone_Apos(Session("Obra"))
+            G.Tsql &= " and Sucursal=" & Pone_Apos(Session("Obra"))
             If Ch_Baja.Checked = True Then
                 G.Tsql &= " and Baja='*'"
             Else
@@ -167,7 +167,7 @@ Partial Class Catalogo_Area
         Try
             G.cn.Open()
             G.Tsql = "Select Max(Area) from Area Where Cia=" & Val(Session("Cia"))
-            G.Tsql &= " and Obra=" & Pone_Apos(Session("Obra"))
+            G.Tsql &= " and Sucursal=" & Pone_Apos(Session("Obra"))
             G.com.CommandText = G.Tsql
             Siguiente = Val(G.com.ExecuteScalar.ToString) + 1
         Catch ex As Exception
@@ -240,7 +240,7 @@ Partial Class Catalogo_Area
                 If Not G.com.ExecuteScalar Is Nothing Then
                     Msg_Error("Ya existe el Nombre del Area") : Exit Sub
                 End If
-                G.Tsql = "Insert into Area (Cia,Obra,Area,Descripcion,Cve_Seg,Fecha_Seg,Hora_Seg,Baja) values ("
+                G.Tsql = "Insert into Area (Cia,Sucursal,Area,Descripcion,Cve_Seg,Fecha_Seg,Hora_Seg,Baja) values ("
                 G.Tsql &= Val(Session("Cia"))
                 G.Tsql &= "," & Pone_Apos(Session("Obra"))
                 G.Tsql &= "," & T_Numero.Text.Trim
@@ -257,14 +257,14 @@ Partial Class Catalogo_Area
             If Movimiento.Value = "Cambio" Then
                 G.cn.Open()
                 G.Tsql = "Update Area set Cia=" & Val(Session("Cia"))
-                G.Tsql &= ",Obra=" & Pone_Apos(Session("Obra"))
+                G.Tsql &= ",Sucursal=" & Pone_Apos(Session("Obra"))
                 G.Tsql &= ",Descripcion=" & Pone_Apos(T_Descripcion.Text.Trim)
                 G.Tsql &= ",Cve_Seg=" & Pone_Apos(Session("Contraseña"))
                 G.Tsql &= ",Fecha_Seg=" & Pone_Apos(DateTime.Now.ToString("yyyy/mm/dd"))
                 G.Tsql &= ",Hora_Seg=" & Pone_Apos(DateTime.Now.ToString("H:mm:ss", CultureInfo.InvariantCulture))
                 G.Tsql &= ",Baja=" & "''"
                 G.Tsql &= " Where Cia=" & Val(Session("Cia"))
-                G.Tsql &= " and Obra=" & Pone_Apos(Session("Obra"))
+                G.Tsql &= " and Sucursal=" & Pone_Apos(Session("Obra"))
                 G.Tsql &= " and Area=" & Val(T_Numero.Text.Trim)
                 G.com.CommandText = G.Tsql
                 G.com.ExecuteNonQuery()
@@ -282,7 +282,7 @@ Partial Class Catalogo_Area
                 G.Tsql &= ",Hora_Seg=" & Pone_Apos(DateTime.Now.ToString("H:mm:ss", CultureInfo.InvariantCulture))
                 G.Tsql &= ",Baja=" & "'*'"
                 G.Tsql &= " Where Cia=" & Val(Session("Cia"))
-                G.Tsql &= " and Obra=" & Pone_Apos(Session("Obra"))
+                G.Tsql &= " and Sucursal=" & Pone_Apos(Session("Obra"))
                 G.Tsql &= " and Area=" & Val(T_Numero.Text.Trim)
                 G.com.CommandText = G.Tsql
                 G.com.ExecuteNonQuery()

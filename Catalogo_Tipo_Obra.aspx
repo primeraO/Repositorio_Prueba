@@ -64,7 +64,7 @@
 
                 <asp:Panel ID="Panel1" runat="server" HorizontalAlign="Center">
                                     <asp:Label ID="Label25" runat="server" CssClass="Textos_Encabezado_Azul" 
-                                        Text="Catálogo Tipo de Obra" Width="95%"></asp:Label>
+                                        Text="Catálogo Tipo de Sucursal" Width="95%"></asp:Label>
                                 <br />
                                 </asp:Panel>
 
@@ -198,7 +198,7 @@
                             </div>
                             <div style="overflow-y:scroll; overflow-x:hidden; width:100%; height:500px;">
                                 <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" 
-                                    CellPadding="2" CellSpacing="4" DataKeyNames="Tipo_Obra" Font-Size="Small" 
+                                    CellPadding="2" CellSpacing="4" DataKeyNames="Tipo_Sucursal" Font-Size="Small" 
                                     ForeColor="#333333" GridLines="None" Height="16px" ShowHeader="False" 
                                     style="top: 152px; left: 86px; " Visible="False" Width="964px">
                                     <RowStyle BackColor="#EFF3FB" Height="22px" />
@@ -207,7 +207,7 @@
                                         <HeaderStyle Width="100px" />
                                         <ItemStyle Width="100px" />
                                         </asp:CommandField>
-                                        <asp:BoundField DataField="Tipo_Obra" HeaderText="Núm.">
+                                        <asp:BoundField DataField="Tipo_Sucursal" HeaderText="Núm.">
                                         <ItemStyle HorizontalAlign="Right" Width="50px" />
                                         </asp:BoundField>
                                         <asp:BoundField DataField="Descripcion" HeaderText="Descripcion">

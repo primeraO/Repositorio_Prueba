@@ -79,7 +79,7 @@ Partial Class Monedas
     Private Function validar() As Boolean
         validar = False
         If T_Nombre.Text.Trim = "" Then
-            Msg_Error("Nombre inválido") : Exit Function
+            Msg_Error("Descripcion inválida") : Exit Function
         End If
         If T_Abreviatura.Text.Trim = "" Then
             Msg_Error("Abreviatura inválida") : Exit Function
@@ -135,12 +135,12 @@ Partial Class Monedas
             G.cn.Open()
             Session("dt") = New DataTable
             Try
-                G.Tsql = "Insert into Moneda(Moneda,Descripcion,Abreviatura) values (0,'Peso','MN')"
+                G.Tsql = "Insert into Moneda(Numero,Descripcion,Abreviatura) values (0,'Peso','MN')"
                 G.com.CommandText = G.Tsql
                 G.com.ExecuteNonQuery()
             Catch ex As Exception
             End Try
-            G.Tsql = "Select Moneda,Descripcion,Abreviatura from Moneda"
+            G.Tsql = "Select Numero as Moneda,Descripcion,Abreviatura from Moneda"
             If Ch_Baja.Checked = True Then
                 G.Tsql &= " where Baja='*' "
             Else
@@ -150,9 +150,9 @@ Partial Class Monedas
                 G.Tsql &= " and Descripcion like '%" & TB_Nombre.Text.Trim & "%'"
             End If
             If TB_Numero.Text <> "" Then
-                G.Tsql &= " and Moneda=" & Val(TB_Numero.Text.Trim)
+                G.Tsql &= " and Numero=" & Val(TB_Numero.Text.Trim)
             End If
-            G.Tsql &= " Order by Moneda"
+            G.Tsql &= " Order by Numero"
             G.com.CommandText = G.Tsql
             G.dr = G.com.ExecuteReader
             Session("dt").Load(G.dr)
@@ -185,14 +185,12 @@ Partial Class Monedas
                 T_Abreviatura.Enabled = False
                 T_Nombre.Enabled = False
                 Pnl_Registro.Enabled = False
-
             End If
             If (e.CommandName.Equals("Seleccion")) Then
                 Pnl_Registro.Enabled = False
                 Habilita()
                 Ima_Guarda.Enabled = False
                 Ima_Guarda.CssClass = "Btn_Rojo"
-
             End If
             If (e.CommandName.Equals("Cambio")) Then
                 Movimiento.Value = "Cambio"
@@ -314,12 +312,12 @@ Partial Class Monedas
                 If Not G.com.ExecuteScalar Is Nothing Then
                     Msg_Error("Ya existe una Moneda con esa Descripción") : Exit Sub
                 End If
-                G.Tsql = "Insert into Moneda (Moneda,Descripcion,Abreviatura,Cve_Seg,Fecha_Seg,Hora_Seg,Baja) values ("
+                G.Tsql = "Insert into Moneda (Numero,Descripcion,Abreviatura,Cve_Seg,Fecha_Seg,Hora_Seg,Baja) values ("
                 G.Tsql &= T_Numero.Text.Trim
                 G.Tsql &= "," & Pone_Apos(T_Nombre.Text.Trim)
                 G.Tsql &= "," & Pone_Apos(T_Abreviatura.Text.Trim)
                 G.Tsql &= "," & Pone_Apos(Session("Contraseña"))
-                G.Tsql &= "," & Pone_Apos(Fecha_AMD(DateTime.Now().ToShortDateString()))
+                G.Tsql &= "," & Pone_Apos(DateTime.Now.ToString("yyyy/mm/dd"))
                 G.Tsql &= "," & Pone_Apos(DateTime.Now.ToString("H:mm:ss", CultureInfo.InvariantCulture))
                 G.Tsql &= "," & "''" & ")"
                 G.com.CommandText = G.Tsql
@@ -332,10 +330,10 @@ Partial Class Monedas
                 G.Tsql = "Update Moneda set Descripcion=" & Pone_Apos(T_Nombre.Text.Trim)
                 G.Tsql &= ",Abreviatura=" & Pone_Apos(T_Abreviatura.Text.Trim)
                 G.Tsql &= ",Cve_Seg=" & Pone_Apos(Session("Contraseña"))
-                G.Tsql &= ",Fecha_Seg=" & Pone_Apos(Fecha_AMD(DateTime.Now().ToShortDateString()))
+                G.Tsql &= ",Fecha_Seg=" & Pone_Apos(DateTime.Now.ToString("yyyy/mm/dd"))
                 G.Tsql &= ",Hora_Seg=" & Pone_Apos(DateTime.Now.ToString("H:mm:ss", CultureInfo.InvariantCulture))
                 G.Tsql &= ",Baja=" & Pone_Apos("")
-                G.Tsql &= " Where Moneda=" & Val(T_Numero.Text.Trim)
+                G.Tsql &= " Where Numero=" & Val(T_Numero.Text.Trim)
                 G.com.CommandText = G.Tsql
                 G.com.ExecuteNonQuery()
                 If Ch_Baja.Checked = True Then
@@ -349,10 +347,10 @@ Partial Class Monedas
                 G.Tsql = "Update Moneda set Descripcion=" & Pone_Apos(T_Nombre.Text.Trim)
                 G.Tsql &= ",Abreviatura=" & Pone_Apos(T_Abreviatura.Text.Trim)
                 G.Tsql &= ",Cve_Seg=" & Pone_Apos(Session("Contraseña"))
-                G.Tsql &= ",Fecha_Seg=" & Pone_Apos(Fecha_AMD(DateTime.Now().ToShortDateString()))
+                G.Tsql &= ",Fecha_Seg=" & Pone_Apos(DateTime.Now.ToString("yyyy/mm/dd"))
                 G.Tsql &= ",Hora_Seg=" & Pone_Apos(DateTime.Now.ToString("H:mm:ss", CultureInfo.InvariantCulture))
                 G.Tsql &= ",Baja=" & "'*'"
-                G.Tsql &= " Where Moneda=" & Val(T_Numero.Text.Trim)
+                G.Tsql &= " Where Numero=" & Val(T_Numero.Text.Trim)
                 G.com.CommandText = G.Tsql
                 G.com.ExecuteNonQuery()
                 EliminaFilaGrid(T_Numero.Text.Trim)
@@ -372,7 +370,7 @@ Partial Class Monedas
         Siguiente = 0
         Try
             G.cn.Open()
-            G.Tsql = "Select Max(Moneda) from Moneda"
+            G.Tsql = "Select Max(Numero) from Moneda"
             G.com.CommandText = G.Tsql
             Siguiente = Val(G.com.ExecuteScalar.ToString) + 1
         Catch ex As Exception

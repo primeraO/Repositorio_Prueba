@@ -70,7 +70,7 @@ Partial Class Catalogo_Solicitante
             G.cn.Open()
             G.Tsql = "Select Solicitante, Nombre, RFC, Tarjeta from Solicitante"
             G.Tsql &= " Where Cia=" & Val(Session("Cia"))
-            G.Tsql &= " and Obra=" & Pone_Apos(Session("Obra"))
+            G.Tsql &= " and Sucursal=" & Pone_Apos(Session("Obra"))
             If Ch_Baja.Checked = True Then
                 G.Tsql &= " and Baja='*' "
             Else
@@ -106,7 +106,7 @@ Partial Class Catalogo_Solicitante
     Private Sub CrearCamposTabla()
         'Tabla Paises'
         Session("dt").Columns.Add("Cia", Type.GetType("System.Int64")) : Session("dt").Columns("Cia").DefaultValue = 0
-        Session("dt").Columns.Add("Obra", Type.GetType("System.String")) : Session("dt").Columns("Obra").DefaultValue = ""
+        Session("dt").Columns.Add("Sucursal", Type.GetType("System.String")) : Session("dt").Columns("Sucursal").DefaultValue = ""
         Session("dt").Columns.Add("Solicitante", Type.GetType("System.String")) : Session("dt").Columns("Solicitante").DefaultValue = ""
         Session("dt").Columns.Add("Nombre", Type.GetType("System.String")) : Session("dt").Columns("Nombre").DefaultValue = ""
         Session("dt").Columns.Add("RFC", Type.GetType("System.String")) : Session("dt").Columns("RFC").DefaultValue = ""
@@ -305,7 +305,7 @@ Partial Class Catalogo_Solicitante
                 If Not G.com.ExecuteScalar Is Nothing Then
                     Msg_Error("Ya existe un Solicitante con ese nombre") : Exit Sub
                 End If
-                G.Tsql = "Insert into Solicitante (Cia,Obra,Solicitante,Nombre,RFC,Cve_Seg,Fecha_Seg,Hora_Seg,Baja,Tarjeta) values ("
+                G.Tsql = "Insert into Solicitante (Cia,Sucursal,Solicitante,Nombre,RFC,Cve_Seg,Fecha_Seg,Hora_Seg,Baja,Tarjeta) values ("
                 G.Tsql &= Val(Session("Cia"))
                 G.Tsql &= "," & Pone_Apos(Session("Obra"))
                 G.Tsql &= "," & T_Numero.Text.Trim
@@ -331,7 +331,7 @@ Partial Class Catalogo_Solicitante
                 G.Tsql &= ",Tarjeta=" & Pone_Apos(T_Num_Tarjeta.Text.Trim)
                 G.Tsql &= " Where Solicitante=" & Val(T_Numero.Text.Trim)
                 G.Tsql &= " and Cia=" & Val(Session("Cia"))
-                G.Tsql &= " and Obra=" & Pone_Apos(Session("Obra"))
+                G.Tsql &= " and Sucursal=" & Pone_Apos(Session("Obra"))
                 G.com.CommandText = G.Tsql
                 G.com.ExecuteNonQuery()
                 CambiaFilaGrid(T_Numero.Text.Trim, T_Nombre.Text.Trim, rfc.ToUpper, T_Num_Tarjeta.Text.Trim)
@@ -350,7 +350,7 @@ Partial Class Catalogo_Solicitante
                 G.Tsql &= ",Tarjeta=" & Pone_Apos(T_Num_Tarjeta.Text.Trim)
                 G.Tsql &= " Where Solicitante=" & Val(T_Numero.Text.Trim)
                 G.Tsql &= " and Cia=" & Val(Session("Cia"))
-                G.Tsql &= " and Obra=" & Pone_Apos(Session("Obra"))
+                G.Tsql &= " and Sucursal=" & Pone_Apos(Session("Obra"))
                 G.com.CommandText = G.Tsql
                 G.com.ExecuteNonQuery()
                 EliminaFilaGrid(T_Numero.Text.Trim)
@@ -378,7 +378,7 @@ Partial Class Catalogo_Solicitante
         Try
             G.cn.Open()
             G.Tsql = "Select Max(Solicitante) from Solicitante where Cia=" & Val(Session("Cia"))
-            G.Tsql &= " and Obra=" & Pone_Apos(Session("Obra"))
+            G.Tsql &= " and Sucursal=" & Pone_Apos(Session("Obra"))
             G.com.CommandText = G.Tsql
             Siguiente = Val(G.com.ExecuteScalar.ToString) + 1
         Catch ex As Exception

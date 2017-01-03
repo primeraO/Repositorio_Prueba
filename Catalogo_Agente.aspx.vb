@@ -105,15 +105,6 @@ Partial Class Catalogo_Economico
         TB_Numero.Enabled = True
         TB_Descripcion.Enabled = True
         Ch_Baja.Enabled = True
-        Ch_Baja.Enabled = True
-        Ch_Baja.Enabled = True
-        Ch_Baja.Enabled = True
-        Ch_Baja.Enabled = True
-        Ch_Baja.Enabled = True
-        Ch_Baja.Enabled = True
-        Ch_Baja.Enabled = True
-        Ch_Baja.Enabled = True
-        Ch_Baja.Enabled = True
     End Sub
     Private Sub Habilita()
         Pnl_Busqueda.Visible = False
@@ -229,8 +220,14 @@ Partial Class Catalogo_Economico
             Msg_Error("Numero invalido") : Exit Function
         End If
         If T_Nombre.Text.Trim = "" Then
-            Msg_Error("Descripcion inválida") : Exit Function
+            Msg_Error("Nombre invalido") : Exit Function
         End If
+        'If T_Direccion.Text.Trim = "" Then
+        '    Msg_Error("Direccion invalida") : Exit Function
+        'End If
+        'If T_Telefono.Text.Trim = "" Then
+        '    Msg_Error("Telefono invalido") : Exit Function
+        'End If
         'If T_Aplicacion.Text.Trim = "" Then
         '    Msg_Error("Aplicacion inválida") : Exit Function
         'End If
@@ -315,9 +312,11 @@ Partial Class Catalogo_Economico
         LimpiaCampos()
         Movimiento.Value = "Alta"
         'T_Numero.Text = Siguiente()
-        T_Numero.Focus()
+        T_Nombre.Focus()
         GridView1.Enabled = False
         Pnl_Registro.Enabled = True
+        T_Numero.Text = Siguiente()
+        T_Numero.Enabled = False
     End Sub
 
     Protected Sub Ima_Restaura_Click(sender As Object, e As System.EventArgs) Handles Ima_Restaura.Click
@@ -343,7 +342,7 @@ Partial Class Catalogo_Economico
                 If Not G.com.ExecuteScalar Is Nothing Then
                     Msg_Error("Ya existe el agente con el numero: " & Pone_Apos(T_Numero.Text)) : Exit Sub
                 End If
-                G.Tsql = "Insert into Agente (Compañia,Sucursal,Numero,Nombre,Direccion,Colonia,Estado,Telefono,Fax,Mail,Baja) values ("
+                G.Tsql = "Insert into Agente (Compañia,Sucursal,Numero,Nombre,Direccion,Colonia,Estado,Telefono,Fax,Mail,Cve_Seg,Fecha_Seg,Hora_Seg,Baja) values ("
                 G.Tsql &= Val(Session("Cia"))
                 G.Tsql &= "," & Pone_Apos(G.Sucursal)
                 G.Tsql &= "," & Pone_Apos(T_Numero.Text.Trim)
@@ -354,6 +353,9 @@ Partial Class Catalogo_Economico
                 G.Tsql &= "," & Pone_Apos(T_Telefono.Text.Trim)
                 G.Tsql &= "," & Pone_Apos(T_Fax.Text.Trim)
                 G.Tsql &= "," & Pone_Apos(T_Mail.Text.Trim)
+                G.Tsql &= "," & Pone_Apos(Session("Contraseña"))
+                G.Tsql &= "," & Pone_Apos(DateTime.Now.ToString("yyyy/mm/dd"))
+                G.Tsql &= "," & Pone_Apos(DateTime.Now.ToString("H:mm:ss", CultureInfo.InvariantCulture))
                 G.Tsql &= "," & "''" & ")"
                 G.com.CommandText = G.Tsql
                 G.com.ExecuteNonQuery()
@@ -369,6 +371,9 @@ Partial Class Catalogo_Economico
                 G.Tsql &= ",Telefono=" & Pone_Apos(T_Telefono.Text.Trim)
                 G.Tsql &= ",Mail=" & Pone_Apos(T_Mail.Text.Trim)
                 G.Tsql &= ",Fax=" & Pone_Apos(T_Fax.Text.Trim)
+                G.Tsql &= ",Cve_Seg=" & Pone_Apos(Session("Contraseña"))
+                G.Tsql &= ",Fecha_Seg=" & Pone_Apos(DateTime.Now.ToString("yyyy/mm/dd"))
+                G.Tsql &= ",Hora_Seg=" & Pone_Apos(DateTime.Now.ToString("H:mm:ss", CultureInfo.InvariantCulture))
                 G.Tsql &= ",Baja=" & "''"
                 G.Tsql &= " Where Numero=" & Pone_Apos(T_Numero.Text.Trim)
                 G.Tsql &= " and Compañia=" & Val(Session("Cia"))
@@ -383,6 +388,9 @@ Partial Class Catalogo_Economico
             End If
             If Movimiento.Value = "Baja" Then
                 G.Tsql = "Update Agente set Baja=" & "'*'"
+                G.Tsql &= ",Cve_Seg=" & Pone_Apos(Session("Contraseña"))
+                G.Tsql &= ",Fecha_Seg=" & Pone_Apos(DateTime.Now.ToString("yyyy/mm/dd"))
+                G.Tsql &= ",Hora_Seg=" & Pone_Apos(DateTime.Now.ToString("H:mm:ss", CultureInfo.InvariantCulture))
                 G.Tsql &= " Where Numero=" & Pone_Apos(T_Numero.Text.Trim)
                 G.Tsql &= " and Compañia=" & Val(Session("Cia"))
                 G.Tsql &= " and Sucursal=" & Pone_Apos(G.Sucursal)

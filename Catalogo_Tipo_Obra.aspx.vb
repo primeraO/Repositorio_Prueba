@@ -37,11 +37,11 @@ Partial Class Catalogo_Tipo_Obra
     Private Sub CrearCamposTabla()
         'Tabla Paises'
         Session("dt").Columns.Add("Cia", Type.GetType("System.Int64")) : Session("dt").Columns("Cia").DefaultValue = 0
-        Session("dt").Columns.Add("Tipo_Obra", Type.GetType("System.Int64")) : Session("dt").Columns("Tipo_Obra").DefaultValue = 0
+        Session("dt").Columns.Add("Tipo_Sucursal", Type.GetType("System.Int64")) : Session("dt").Columns("Tipo_Sucursal").DefaultValue = 0
         Session("dt").Columns.Add("Descripcion", Type.GetType("System.String")) : Session("dt").Columns("Descripcion").DefaultValue = ""
         Session("dt").Columns.Add("Baja", Type.GetType("System.String")) : Session("dt").Columns("Baja").DefaultValue = ""
         Dim clave(0) As DataColumn
-        clave(0) = Session("dt").Columns("Tipo_Obra")
+        clave(0) = Session("dt").Columns("Tipo_Sucursal")
         Session("dt").PrimaryKey = clave
     End Sub
     Private Sub DibujaSpan()
@@ -77,8 +77,8 @@ Partial Class Catalogo_Tipo_Obra
         Try
             Session("dt").rows.clear()
             G.cn.Open()
-            G.Tsql = "Select Tipo_Obra,Descripcion from Tipo_Obra"
-            G.Tsql &= " where Tipo_Obra<>0"
+            G.Tsql = "Select Tipo_Sucursal ,Descripcion from Tipo_Sucursal"
+            G.Tsql &= " where Tipo_Sucursal<>0"
             If Ch_Baja.Checked = True Then
                 G.Tsql &= " and Baja='*' "
             Else
@@ -88,9 +88,9 @@ Partial Class Catalogo_Tipo_Obra
                 G.Tsql &= " and Descripcion like '%" & TB_Descripcion.Text.Trim & "%'"
             End If
             If TB_Numero.Text <> "" Then
-                G.Tsql &= " and Tipo_Obra =" & Val(TB_Numero.Text.Trim)
+                G.Tsql &= " and Tipo_Sucursal =" & Val(TB_Numero.Text.Trim)
             End If
-            G.Tsql &= " Order by Tipo_Obra"
+            G.Tsql &= " Order by Tipo_Sucursal"
             G.com.CommandText = G.Tsql
             G.dr = G.com.ExecuteReader
             Session("dt").Load(G.dr)
@@ -155,7 +155,7 @@ Partial Class Catalogo_Tipo_Obra
         GridView1.Enabled = False
         Ch_Baja.Enabled = False
     End Sub
-    
+
     Protected Sub GridView1_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles GridView1.RowCommand
         If (e.CommandName.Equals("Baja")) Or (e.CommandName.Equals("Cambio")) Or (e.CommandName.Equals("Seleccion")) Then
             Dim ind As Integer = Convert.ToInt32(e.CommandArgument)
@@ -163,7 +163,7 @@ Partial Class Catalogo_Tipo_Obra
             Clave(0) = (GridView1.Rows(ind).Cells(1).Text)
             Dim f As DataRow = Session("dt").Rows.Find(Clave)
             If Not f Is Nothing Then
-                T_Numero.Text = f("Tipo_Obra")
+                T_Numero.Text = f("Tipo_Sucursal")
                 T_Descripcion.Text = f("Descripcion")
                 Habilita()
             End If
@@ -203,7 +203,7 @@ Partial Class Catalogo_Tipo_Obra
 
     Private Sub AñadeFilaGrid(ByVal Numero As String, ByVal Descripcion As String)
         Dim f As DataRow = Session("dt").NewRow()
-        f("Tipo_Obra") = Numero
+        f("Tipo_Sucursal") = Numero
         f("Descripcion") = Descripcion
         Session("dt").Rows.Add(f)
         GridView1.PageIndex = Int((Session("dt").Rows.Count) / 10)
@@ -270,12 +270,12 @@ Partial Class Catalogo_Tipo_Obra
             If Movimiento.Value = "Alta" Then
                 T_Numero.Text = Siguiente()
                 G.cn.Open()
-                Tsql = "Select Descripcion from Tipo_Obra where Descripcion=" & Pone_Apos(T_Descripcion.Text)
+                Tsql = "Select Descripcion from Tipo_Sucursal where Descripcion=" & Pone_Apos(T_Descripcion.Text)
                 G.com.CommandText = Tsql
                 If Not G.com.ExecuteScalar Is Nothing Then
                     Msg_Error("Ya existe un tipo de obra con esta descripcion") : Exit Sub
                 End If
-                G.Tsql = "Insert into Tipo_Obra (Cia,Tipo_Obra,Descripcion,Baja) values ("
+                G.Tsql = "Insert into Tipo_Sucursal (Cia,Tipo_Sucursal,Descripcion,Baja) values ("
                 G.Tsql &= Val(Session("Cia"))
                 G.Tsql &= "," & T_Numero.Text.Trim
                 G.Tsql &= "," & Pone_Apos(T_Descripcion.Text.Trim)
@@ -287,9 +287,9 @@ Partial Class Catalogo_Tipo_Obra
             End If
             If Movimiento.Value = "Cambio" Then
                 G.cn.Open()
-                G.Tsql = "Update Tipo_Obra set Descripcion=" & Pone_Apos(T_Descripcion.Text.Trim)
+                G.Tsql = "Update Tipo_Sucursal set Descripcion=" & Pone_Apos(T_Descripcion.Text.Trim)
                 G.Tsql &= ",Baja=" & "''"
-                G.Tsql &= " Where Tipo_Obra=" & Val(T_Numero.Text.Trim)
+                G.Tsql &= " Where Tipo_Sucursal=" & Val(T_Numero.Text.Trim)
                 G.Tsql &= " and Cia=" & Val(Session("Cia"))
                 G.com.CommandText = G.Tsql
                 G.com.ExecuteNonQuery()
@@ -301,8 +301,8 @@ Partial Class Catalogo_Tipo_Obra
             End If
             If Movimiento.Value = "Baja" Then
                 G.cn.Open()
-                G.Tsql = "Update Tipo_Obra set Baja=" & "'*'"
-                G.Tsql &= " Where Tipo_Obra=" & Val(T_Numero.Text.Trim)
+                G.Tsql = "Update Tipo_Sucursal set Baja=" & "'*'"
+                G.Tsql &= " Where Tipo_Sucursal=" & Val(T_Numero.Text.Trim)
                 G.Tsql &= " and Cia=" & Val(Session("Cia"))
                 G.com.CommandText = G.Tsql
                 G.com.ExecuteNonQuery()
@@ -330,7 +330,7 @@ Partial Class Catalogo_Tipo_Obra
         Siguiente = 0
         Try
             G.cn.Open()
-            G.Tsql = "Select Max(Tipo_Obra) from Tipo_Obra"
+            G.Tsql = "Select Max(Tipo_Sucursal) from Tipo_Sucursal"
             G.Tsql &= " where Cia=" & Val(Session("Cia"))
             G.com.CommandText = G.Tsql
             Siguiente = Val(G.com.ExecuteScalar.ToString) + 1

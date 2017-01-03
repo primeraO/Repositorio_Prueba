@@ -124,7 +124,7 @@ Partial Class Catalogo_Terceros
             G.Tsql = "Select Tercero,Descripcion,RFC from Terceros "
             G.Tsql &= " Where Tercero<>0 "
             G.Tsql &= " and Cia=" & Val(Session("Cia"))
-            G.Tsql &= " and Obra=" & Val(Session("Obra"))
+            G.Tsql &= " and Sucursal=" & Val(Session("Obra"))
             If Ch_Baja.Checked = True Then
                 G.Tsql &= " and Baja='*'"
             Else
@@ -158,7 +158,7 @@ Partial Class Catalogo_Terceros
         Try
             G.cn.Open()
             G.Tsql = "Select Max(Tercero) from Terceros where Cia=" & Val(Session("Cia"))
-            G.Tsql &= " and Obra=" & Pone_Apos(Session("Obra"))
+            G.Tsql &= " and Sucursal=" & Pone_Apos(Session("Obra"))
             G.com.CommandText = G.Tsql
             Siguiente = Val(G.com.ExecuteScalar.ToString) + 1
         Catch ex As Exception
@@ -236,7 +236,7 @@ Partial Class Catalogo_Terceros
                 If Not G.com.ExecuteScalar Is Nothing Then
                     Msg_Error("Ya existe la Descripcion del Tercero") : Exit Sub
                 End If
-                G.Tsql = "Insert into Terceros (Cia,Obra,Tercero,Descripcion,RFC,Cve_Seg,Fecha_Seg,Hora_Seg,Baja) values ("
+                G.Tsql = "Insert into Terceros (Cia,Sucursal,Tercero,Descripcion,RFC,Cve_Seg,Fecha_Seg,Hora_Seg,Baja) values ("
                 G.Tsql &= Val(Session("Cia"))
                 G.Tsql &= "," & Pone_Apos(Session("Obra"))
                 G.Tsql &= "," & T_Numero.Text.Trim
@@ -253,7 +253,7 @@ Partial Class Catalogo_Terceros
             End If
             If Movimiento.Value = "Cambio" Then
                 G.Tsql = "Update Terceros set Cia=" & Val(Session("Cia"))
-                G.Tsql &= ",Obra=" & Pone_Apos(Session("Obra"))
+                G.Tsql &= ",Sucursal=" & Pone_Apos(Session("Obra"))
                 G.Tsql &= ",Descripcion=" & Pone_Apos(T_Descripcion.Text.Trim)
                 G.Tsql &= ",RFC=" & Pone_Apos(T_RFC.Text.Trim)
                 G.Tsql &= ",Cve_Seg=" & Pone_Apos(Session("Contraseña"))
@@ -273,7 +273,7 @@ Partial Class Catalogo_Terceros
                 'G.Tsql = "Delete from Moneda Where Moneda=" & Val(T_NumeroPais.Text.Trim)
                 'G.com.CommandText = G.Tsql
                 G.Tsql = "Update Terceros set Cia=" & Val(Session("Cia"))
-                G.Tsql &= ",Obra=" & Pone_Apos(Session("Obra"))
+                G.Tsql &= ",Sucursal=" & Pone_Apos(Session("Obra"))
                 G.Tsql &= ",Descripcion=" & Pone_Apos(T_Descripcion.Text.Trim)
                 G.Tsql &= ",RFC=" & Pone_Apos(T_RFC.Text.Trim)
                 G.Tsql &= ",Cve_Seg=" & Pone_Apos(Session("Contraseña"))
