@@ -85,7 +85,7 @@ Partial Class Bus_Cat_Articulos
             G.dt3.Rows.Clear()
             Select Case Catalogo
                 Case "ARTICULO"
-                    G.Tsql = "Select top 200 Numero,Art_Descripcion,Lin_Numero,Sub_Numero from Articulos Where Baja<>'*' and Obra=" & Pone_Apos(G.Sucursal) & " and Cia=" & Val(Session("Cia"))
+                    G.Tsql = "Select top 200 Numero,Art_Descripcion,Lin_Numero,Sub_Numero from Articulos Where Baja<>'*' and Obra=" & Pone_Apos(G.Sucursal) & " and Empresa =" & Val(Session("Cia"))
                     If T_Numero.Text <> "" Then
                         G.Tsql &= " and Numero LIKE '%" & T_Numero.Text & "%'"
                     End If
@@ -100,7 +100,7 @@ Partial Class Bus_Cat_Articulos
                     End If
                     G.Tsql &= " order by Numero"
                 Case "ARTICULO_IEPS"
-                    G.Tsql = "Select top 200 Numero,Art_Descripcion,Lin_Numero,Sub_Numero from Articulos Where Baja<>'*' and Obra=" & Pone_Apos(G.Sucursal) & " and Cia=" & Val(Session("Cia")) & " and IEPS<>''"
+                    G.Tsql = "Select top 200 Numero,Art_Descripcion,Lin_Numero,Sub_Numero from Articulos Where Baja<>'*' and Obra=" & Pone_Apos(G.Sucursal) & " and Empresa =" & Val(Session("Cia")) & " and IEPS<>''"
                     If T_Numero.Text <> "" Then
                         G.Tsql &= " and Numero LIKE '%" & T_Numero.Text & "%'"
                     End If

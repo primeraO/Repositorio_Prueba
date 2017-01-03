@@ -216,7 +216,7 @@ Partial Class Bus_Cat
                 GridView1.Columns.Add(col1)
                 Cabecera.Columns.Add(col1)
                 Dim col2 As New BoundField
-            Case "ALMACEN", "ALMACEN2", "CLAVE_MOVIMIENTOS_INVENTARIO", "ALMACEN", "MONEDA", "CENTRO_COSTOS", "ALMACEN_DESTINO", "EMPLEADOS", "LUGAR_ENTREGA", "CLAVE_MOVIMIENTOS_INVENTARIO_ENTRADAS"
+            Case "ALMACEN", "MONEDA", "ALMACEN2", "CLAVE_MOVIMIENTOS_INVENTARIO", "ALMACEN", "CENTRO_COSTOS", "ALMACEN_DESTINO", "EMPLEADOS", "LUGAR_ENTREGA", "CLAVE_MOVIMIENTOS_INVENTARIO_ENTRADAS"
                 G.dt2.Columns.Add("Numero", Type.GetType("System.Int64")) : G.dt2.Columns("Numero").DefaultValue = 0
                 G.dt2.Columns.Add("Descripcion", Type.GetType("System.String")) : G.dt2.Columns("Descripcion").DefaultValue = ""
                 Dim col1 As New BoundField
@@ -644,11 +644,11 @@ Partial Class Bus_Cat
                         G.Tsql &= " and Descripcion like '%" & T_Descipcion.Text & "%'"
                     End If
                 Case "MONEDA"
-                    G.Tsql = "Select TOP(200) Moneda as Numero, Descripcion "
+                    G.Tsql = "Select TOP(200) Numero, Descripcion "
                     G.Tsql &= "from Moneda "
-                    G.Tsql &= "Where Moneda>=0"
+                    G.Tsql &= "Where Numero>=0"
                     If Val(T_Numero.Text) > 0 Then
-                        G.Tsql &= " and Moneda=" & Val(T_Numero.Text)
+                        G.Tsql &= " and Numero=" & Val(T_Numero.Text)
                     End If
                     If T_Descipcion.Text.Trim <> "" Then
                         G.Tsql &= " and Descripcion like '%" & T_Descipcion.Text & "%'"

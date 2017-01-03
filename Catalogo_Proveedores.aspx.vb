@@ -236,6 +236,9 @@ Partial Class Catalogo_Proveedores
         T_Desc_CondPago.Text = ""
         T_Desc_Pais.Text = ""
         T_Desc_Transporte.Text = ""
+        T_Contacto_Nombre.Text = ""
+        T_Contacto_Telefono.Text = ""
+        T_Contacto_Mail.Text = ""
     End Sub
     Private Function Siguiente() As Integer
         Dim G As Glo = CType(Session("G"), Glo)
@@ -261,9 +264,9 @@ Partial Class Catalogo_Proveedores
             If G.com.ExecuteReader.HasRows Then
                 Msg_Error("Ya ha sido registrado el RFC") : G.cn.Close() : Return False
             End If
-            If (T_RFC.Text Like "[A-Z][A-Z][A-Z]######*") = False Then
-                Msg_Error("RFC Inválido") : Return False
-            End If
+        End If
+        If (T_RFC.Text Like "[A-Z][A-Z][A-Z]######*") = False Then
+            Msg_Error("RFC Inválido") : Return False
         End If
         If T_RFC.Text = "" Or T_RFC.Text.Trim.Length < 12 Then
             Msg_Error("RFC Inválido") : Return False

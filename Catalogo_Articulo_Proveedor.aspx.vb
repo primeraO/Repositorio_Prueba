@@ -317,7 +317,7 @@ Partial Class Catalogo_Articulo_Proveedor
             If Movimiento.Value = "Alta" Then
                 G.cn.Open()
                 G.Tsql = "Insert Into Articulo_Proveedor(Art_Numero,Numero,Art_Descripcion,Pro_Numero,Dias_Entrega,Garantia,Precio1,Costo1"
-                G.Tsql &= ",Fecha_Precio1,Moneda,Impuesto,Catalogo,Figura,Pagina,Baja,Unidad_Medida,Cia,Obra)values("
+                G.Tsql &= ",Fecha_Precio1,Moneda,Impuesto,Catalogo,Figura,Pagina,Baja,Unidad_Medida,Cia,Sucursal)values("
                 G.Tsql &= Pone_Apos(T_Articulo.Text)
                 G.Tsql &= "," & Pone_Apos(T_Art_Numero.Text)
                 G.Tsql &= "," & Pone_Apos(T_Art_Numero_Desc.Text)
@@ -404,7 +404,7 @@ Partial Class Catalogo_Articulo_Proveedor
                 G.Tsql &= " Where Pro_Numero=" & Val(T_Proveedor.Text.Trim)
                 G.Tsql &= " and Art_Numero=" & Pone_Apos(T_Articulo.Text)
                 G.Tsql &= " and Cia=" & Val(Session("Cia"))
-                G.Tsql &= " and Sucursal=" & Pone_Apos(Session("Obra"))
+                G.Tsql &= " and Sucursal=" & Pone_Apos(Session("Sucursal"))
                 G.com.CommandText = G.Tsql
                 G.com.ExecuteNonQuery()
                 EliminaFilaGrid(T_Articulo.Text)
@@ -492,7 +492,7 @@ Partial Class Catalogo_Articulo_Proveedor
             G.Tsql &= " where Pro_Numero=" & Val(T_Proveedor.Text)
             G.Tsql &= " and Art_Numero=" & Pone_Apos(T_Articulo.Text)
             G.Tsql &= " and Cia=" & Val(Session("Cia"))
-            G.Tsql &= " and Obra=" & Pone_Apos(Session("Obra"))
+            G.Tsql &= " and Sucursal =" & Pone_Apos(Session("Obra"))
             G.com.CommandText = G.Tsql
             G.dr = G.com.ExecuteReader
             If G.dr.HasRows Then
@@ -509,6 +509,9 @@ Partial Class Catalogo_Articulo_Proveedor
         End If
         If T_Fecha_Vigencia.Text = "" Or T_Fecha_Vigencia.Text.Trim = "" Then
             Msg_Error("Fecha de Vigencia inválida") : Exit Function
+        End If
+        If T_Dias_Entrega.Text = "" Or T_Dias_Entrega.Text.Trim = "" Then
+            Msg_Error("Dias de Entrega inválida") : Exit Function
         End If
         Return True
     End Function
@@ -540,6 +543,7 @@ Partial Class Catalogo_Articulo_Proveedor
     Protected Sub Ch_Baja_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Ch_Baja.CheckedChanged
         LlenaGrid()
     End Sub
+
 End Class
 
 
