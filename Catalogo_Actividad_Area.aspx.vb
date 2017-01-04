@@ -144,12 +144,12 @@ Partial Class Catalogo_Actividad_Area
             If TB_Descripcion.Text <> "" Then
                 G.Tsql &= " and a.Descripcion like'%" & TB_Descripcion.Text & "%'"
             End If
-            If Val(T_Area.Text) > 0 Then
-                G.Tsql &= " and a.Area=" & Val(T_Area.Text)
-            End If
-            If T_Area_Desc.Text <> "" Then
-                G.Tsql &= " and b.Descripcion like'%" & T_Area_Desc.Text & "%'"
-            End If
+            'If Val(T_Area.Text) > 0 Then
+            '    G.Tsql &= " and a.Area=" & Val(T_Area.Text)
+            'End If
+            'If T_Area_Desc.Text <> "" Then
+            '    G.Tsql &= " and b.Descripcion like'%" & T_Area_Desc.Text & "%'"
+            'End If
             If Ch_Baja.Checked = True Then
                 G.Tsql &= " and a.Baja='*'"
             Else
