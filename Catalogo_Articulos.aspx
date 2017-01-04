@@ -227,9 +227,7 @@
                                     ImageUrl="~/Imagenes/M_Buscar_50.png">HyperLink</asp:HyperLink>
                             </td>
                             <td width="9%">
-                                <asp:TextBox ID="TB_Clas_Corta" runat="server" AutoPostBack="True" 
-                                    CssClass="form-control" placeholder="Clasificación" TabIndex="13" Width="74px"></asp:TextBox>
-                            </td>
+                                &nbsp;</td>
                             <td width="350" style="text-align: left">
                                 <asp:CheckBox ID="Ch_Baja" runat="server" AutoPostBack="True" 
                                     CssClass="Textos_Azules" Text="Bajas" />
@@ -616,7 +614,7 @@
                                                         </td>
                                                         <td>
                                                             <asp:TextBox ID="T_Contado_IVA" runat="server" BackColor="SkyBlue" 
-                                                                CssClass="form-control" Enabled="False" placeholder="Grupo" TabIndex="13" 
+                                                                CssClass="form-control" Enabled="False" placeholder="" TabIndex="13" 
                                                                 Width="63px">0.00</asp:TextBox>
                                                         </td>
                                                         <td>
@@ -624,7 +622,7 @@
                                                         </td>
                                                         <td>
                                                             <asp:TextBox ID="T_Credito_Iva" runat="server" BackColor="SkyBlue" 
-                                                                CssClass="form-control" Enabled="False" placeholder="Grupo" TabIndex="13" 
+                                                                CssClass="form-control" Enabled="False" placeholder="" TabIndex="13" 
                                                                 Width="63px">0.00</asp:TextBox>
                                                         </td>
                                                         <td>
@@ -632,7 +630,7 @@
                                                         </td>
                                                         <td>
                                                             <asp:TextBox ID="T_Mayoreo_IVA" runat="server" BackColor="SkyBlue" 
-                                                                CssClass="form-control" Enabled="False" placeholder="Grupo" TabIndex="13" 
+                                                                CssClass="form-control" Enabled="False" placeholder="" TabIndex="13" 
                                                                 Width="63px">0.00</asp:TextBox>
                                                         </td>
                                                         <td>
@@ -640,7 +638,7 @@
                                                         </td>
                                                         <td>
                                                             <asp:TextBox ID="T_Filial_IVA" runat="server" BackColor="SkyBlue" 
-                                                                CssClass="form-control" Enabled="False" placeholder="Grupo" TabIndex="13" 
+                                                                CssClass="form-control" Enabled="False" placeholder="" TabIndex="13" 
                                                                 Width="63px">0.00</asp:TextBox>
                                                         </td>
                                                     </tr>
@@ -710,7 +708,7 @@
                                                         </td>
                                                         <td>
                                                             <asp:TextBox ID="T_Lote_Minimo" runat="server" CssClass="form-control" 
-                                                                placeholder="Grupo" TabIndex="13" Width="63px"></asp:TextBox>
+                                                                placeholder="" TabIndex="13" Width="63px"></asp:TextBox>
                                                         </td>
                                                         <td>
                                                             <asp:Label ID="Label67" runat="server" CssClass="Textos_Azules" 
@@ -718,7 +716,7 @@
                                                         </td>
                                                         <td>
                                                             <asp:TextBox ID="T_Multiplos" runat="server" CssClass="form-control" 
-                                                                placeholder="Grupo" TabIndex="13" Width="63px"></asp:TextBox>
+                                                                placeholder="" TabIndex="13" Width="63px"></asp:TextBox>
                                                         </td>
                                                         <td>
                                                             &nbsp;</td>

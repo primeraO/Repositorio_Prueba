@@ -41,8 +41,9 @@ Partial Class Catalogo_Articulos
         T_SubLinea.Attributes.Add("onkeypress", "javascript: ValidaSoloNumeros('" & T_SubLinea.ClientID & "');")
 
         TB_Grupo.Attributes.Add("onkeydown", "javascript: PierdeFoco_1('" & TB_SubGrupo.ClientID & "','" & TB_Grupo.ClientID & "');")
-        TB_SubGrupo.Attributes.Add("onkeydown", "javascript: PierdeFoco_1('" & TB_Clas_Corta.ClientID & "','" & TB_SubGrupo.ClientID & "');")
-        TB_Clas_Corta.Attributes.Add("onkeydown", "javascript: PierdeFoco_1('" & TB_Numero.ClientID & "','" & TB_Clas_Corta.ClientID & "');")
+        'TB_SubGrupo.Attributes.Add("onkeydown", "javascript: PierdeFoco_1('" & TB_Clas_Corta.ClientID & "','" & TB_SubGrupo.ClientID & "');")
+        HB_Linea.Attributes.Add("style", "cursor:pointer;")
+        'TB_Clas_Corta.Attributes.Add("onkeydown", "javascript: PierdeFoco_1('" & TB_Numero.ClientID & "','" & TB_Clas_Corta.ClientID & "');")
         TB_Numero.Attributes.Add("onkeydown", "javascript: PierdeFoco_1('" & TB_Descripcion.ClientID & "','" & TB_Numero.ClientID & "');")
         TB_Descripcion.Attributes.Add("onkeydown", "javascript: PierdeFoco_1('" & TB_Grupo.ClientID & "','" & TB_Descripcion.ClientID & "');")
         Btn_Moneda1.Attributes.Add("onclick", "window.open('Bus_Cat.aspx?Catalogo=MONEDA&Num=1',null,'left=400, top=100, height=450, width= 800, status=no, resizable=no, scrollbars=no, toolbar=no,location= no, menubar=no');")
@@ -53,7 +54,7 @@ Partial Class Catalogo_Articulos
         TB_Descripcion.Attributes.Add("onfocus", "this.select();")
         TB_Grupo.Attributes.Add("onfocus", "this.select();")
         TB_SubGrupo.Attributes.Add("onfocus", "this.select();")
-        TB_Clas_Corta.Attributes.Add("onfocus", "this.select();")
+        'TB_Clas_Corta.Attributes.Add("onfocus", "this.select();")
         T_Numero.Attributes.Add("onfocus", "this.select();")
         T_Descripcion.Attributes.Add("onfocus", "this.select();")
         T_Marca.Attributes.Add("onfocus", "this.select();")
@@ -409,7 +410,7 @@ Partial Class Catalogo_Articulos
 
     Protected Sub Ima_Busca_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles Ima_Busca.Click
 
-        If TB_Numero.Text.Trim = "" And TB_Descripcion.Text.Trim = "" And TB_SubGrupo.Text = "" And TB_Grupo.Text = "" And TB_Clas_Corta.Text = "" Then
+        If TB_Numero.Text.Trim = "" And TB_Descripcion.Text.Trim = "" And TB_SubGrupo.Text = "" And TB_Grupo.Text = "" Then
             Msg_Error("Especificar información a buscar")
             Exit Sub
         End If
@@ -624,6 +625,9 @@ Partial Class Catalogo_Articulos
                 H_Marca.Attributes.Add("style", "cursor:not-allowed;")
                 H_SubLinea.Attributes.Add("onclick", "")
                 H_SubLinea.Attributes.Add("style", "cursor:not-allowed;")
+
+                H_Articulo.Attributes.Add("onclick", "")
+                H_Articulo.Attributes.Add("style", "cursor:not-allowed;")
             End If
             If (e.CommandName.Equals("Cambio")) Then
                 Movimiento.Value = "Cambio"
@@ -714,46 +718,53 @@ Partial Class Catalogo_Articulos
     End Sub
 
 
-    Protected Sub TB_Clas_Corta_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TB_Clas_Corta.TextChanged, TB_Descripcion.TextChanged, TB_Numero.TextChanged, TB_SubGrupo.TextChanged
+    Protected Sub TB_Descripcion_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TB_Descripcion.TextChanged, TB_Numero.TextChanged, TB_SubGrupo.TextChanged
         LLenaGrid()
         Pnl_Grids.Visible = True
     End Sub
 
    
     Protected Sub T_Contado_TextChanged(sender As Object, e As System.EventArgs) Handles T_Contado.TextChanged
-        If T_IVA.Text > "" Then
+        If T_IVA.Text > "" And T_Contado.Text > "" Then
             T_Contado_IVA.Text = For_Pan_Lib(Val(T_Contado.Text * Val(T_IVA.Text / 100)) + Val(T_Contado.Text), 2)
         End If
+        If T_Contado.Text = "" Then T_Contado_IVA.Text = ""
         T_Credito.Focus()
     End Sub
 
     Protected Sub T_IVA_v_TextChanged(sender As Object, e As System.EventArgs) Handles T_IVA.TextChanged
-        If T_Contado.Text > 0 Then T_Contado_IVA.Text = For_Pan_Lib(Val(T_Contado.Text * Val(T_IVA.Text / 100)) + Val(T_Contado.Text), 2)
-        If T_Credito.Text > 0 Then T_Credito_Iva.Text = For_Pan_Lib(Val(T_Credito.Text * Val(T_IVA.Text / 100)) + Val(T_Credito.Text), 2)
-        If T_Mayoreo.Text > 0 Then T_Mayoreo_IVA.Text = For_Pan_Lib(Val(T_Mayoreo.Text * Val(T_IVA.Text / 100)) + Val(T_Mayoreo.Text), 2)
-        If T_Filial.Text > 0 Then T_Filial_IVA.Text = For_Pan_Lib(Val(T_Filial.Text * Val(T_IVA.Text / 100)) + Val(T_Filial.Text), 2)
+        If T_IVA.Text > "" Then
+            If T_Contado.Text > "" Then T_Contado_IVA.Text = For_Pan_Lib(Val(T_Contado.Text * Val(T_IVA.Text / 100)) + Val(T_Contado.Text), 2)
+            If T_Credito.Text > "" Then T_Credito_Iva.Text = For_Pan_Lib(Val(T_Credito.Text * Val(T_IVA.Text / 100)) + Val(T_Credito.Text), 2)
+            If T_Mayoreo.Text > "" Then T_Mayoreo_IVA.Text = For_Pan_Lib(Val(T_Mayoreo.Text * Val(T_IVA.Text / 100)) + Val(T_Mayoreo.Text), 2)
+            If T_Filial.Text > "" Then T_Filial_IVA.Text = For_Pan_Lib(Val(T_Filial.Text * Val(T_IVA.Text / 100)) + Val(T_Filial.Text), 2)
+        End If
+        If T_IVA.Text = "" Then T_Contado_IVA.Text = "" : T_Credito_Iva.Text = "" : T_Mayoreo_IVA.Text = "" : T_Filial_IVA.Text = ""
         T_precio_Contado.Focus()
     End Sub
 
     Protected Sub T_Credito_TextChanged(sender As Object, e As System.EventArgs) Handles T_Credito.TextChanged
-        If T_IVA.Text > "" Then
+        If T_IVA.Text > "" And T_Credito.Text > "" Then
             T_Credito_Iva.Text = For_Pan_Lib(Val(T_Credito.Text * Val(T_IVA.Text / 100)) + Val(T_Credito.Text), 2)
         End If
         T_Mayoreo.Focus()
+        If T_Credito.Text = "" Then T_Credito_Iva.Text = ""
     End Sub
 
     Protected Sub T_Mayoreo_TextChanged(sender As Object, e As System.EventArgs) Handles T_Mayoreo.TextChanged
-        If T_IVA.Text > "" Then
+        If T_IVA.Text > "" And T_Mayoreo.Text > "" Then
             T_Mayoreo_IVA.Text = For_Pan_Lib(Val(T_Mayoreo.Text * Val(T_IVA.Text / 100)) + Val(T_Mayoreo.Text), 2)
         End If
         T_Filial.Focus()
+        If T_Mayoreo.Text = "" Then T_Mayoreo_IVA.Text = ""
     End Sub
 
     Protected Sub T_Filial_TextChanged(sender As Object, e As System.EventArgs) Handles T_Filial.TextChanged
-        If T_IVA.Text > "" Then
+        If T_IVA.Text > "" And T_Filial.Text > "" Then
             T_Filial_IVA.Text = For_Pan_Lib(Val(T_Filial.Text * Val(T_IVA.Text / 100)) + Val(T_Filial.Text), 2)
         End If
         T_Descuento_1.Focus()
+        If T_Filial.Text = "" Then T_Filial_IVA.Text = ""
     End Sub
 
     Protected Sub T_Moneda1_TextChanged(sender As Object, e As System.EventArgs) Handles T_Moneda1.TextChanged
