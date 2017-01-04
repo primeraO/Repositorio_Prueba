@@ -187,7 +187,7 @@ Partial Class Catalogo_Terceros
         LimpiaCampos()
         Movimiento.Value = "Alta"
         T_Numero.Text = Siguiente()
-        T_Numero.Focus()
+        T_Descripcion.Focus()
         GridView1.Enabled = False
         Pnl_Registro.Enabled = True
     End Sub

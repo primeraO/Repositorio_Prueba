@@ -87,7 +87,7 @@
               
                
                <li class="menu-item dropdown dropdown-submenu">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Obra  </a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sucursal </a>
                     <ul class="dropdown-menu">
                         <li class="menu-item ">                                                         
                           <%-- <a href="C_Acceso.aspx?form=Catalogo_Actividad_Frente" >Actividad - Frente</a>--%>

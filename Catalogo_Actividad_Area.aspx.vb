@@ -135,9 +135,9 @@ Partial Class Catalogo_Actividad_Area
             Session("dt").Rows.Clear()
             G.cn.Open()
             G.Tsql = "Select a.Area,a.Actividad,a.Descripcion as Descripcion_Actividad, b.Descripcion as Descripcion_Area from Actividad_Area a"
-            G.Tsql &= " left join Area b on a.Cia=b.Cia and a.Obra=b.Obra and a.Area=b.Area"
+            G.Tsql &= " left join Area b on a.Cia=b.Cia and a.Sucursal=b.Sucursal and a.Area=b.Area"
             G.Tsql &= " Where a.Cia=" & Val(Session("Cia"))
-            G.Tsql &= " and a.Obra=" & Pone_Apos(Session("Obra"))
+            G.Tsql &= " and a.Sucursal=" & Pone_Apos(Session("Obra"))
             If Val(TB_Numero.Text) > 0 Then
                 G.Tsql &= " and a.Actividad=" & Val(TB_Numero.Text)
             End If
@@ -177,7 +177,7 @@ Partial Class Catalogo_Actividad_Area
             G.cn.Open()
             G.Tsql = "Select Max(Actividad) from Actividad_Area"
             G.Tsql &= " Where Cia=" & Session("Cia")
-            G.Tsql &= " and Obra=" & Pone_Apos(Session("Obra"))
+            G.Tsql &= " and Sucursal=" & Pone_Apos(Session("Obra"))
             G.Tsql &= " and Area=" & Val(T_Area.Text)
             G.com.CommandText = G.Tsql
             Siguiente = Val(G.com.ExecuteScalar.ToString) + 1
@@ -271,7 +271,7 @@ Partial Class Catalogo_Actividad_Area
                 'If Not G.com.ExecuteScalar Is Nothing Then
                 '    Msg_Error("Ya existe el Nombre de la Actividad") : Exit Sub
                 'End If
-                G.Tsql = "Insert into Actividad_Area (Cia,Obra,Actividad,Area,Descripcion,Cve_Seg,Fecha_Seg,Hora_Seg,Baja) values ("
+                G.Tsql = "Insert into Actividad_Area (Cia,Sucursal,Actividad,Area,Descripcion,Cve_Seg,Fecha_Seg,Hora_Seg,Baja) values ("
                 G.Tsql &= Val(Session("Cia"))
                 G.Tsql &= "," & Pone_Apos(Session("Obra"))
                 G.Tsql &= "," & T_Numero.Text.Trim
@@ -288,7 +288,7 @@ Partial Class Catalogo_Actividad_Area
             If Movimiento.Value = "Cambio" Then
                 G.cn.Open()
                 G.Tsql = "Update Actividad_Area set Cia=" & Val(Session("Cia"))
-                G.Tsql &= ",Obra=" & Pone_Apos(Session("Obra"))
+                G.Tsql &= ",Sucursal=" & Pone_Apos(Session("Obra"))
                 G.Tsql &= ",Descripcion=" & Pone_Apos(T_Descripcion.Text.Trim)
                 G.Tsql &= ",Area=" & Val(T_Area.Text.Trim)
                 G.Tsql &= ",Cve_Seg=" & Pone_Apos(Session("Contraseña"))
@@ -296,7 +296,7 @@ Partial Class Catalogo_Actividad_Area
                 G.Tsql &= ",Hora_Seg=" & Pone_Apos(DateTime.Now.ToString("H:mm:ss", CultureInfo.InvariantCulture))
                 G.Tsql &= ",Baja=" & "''"
                 G.Tsql &= " Where Cia=" & Val(Session("Cia"))
-                G.Tsql &= " and Obra=" & Pone_Apos(Session("Obra"))
+                G.Tsql &= " and Sucursal=" & Pone_Apos(Session("Obra"))
                 G.Tsql &= " and Area=" & Val(T_Area.Text)
                 G.Tsql &= " and Actividad=" & Val(T_Numero.Text.Trim)
                 G.com.CommandText = G.Tsql
@@ -315,7 +315,7 @@ Partial Class Catalogo_Actividad_Area
                 G.Tsql &= ",Baja=" & "'*'"
                 G.Tsql &= " Where Cia=" & Val(Session("Cia"))
                 G.Tsql &= " and Area=" & Val(T_Area.Text.Trim)
-                G.Tsql &= " and Obra=" & Pone_Apos(Session("Obra"))
+                G.Tsql &= " and Sucursal=" & Pone_Apos(Session("Obra"))
                 G.Tsql &= " and Actividad = " & Val(T_Numero.Text.Trim)
                 G.com.CommandText = G.Tsql
                 G.com.ExecuteNonQuery()
@@ -430,7 +430,7 @@ Partial Class Catalogo_Actividad_Area
         G.Tsql = "Select Descripcion from Area"
         G.Tsql &= " where Area=" & Pone_Apos(T_Area.Text.Trim)
         G.Tsql &= " and Cia=" & Val(Session("Cia"))
-        G.Tsql &= " and Obra=" & Pone_Apos(Session("Obra"))
+        G.Tsql &= " and Sucursal=" & Pone_Apos(Session("Obra"))
         G.com.CommandText = G.Tsql
         Dim Desc_Area As String = G.com.ExecuteScalar
         T_Area_Desc.Text = Desc_Area
