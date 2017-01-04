@@ -369,7 +369,7 @@ Public Module Cla_Inf
                 Case "MONEDA"
                     Tsql = "Select Descripcion"
                     Tsql &= " from Moneda"
-                    Tsql &= " Where Moneda=" & Val(Clave)
+                    Tsql &= " Where Numero=" & Val(Clave)
                 Case "PROVEEDOR"
                     Tsql = "Select Razon_Social"
                     Tsql &= " from Proveedor where Baja<>'*'"

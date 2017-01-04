@@ -31,6 +31,7 @@ Partial Class Catalogo_Articulos
             TB_SubGrupo.Enabled = False
             HB_SubLinea.Attributes.Add("style", "cursor:not-allowed;")
             'RB_Opciones.Visible = False
+            T_Moneda_Desc1.Text = Busca_Cat(Session("G"), "MONEDA", T_Moneda1.Text)
         End If
         Msg_Err.Visible = False
         DibujaSpan()
@@ -63,6 +64,38 @@ Partial Class Catalogo_Articulos
         T_UMedida.Attributes.Add("onfocus", "this.select();")
         T_Codigo.Attributes.Add("onfocus", "this.select();")
 
+        T_Contado.Attributes.Add("onfocus", "this.select();")
+        T_Contado.Attributes.Add("onkeypress", "javascript: ValidaSoloNumeros('" & T_Contado.ClientID & "');")
+
+        T_Credito.Attributes.Add("onfocus", "this.select();")
+        T_Credito.Attributes.Add("onkeypress", "javascript: ValidaSoloNumeros('" & T_Credito.ClientID & "');")
+
+        T_Mayoreo.Attributes.Add("onfocus", "this.select();")
+        T_Mayoreo.Attributes.Add("onkeypress", "javascript: ValidaSoloNumeros('" & T_Mayoreo.ClientID & "');")
+
+        T_Filial.Attributes.Add("onfocus", "this.select();")
+        T_Filial.Attributes.Add("onkeypress", "javascript: ValidaSoloNumeros('" & T_Filial.ClientID & "');")
+
+        T_Descuento_1.Attributes.Add("onfocus", "this.select();")
+        T_Descuento_1.Attributes.Add("onkeypress", "javascript: ValidaSoloNumeros('" & T_Descuento_1.ClientID & "');")
+
+        T_Descuento_2.Attributes.Add("onfocus", "this.select();")
+        T_Descuento_2.Attributes.Add("onkeypress", "javascript: ValidaSoloNumeros('" & T_Descuento_2.ClientID & "');")
+
+        T_IVA.Attributes.Add("onfocus", "this.select();")
+        T_IVA.Attributes.Add("onkeypress", "javascript: ValidaSoloNumeros('" & T_IVA.ClientID & "');")
+
+        T_precio_Contado.Attributes.Add("onfocus", "this.select();")
+        T_precio_Contado.Attributes.Add("onkeypress", "javascript: ValidaSoloNumeros('" & T_precio_Contado.ClientID & "');")
+
+        T_Moneda1.Attributes.Add("onfocus", "this.select();")
+        T_Lote_Minimo.Attributes.Add("onfocus", "this.select();")
+        T_Lote_Minimo.Attributes.Add("onkeypress", "javascript: ValidaSoloNumeros('" & T_Lote_Minimo.ClientID & "');")
+
+        T_Multiplos.Attributes.Add("onfocus", "this.select();")
+        T_Multiplos.Attributes.Add("onkeypress", "javascript: ValidaSoloNumeros('" & T_Multiplos.ClientID & "');")
+
+
     End Sub
     Private Sub DibujaSpan()
         Dim dtspan As New DataTable
@@ -92,7 +125,19 @@ Partial Class Catalogo_Articulos
         Session("dt").Columns.Add("Mar_Numero", Type.GetType("System.Int64")) : Session("dt").Columns("Mar_Numero").DefaultValue = 0
         Session("dt").Columns.Add("Lin_Numero", Type.GetType("System.Int64")) : Session("dt").Columns("Lin_Numero").DefaultValue = 0
         Session("dt").Columns.Add("Sub_Numero", Type.GetType("System.Int64")) : Session("dt").Columns("Sub_Numero").DefaultValue = 0
-        Session("dt").Columns.Add("IVA", Type.GetType("System.Int64")) : Session("dt").Columns("IVA").DefaultValue = 0
+
+        Session("dt").Columns.Add("IVA", Type.GetType("System.Double")) : Session("dt").Columns("IVA").DefaultValue = 0
+        Session("dt").Columns.Add("Pre_Vta_1", Type.GetType("System.Double")) : Session("dt").Columns("Pre_Vta_1").DefaultValue = 0
+        Session("dt").Columns.Add("Pre_Vta_2", Type.GetType("System.Double")) : Session("dt").Columns("Pre_Vta_2").DefaultValue = 0
+        Session("dt").Columns.Add("Pre_Vta_3", Type.GetType("System.Double")) : Session("dt").Columns("Pre_Vta_3").DefaultValue = 0
+        Session("dt").Columns.Add("Pre_Vta_4", Type.GetType("System.Double")) : Session("dt").Columns("Pre_Vta_4").DefaultValue = 0
+        Session("dt").Columns.Add("Descuento_1", Type.GetType("System.Double")) : Session("dt").Columns("Descuento_1").DefaultValue = 0
+        Session("dt").Columns.Add("Descuento_2", Type.GetType("System.Double")) : Session("dt").Columns("Descuento_2").DefaultValue = 0
+        Session("dt").Columns.Add("Pre_Contado", Type.GetType("System.Double")) : Session("dt").Columns("Pre_Contado").DefaultValue = 0
+        Session("dt").Columns.Add("Mon_Numero", Type.GetType("System.Int64")) : Session("dt").Columns("Mon_Numero").DefaultValue = 0
+        Session("dt").Columns.Add("Lote_Minimo", Type.GetType("System.Double")) : Session("dt").Columns("Lote_Minimo").DefaultValue = 0
+        Session("dt").Columns.Add("Multiplos", Type.GetType("System.Double")) : Session("dt").Columns("Multiplos").DefaultValue = 0
+
         Session("dt").Columns.Add("Unidad_Medida", Type.GetType("System.String")) : Session("dt").Columns("Unidad_Medida").DefaultValue = ""
         Session("dt").Columns.Add("Ref_Sub_Num", Type.GetType("System.String")) : Session("dt").Columns("Ref_Sub_Num").DefaultValue = ""
         'Session("dt").Columns.Add("Clas_Corta", Type.GetType("System.String")) : Session("dt").Columns("Clas_Corta").DefaultValue = ""
@@ -112,6 +157,17 @@ Partial Class Catalogo_Articulos
         T_Linea.Enabled = False
         T_SubLinea.Enabled = False
         T_Codigo.Enabled = False
+        T_Contado.Enabled = False
+        T_Credito.Enabled = False
+        T_Mayoreo.Enabled = False
+        T_Filial.Enabled = False
+        T_Descuento_1.Enabled = False
+        T_Descuento_2.Enabled = False
+        T_IVA.Enabled = False
+        T_precio_Contado.Enabled = False
+        T_Moneda1.Enabled = False
+        T_Lote_Minimo.Enabled = False
+        T_Multiplos.Enabled = False
         T_IVA.Enabled = False
         T_UMedida.Enabled = False
         T_Desc_Linea.Enabled = False
@@ -154,6 +210,17 @@ Partial Class Catalogo_Articulos
         T_IVA.Enabled = True
         T_UMedida.Enabled = True
         T_Desc_Linea.Enabled = True
+        T_Contado.Enabled = True
+        T_Credito.Enabled = True
+        T_Mayoreo.Enabled = True
+        T_Filial.Enabled = True
+        T_Descuento_1.Enabled = True
+        T_Descuento_2.Enabled = True
+        T_IVA.Enabled = True
+        T_precio_Contado.Enabled = True
+        T_Moneda1.Enabled = True
+        T_Lote_Minimo.Enabled = True
+        T_Multiplos.Enabled = True
         T_Desc_Marca.Enabled = True
         Ima_Restaura.Enabled = True
         Ima_Guarda.Enabled = True
@@ -193,7 +260,7 @@ Partial Class Catalogo_Articulos
         Try
             Session("dt").Rows.Clear()
             G.cn.Open()
-            G.Tsql = "Select top 200 a.Numero,a.Art_Descripcion,a.Lin_Numero,a.Sub_Numero,a.IVA,a.Unidad_Medida,a.Ref_Sub_Num"
+            G.Tsql = "Select top 200 a.Numero,a.Art_Descripcion,a.Lin_Numero,a.Sub_Numero,a.IVA,a.Unidad_Medida,a.Ref_Sub_Num,a.Pre_Vta_1,a.Pre_Vta_2,a.Pre_Vta_3,a.Pre_Vta_4,a.Descuento_1,a.Descuento_2,a.Pre_Contado,a.Mon_Numero,a.Lote_Minimo,a.Multiplos"
             G.Tsql &= " from Articulos a inner join Sub_Linea b on a.Lin_Numero=b.Lin_Numero and a.Sub_Numero=b.Numero"
             If Ch_Baja.Checked = True Then
                 G.Tsql &= " where a.Baja='*'"
@@ -237,6 +304,22 @@ Partial Class Catalogo_Articulos
         T_Desc_Linea.Text = ""
         T_Desc_Marca.Text = ""
         T_Desc_SubLinea.Text = ""
+
+        T_Contado.Text = ""
+        T_Credito.Text = ""
+        T_Mayoreo.Text = ""
+        T_Filial.Text = ""
+        T_Contado_IVA.Text = ""
+        T_Credito_Iva.Text = ""
+        T_Mayoreo_IVA.Text = ""
+        T_Filial_IVA.Text = ""
+        T_Descuento_1.Text = ""
+        T_Descuento_2.Text = ""
+        T_IVA.Text = ""
+        T_precio_Contado.Text = ""
+        T_Moneda1.Text = 0
+        T_Lote_Minimo.Text = ""
+        T_Multiplos.Text = ""
     End Sub
     'Private Function Siguiente() As Integer
     '    Dim G As Glo = CType(Session("G"), Glo)
@@ -270,6 +353,16 @@ Partial Class Catalogo_Articulos
         f("IVA") = IVA
         f("Lin_Numero") = T_Linea.Text
         f("Sub_Numero") = T_SubLinea.Text
+        f("Pre_Vta_1") = T_Contado_IVA.Text
+        f("Pre_Vta_2") = T_Credito_Iva.Text
+        f("Pre_Vta_3") = T_Mayoreo_IVA.Text
+        f("Pre_Vta_4") = T_Filial_IVA.Text
+        f("Descuento_1") = T_Descuento_1.Text
+        f("Descuento_2") = T_Descuento_2.Text
+        f("Pre_Contado") = T_precio_Contado.Text
+        f("Mon_Numero") = T_Moneda1.Text
+        f("Lote_Minimo") = T_Lote_Minimo.Text
+        f("Multiplos") = T_Multiplos.Text
         'If CH_IEPS.Checked = True Then f("IEPS") = RB_Opciones.SelectedValue.ToString
         Session("dt").Rows.Add(f)
         GridView1.PageIndex = Int((Session("dt").Rows.Count) / 10)
@@ -287,6 +380,17 @@ Partial Class Catalogo_Articulos
             f("Lin_Numero") = T_Linea.Text
 
             f("Sub_Numero") = T_SubLinea.Text
+
+            f("Pre_Vta_1") = T_Contado_IVA.Text
+            f("Pre_Vta_2") = T_Credito_Iva.Text
+            f("Pre_Vta_3") = T_Mayoreo_IVA.Text
+            f("Pre_Vta_4") = T_Filial_IVA.Text
+            f("Descuento_1") = T_Descuento_1.Text
+            f("Descuento_2") = T_Descuento_2.Text
+            f("Pre_Contado") = T_precio_Contado.Text
+            f("Mon_Numero") = T_Moneda1.Text
+            f("Lote_Minimo") = T_Lote_Minimo.Text
+            f("Multiplos") = T_Multiplos.Text
 
         End If
         GridView1.DataSource = Session("dt")
@@ -353,7 +457,7 @@ Partial Class Catalogo_Articulos
                 If Not G.com.ExecuteScalar Is Nothing Then
                     Msg_Error("Ya existe el articulo: " & Pone_Apos(T_Numero.Text)) : Exit Sub
                 End If
-                G.Tsql = "Insert into Articulos (Empresa,Numero,Art_Descripcion,Mar_Numero,Lin_Numero,Sub_Numero,IVA,Unidad_Medida,Ref_Sub_Num,Baja) values ("
+                G.Tsql = "Insert into Articulos (Empresa,Numero,Art_Descripcion,Mar_Numero,Lin_Numero,Sub_Numero,IVA,Unidad_Medida,Ref_Sub_Num,a.Pre_Vta_1,a.Pre_Vta_2,a.Pre_Vta_3,a.Pre_Vta_4,a.Descuento_1,a.Descuento_2,a.Pre_Contado,a.Mon_Numero,a.Lote_Minimo,a.Multiplos,Baja) values ("
                 G.Tsql &= Val(G.Empresa_Numero)
                 G.Tsql &= "," & Pone_Apos(T_Numero.Text.Trim)
                 G.Tsql &= "," & Pone_Apos(T_Descripcion.Text.Trim)
@@ -363,6 +467,16 @@ Partial Class Catalogo_Articulos
                 G.Tsql &= "," & Val(T_IVA.Text.Trim)
                 G.Tsql &= "," & Pone_Apos(T_UMedida.Text.Trim)
                 G.Tsql &= "," & Pone_Apos(T_Codigo.Text.Trim)
+                G.Tsql &= "," & Val(T_Contado_IVA.Text)
+                G.Tsql &= "," & Val(T_Credito_Iva.Text)
+                G.Tsql &= "," & Val(T_Mayoreo_IVA.Text)
+                G.Tsql &= "," & Val(T_Filial_IVA.Text)
+                G.Tsql &= "," & Val(T_Descuento_1.Text)
+                G.Tsql &= "," & Val(T_Descuento_2.Text)
+                G.Tsql &= "," & Val(T_precio_Contado.Text)
+                G.Tsql &= "," & Val(T_Moneda1.Text)
+                G.Tsql &= "," & Val(T_Lote_Minimo.Text)
+                G.Tsql &= "," & Val(T_Multiplos.Text)
                 G.Tsql &= "," & "''" & ")"
                 G.com.CommandText = G.Tsql
                 G.com.ExecuteNonQuery()
@@ -378,6 +492,16 @@ Partial Class Catalogo_Articulos
                 G.Tsql &= ",IVA=" & Val(T_IVA.Text.Trim)
                 G.Tsql &= ",Unidad_Medida=" & Pone_Apos(T_UMedida.Text.Trim)
                 G.Tsql &= ",Ref_Sub_Num=" & Pone_Apos(T_Codigo.Text.Trim)
+                G.Tsql &= ",Pre_Vta_1=" & Val(T_Contado_IVA.Text)
+                G.Tsql &= ",Pre_Vta_2=" & Val(T_Credito_Iva.Text)
+                G.Tsql &= ",Pre_Vta_3=" & Val(T_Mayoreo_IVA.Text)
+                G.Tsql &= ",Pre_Vta_4=" & Val(T_Filial_IVA.Text)
+                G.Tsql &= ",Descuento_1=" & Val(T_Descuento_1.Text)
+                G.Tsql &= ",Descuento_2=" & Val(T_Descuento_2.Text)
+                G.Tsql &= ",Pre_Contado=" & Val(T_precio_Contado.Text)
+                G.Tsql &= ",Mon_Numero=" & Val(T_Moneda1.Text)
+                G.Tsql &= ",Lote_Minimo=" & Val(T_Lote_Minimo.Text)
+                G.Tsql &= ",Multiplos=" & Val(T_Multiplos.Text)
                 G.Tsql &= ",Baja=" & "''"
                 G.Tsql &= " WHERE Numero = " & Pone_Apos(T_Numero.Text.Trim)
                 G.Tsql &= " and Empresa = " & Val(G.Empresa_Numero)
@@ -438,12 +562,34 @@ Partial Class Catalogo_Articulos
                 T_IVA.Text = f.Item("IVA").ToString
                 T_Codigo.Text = f.Item("Ref_Sub_Num").ToString
                 T_UMedida.Text = f.Item("Unidad_Medida").ToString
+
+                T_Contado.Text = For_Pan_Lib(f.Item("Pre_Vta_1") / Val(1 + Val(T_IVA.Text / 100)), 2)
+                T_Credito.Text = For_Pan_Lib(f.Item("Pre_Vta_2") / Val(1 + Val(T_IVA.Text / 100)), 2)
+                T_Mayoreo.Text = For_Pan_Lib(f.Item("Pre_Vta_3") / Val(1 + Val(T_IVA.Text / 100)), 2)
+                T_Filial.Text = For_Pan_Lib(f.Item("Pre_Vta_4") / Val(1 + Val(T_IVA.Text / 100)), 2)
+
+                T_Contado_IVA.Text = For_Pan_Lib(Val(f.Item("Pre_Vta_1")), 2)
+                T_Credito_Iva.Text = For_Pan_Lib(Val(f.Item("Pre_Vta_1")), 2)
+                T_Mayoreo_IVA.Text = For_Pan_Lib(Val(f.Item("Pre_Vta_1")), 2)
+                T_Filial_IVA.Text = For_Pan_Lib(Val(f.Item("Pre_Vta_1")), 2)
+
+
+                
+
+
+                T_Descuento_1.Text = f.Item("Descuento_1")
+                T_Descuento_2.Text = f.Item("Descuento_2")
+                T_precio_Contado.Text = f.Item("Pre_Contado")
+                T_Moneda1.Text = f.Item("Mon_Numero")
+                T_Lote_Minimo.Text = f.Item("Lote_Minimo")
+                T_Multiplos.Text = f.Item("Multiplos")
+                T_Moneda_Desc1.Text = Busca_Cat(Session("G"), "MONEDA", T_Moneda1.Text)
                 GridView1.Enabled = False
                 'T_Desc_Marca.Text = Busca_Cat(CType(Session("G"), Glo), "MARCA", f("Mar_Numero"))
                 T_Desc_Linea.Text = Busca_Cat(CType(Session("G"), Glo), "LINEA", f("Lin_Numero"))
                 T_Desc_SubLinea.Text = Busca_Cat(CType(Session("G"), Glo), "SUBLINEA", f("Sub_Numero"), f("Lin_Numero"))
-               
 
+               
             End If
             If (e.CommandName.Equals("Baja")) Then
                 Movimiento.Value = "Baja"
@@ -574,19 +720,43 @@ Partial Class Catalogo_Articulos
     End Sub
 
    
-    Protected Sub T_Contado_TextChanged(sender As Object, e As System.EventArgs) Handles T_Contado.TextChanged, T_Credito.TextChanged, T_Mayoreo.TextChanged, T_Filial.TextChanged
-        If T_IVA_v.Text > "" Then
-            T_Contado_IVA.Text = Val(T_Contado.Text * Val(T_IVA.Text / 100))
-            T_Credito_Iva.Text = Val(T_Credito.Text * Val(T_IVA.Text / 100))
-            T_Mayoreo_IVA.Text = Val(T_Mayoreo.Text * Val(T_IVA.Text / 100))
-            T_Filial_IVA.Text = Val(T_Filial.Text * Val(T_IVA.Text / 100))
+    Protected Sub T_Contado_TextChanged(sender As Object, e As System.EventArgs) Handles T_Contado.TextChanged
+        If T_IVA.Text > "" Then
+            T_Contado_IVA.Text = For_Pan_Lib(Val(T_Contado.Text * Val(T_IVA.Text / 100)) + Val(T_Contado.Text), 2)
         End If
+        T_Credito.Focus()
     End Sub
 
-    Protected Sub T_IVA_v_TextChanged(sender As Object, e As System.EventArgs) Handles T_IVA_v.TextChanged
-        If T_Contado.Text > 0 Then T_Contado_IVA.Text = Val(T_Contado.Text * Val(T_IVA.Text / 100))
-        T_Credito_Iva.Text = Val(T_Credito.Text * Val(T_IVA.Text / 100))
-        T_Mayoreo_IVA.Text = Val(T_Mayoreo.Text * Val(T_IVA.Text / 100))
-        T_Filial_IVA.Text = Val(T_Filial.Text * Val(T_IVA.Text / 100))
+    Protected Sub T_IVA_v_TextChanged(sender As Object, e As System.EventArgs) Handles T_IVA.TextChanged
+        If T_Contado.Text > 0 Then T_Contado_IVA.Text = For_Pan_Lib(Val(T_Contado.Text * Val(T_IVA.Text / 100)) + Val(T_Contado.Text), 2)
+        If T_Credito.Text > 0 Then T_Credito_Iva.Text = For_Pan_Lib(Val(T_Credito.Text * Val(T_IVA.Text / 100)) + Val(T_Credito.Text), 2)
+        If T_Mayoreo.Text > 0 Then T_Mayoreo_IVA.Text = For_Pan_Lib(Val(T_Mayoreo.Text * Val(T_IVA.Text / 100)) + Val(T_Mayoreo.Text), 2)
+        If T_Filial.Text > 0 Then T_Filial_IVA.Text = For_Pan_Lib(Val(T_Filial.Text * Val(T_IVA.Text / 100)) + Val(T_Filial.Text), 2)
+        T_precio_Contado.Focus()
+    End Sub
+
+    Protected Sub T_Credito_TextChanged(sender As Object, e As System.EventArgs) Handles T_Credito.TextChanged
+        If T_IVA.Text > "" Then
+            T_Credito_Iva.Text = For_Pan_Lib(Val(T_Credito.Text * Val(T_IVA.Text / 100)) + Val(T_Credito.Text), 2)
+        End If
+        T_Mayoreo.Focus()
+    End Sub
+
+    Protected Sub T_Mayoreo_TextChanged(sender As Object, e As System.EventArgs) Handles T_Mayoreo.TextChanged
+        If T_IVA.Text > "" Then
+            T_Mayoreo_IVA.Text = For_Pan_Lib(Val(T_Mayoreo.Text * Val(T_IVA.Text / 100)) + Val(T_Mayoreo.Text), 2)
+        End If
+        T_Filial.Focus()
+    End Sub
+
+    Protected Sub T_Filial_TextChanged(sender As Object, e As System.EventArgs) Handles T_Filial.TextChanged
+        If T_IVA.Text > "" Then
+            T_Filial_IVA.Text = For_Pan_Lib(Val(T_Filial.Text * Val(T_IVA.Text / 100)) + Val(T_Filial.Text), 2)
+        End If
+        T_Descuento_1.Focus()
+    End Sub
+
+    Protected Sub T_Moneda1_TextChanged(sender As Object, e As System.EventArgs) Handles T_Moneda1.TextChanged
+        T_Moneda_Desc1.Text = Busca_Cat(Session("G"), "MONEDA", T_Moneda1.Text)
     End Sub
 End Class
