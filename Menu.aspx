@@ -245,7 +245,7 @@
       </div>
     </nav>
     <center >
-        <img src="Imagenes/Inventario1.jpg" />
+        <img src="Imagenes/PUNTODEVENTA1.jpg" />
     </center>
     
 </form>

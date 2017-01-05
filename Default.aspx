@@ -85,7 +85,7 @@
 <body>
 <center>
     <form id="form1" runat="server" 
-     style="background-repeat: no-repeat; width: 1041px; background-image: url('Imagenes/Inventario.jpg');"
+     style="background-repeat: no-repeat; width: 1041px; background-image: url('Imagenes/PUNTODEVENTA2.jpg');"
    >
     <div> 
     

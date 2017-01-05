@@ -100,7 +100,7 @@
 <center>
     <form id="form1" runat="server" 
 
-    style="background-repeat: no-repeat; width: 1041px; background-image: url('Imagenes/Inventario.jpg')">
+    style="background-repeat: no-repeat; width: 1041px; background-image: url('Imagenes/PUNTODEVENTA2.jpg')">
     <div> 
 
         
@@ -161,6 +161,9 @@
                         &nbsp;</td>
                 </tr>
             </table>
+            <br />
+            <br />
+            <br />
             <br />
             <br />
             <table style="width:100%;">
