@@ -98,11 +98,22 @@
     	    width: 150px;
     	    height: 150px;
         }
+           .style15
+        {
+            width: 250px;
+        }
+       
+          .thumb {
+            height: 300px;
+            border: 1px solid #000;
+            margin: 10px 5px 0 0;
+          }
+       
            </style>
     </head>
 <body>
     <center>    
-        <form id="form1" runat="server" style="width: 984px">
+        <form id="form1" runat="server" style="width: 984px" method="post" enctype="multipart/form-data" >
            <asp:ScriptManager ID="ScriptManager1" runat="server">
                 </asp:ScriptManager>
         
@@ -173,6 +184,8 @@
                                     Width="100px" Height="45px" />
                                             &nbsp;
                                                 <asp:Button ID="Ima_Salir" runat="server" CssClass="Btn_Azul" Text="Salir" 
+                                                    Height="45px" />
+                                                <asp:Button ID="Ima_Guarda_Img" runat="server" CssClass="Btn_Azul" Text="Imagen" 
                                                     Height="45px" />
                                             </td>
                                             
@@ -355,7 +368,7 @@
 
 	                <div class="tab-content">
                         <%--PROVEEDOR 1--%>
-		                <div class="tab-pane fade in active" id="Protab1">
+		                <div class="tab-pane fade " id="Protab1">
                         <div class="panel-body">
                         <asp:UpdatePanel ID="UpdatePane2" runat="server" UpdateMode="Conditional">
                                             <ContentTemplate>
@@ -754,7 +767,74 @@
                             </div>
                         </div>
                         <%--FINAL PROVEEDOR 2--%>
-
+                         <%--FICHA TECNICA--%>
+                        <div class="tab-pane fade in active" id="Div1">
+                        <div class="panel-body">
+        
+                          <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                            <ContentTemplate>
+                                <div>
+                                    <table style="width: 100%; border-bottom-style: solid; border-bottom-color: #3366FF;">
+                                        <tr>
+                                            <td width="432px">
+                                                &nbsp;
+                                            </td>
+                                            <td width="150px">
+                                                <asp:Label ID="Label2" runat="server" CssClass="Textos_Azules" 
+                                                    Text="Ficha Tecnica"></asp:Label>
+                                                &nbsp;
+                                            </td>
+                                            <td width="432px">
+                                                &nbsp;
+                                            </td>
+                                        </tr>
+                                    </table>
+                                   <td width="10%">
+                                              <br />
+                                                </td>
+                                    <table style="width:100%;">
+                                        <tr>
+                                            <td width="5%">
+                                                &nbsp;</td>
+                                            <td height="40" style="text-align: left" width="20%">
+                                                <asp:Label ID="Label68" runat="server" AssociatedControlId="files" 
+                                                    CssClass="Textos_Azules" Text="Seleccionar una imagen:" />
+                                            </td>
+                                            <td style="text-align: left">
+                                                <input ID="files" runat="server" type="file" name="files[]"></input>
+                                                <br />
+                                                </td>
+                                            <td width="5%">
+                                                &nbsp;</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>
+                                            </td>
+                                            <td style="text-align: left">
+                                                &nbsp;</td>
+                                            <td class="style15" style="text-align: left">
+                                                <asp:Label ID="Nom_Imagen" runat="server" CssClass="Textos_Azules"></asp:Label>
+                                            </td>
+                                            <td>
+                                                &nbsp;<asp:HiddenField ID="Nombre_Imagen" runat="server" />
+                                            </td>
+                                            <td>
+                                                &nbsp;</td>
+                                        </tr>
+                                    </table>
+                                    
+                                    <div ID="list">
+                                    </div>
+                                    
+                                    <br />
+                                    
+                                </div>
+                                  </ContentTemplate>
+                                </asp:UpdatePanel>
+                            </div>
+                        </div>
+                        <%--FINAL FICHA TECNICA--%>
                     <br />
                 </asp:Panel>
              <asp:HiddenField ID="Movimiento" runat="server" />
@@ -774,6 +854,38 @@
     </asp:UpdateProgress>--%>
         </form>
     </center>
-    
+   <script type="text/javascript" language="javascript">
+       $(document).ready(function (evt) {
+           function archivo(evt) {
+               var files = evt.target.files; // FileList object
+
+               // Obtenemos la imagen del campo "file".
+               for (var i = 0, f; f = files[i]; i++) {
+                   //Solo admitimos imágenes.
+                   if (!f.type.match('image.*')) {
+                       continue;
+                   }
+
+                   var reader = new FileReader();
+
+                   reader.onload = (function (theFile) {
+                       return function (e) {
+                           // Insertamos la imagen
+                           document.getElementById("list").innerHTML = ['<img class="thumb" src="', e.target.result, '" title="', escape(theFile.name), '"/>'].join('');
+                       };
+                   })(f);
+
+                   reader.readAsDataURL(f);
+               }
+
+           }
+           document.getElementById('files').addEventListener('change', archivo, false);
+
+       });
+                                 
+                                            
+                                        
+      </script>
 </body>
 </html>
+ 

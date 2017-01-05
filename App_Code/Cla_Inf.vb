@@ -285,7 +285,22 @@ Public Module Cla_Inf
             End Try
         End Sub
     End Class
-  
+    Public Function Quita_Apos(ByVal txw_Impor As String) As String
+        Dim T_Ultpos As Integer
+        Dim Tw_Numero As String
+        Dim T_Len As Integer
+        Dim T_Co As Integer = 0
+        T_Ultpos = 1
+        Tw_Numero = ""
+        txw_Impor = LTrim(RTrim(txw_Impor))
+        T_Len = Len(txw_Impor)
+        For T_Co = 1 To T_Len
+            If Mid(txw_Impor, T_Co, 1) <> "'" Then
+                Tw_Numero = Tw_Numero & Mid(txw_Impor, T_Co, 1)
+            End If
+        Next
+        Quita_Apos = Tw_Numero
+    End Function
     Public Function Es_Where(ByVal Txm_Sql As String) As String
         Txm_Sql = Txm_Sql.ToUpper
         If InStr(Txm_Sql, "WHERE") Then

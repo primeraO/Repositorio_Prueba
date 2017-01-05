@@ -3,6 +3,8 @@ Imports System.Data
 Imports System.Data.SqlClient
 Imports System.Globalization
 Imports System.IO
+Imports System.IO.FileStream
+Imports System.IO.Path
 Imports System.Drawing
 
 Partial Class Catalogo_Compañia

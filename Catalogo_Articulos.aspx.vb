@@ -2,6 +2,8 @@
 Imports System.Data
 Imports System.Data.SqlClient
 Imports System.Globalization
+Imports System.IO
+Imports System.Drawing
 Partial Class Catalogo_Articulos
     Inherits System.Web.UI.Page
     Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
@@ -440,13 +442,29 @@ Partial Class Catalogo_Articulos
         GridView1.Visible = True
         Pnl_Grids.Visible = True
     End Sub
+   
+
 
     Protected Sub Ima_Guarda_Click(sender As Object, e As System.EventArgs) Handles Ima_Guarda.Click
         Dim G As Glo = CType(Session("G"), Glo)
         Dim Tsql As String = ""
+
         Try
+            
             If validar() = False Then Exit Sub
             If Movimiento.Value = "Alta" Then
+                If files.Value > "" Then
+                    'Msg_Error("Guardalo")
+                    Dim ruta As String = "C:/Fichas_Tecnicas"
+                    Directory.CreateDirectory(ruta)
+                    Dim mi_imagen As HttpPostedFile = files.PostedFile
+                    Dim tamaño As Integer = mi_imagen.ContentLength
+                    Dim datos_img As Byte() = New Byte(tamaño) {}
+                    mi_imagen.InputStream.Read(datos_img, 0, tamaño)
+                    Guardar_Archivo(ruta & "/" & mi_imagen.FileName, datos_img)
+                Else
+                    Msg_Error("Seleccione una imagen antes de guardar.") : Exit Sub
+                End If
                 G.cn.Open()
                 'Tsql = "Select Art_Descripcion from Articulos where Art_Descripcion=" & Pone_Apos(T_Descripcion.Text)
                 'G.com.CommandText = Tsql
@@ -485,6 +503,16 @@ Partial Class Catalogo_Articulos
                 LimpiaCampos()
             End If
             If Movimiento.Value = "Cambio" Then
+                If files.Value > "" Then
+                    'Msg_Error("Guardalo")
+                    Dim ruta As String = "C:/Fichas_Tecnicas"
+                    Directory.CreateDirectory(ruta)
+                    Dim mi_imagen As HttpPostedFile = files.PostedFile
+                    Dim tamaño As Integer = mi_imagen.ContentLength
+                    Dim datos_img As Byte() = New Byte(tamaño) {}
+                    mi_imagen.InputStream.Read(datos_img, 0, tamaño)
+                    Guardar_Archivo(ruta & "/" & mi_imagen.FileName, datos_img)
+                End If
                 G.cn.Open()
                 G.Tsql = "Update Articulos set Art_Descripcion=" & Pone_Apos(T_Descripcion.Text.Trim)
                 G.Tsql &= ",Mar_Numero=" & Val(T_Marca.Text.Trim)
@@ -575,7 +603,7 @@ Partial Class Catalogo_Articulos
                 T_Filial_IVA.Text = For_Pan_Lib(Val(f.Item("Pre_Vta_1")), 2)
 
 
-                
+
 
 
                 T_Descuento_1.Text = f.Item("Descuento_1")
@@ -590,7 +618,7 @@ Partial Class Catalogo_Articulos
                 T_Desc_Linea.Text = Busca_Cat(CType(Session("G"), Glo), "LINEA", f("Lin_Numero"))
                 T_Desc_SubLinea.Text = Busca_Cat(CType(Session("G"), Glo), "SUBLINEA", f("Sub_Numero"), f("Lin_Numero"))
 
-               
+
             End If
             If (e.CommandName.Equals("Baja")) Then
                 Movimiento.Value = "Baja"
@@ -678,7 +706,7 @@ Partial Class Catalogo_Articulos
         T_Linea.Focus()
     End Sub
     Protected Sub T_Linea_TextChanged(sender As Object, e As System.EventArgs) Handles T_Linea.TextChanged
-       
+
         T_Desc_Linea.Text = Busca_Cat(Session("G"), "LINEA", T_Linea.Text)
 
         Session("Linea") = Val(T_Linea.Text.Trim)
@@ -691,10 +719,10 @@ Partial Class Catalogo_Articulos
         T_SubLinea.Focus()
     End Sub
 
-    
+
 
     Protected Sub T_SubLinea_TextChanged(sender As Object, e As System.EventArgs) Handles T_SubLinea.TextChanged
-      
+
         T_Desc_SubLinea.Text = Busca_Cat(Session("G"), "SUBLINEA", T_SubLinea.Text, T_Linea.Text)
 
         T_UMedida.Focus()
@@ -723,7 +751,7 @@ Partial Class Catalogo_Articulos
         Pnl_Grids.Visible = True
     End Sub
 
-   
+
     Protected Sub T_Contado_TextChanged(sender As Object, e As System.EventArgs) Handles T_Contado.TextChanged
         If T_IVA.Text > "" And T_Contado.Text > "" Then
             T_Contado_IVA.Text = For_Pan_Lib(Val(T_Contado.Text * Val(T_IVA.Text / 100)) + Val(T_Contado.Text), 2)
@@ -769,5 +797,18 @@ Partial Class Catalogo_Articulos
 
     Protected Sub T_Moneda1_TextChanged(sender As Object, e As System.EventArgs) Handles T_Moneda1.TextChanged
         T_Moneda_Desc1.Text = Busca_Cat(Session("G"), "MONEDA", T_Moneda1.Text)
+    End Sub
+
+  
+  
+    Private Sub Guardar_Archivo(strPath As String, ByRef Buffer As Byte())
+        Try
+            Dim newFile As New FileStream(strPath, FileMode.Create)
+            newFile.Write(Buffer, 0, Buffer.Length)
+            newFile.Close()
+        Catch ex As Exception
+            Msg_Error(ex.Message.ToString)
+        End Try
+
     End Sub
 End Class
