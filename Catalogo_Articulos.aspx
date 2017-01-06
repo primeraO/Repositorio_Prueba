@@ -48,9 +48,10 @@
                 document.getElementById('<%= T_Moneda1.ClientID %>').value = elemValue1;
                 document.getElementById('<%= T_Moneda_Desc1.ClientID %>').value = elemValue2;
                 __doPostBack("T_Moneda1", "TextChanged");
-            } 
+            }
 
         }
+          
     </script>
     
       <script type="text/javascript" src="jquery.min.js"></script>
@@ -108,6 +109,16 @@
             border: 1px solid #000;
             margin: 10px 5px 0 0;
           }
+       
+           #TextArea1
+        {
+            width: 854px;
+        }
+       
+           #T_Ficha_Tecnica
+        {
+            width: 856px;
+        }
        
            </style>
     </head>
@@ -184,8 +195,6 @@
                                     Width="100px" Height="45px" />
                                             &nbsp;
                                                 <asp:Button ID="Ima_Salir" runat="server" CssClass="Btn_Azul" Text="Salir" 
-                                                    Height="45px" />
-                                                <asp:Button ID="Ima_Guarda_Img" runat="server" CssClass="Btn_Azul" Text="Imagen" 
                                                     Height="45px" />
                                             </td>
                                             
@@ -316,7 +325,7 @@
                                     <ItemStyle HorizontalAlign="Right" Width="53px" />
                                     </asp:BoundField>
                                     <asp:ButtonField ButtonType="Image" CommandName="Seleccion" HeaderText="Ver" 
-                                        ImageUrl="~/Imagenes/M_Selecciona_50.png" Text="Ver">
+                                        ImageUrl="~/Imagenes/M_Selecciona_50.png" Text="Ver" >
                                     <ItemStyle HorizontalAlign="Center" Width="42px" />
                                     </asp:ButtonField>
                                     <asp:ButtonField ButtonType="Image" CommandName="Cambio" HeaderText="Cambio" 
@@ -364,6 +373,7 @@
 	                <ul class="nav nav-tabs" id="">
 		                <li class="active"><a href="#Protab1" data-toggle="tab">Articulos</a></li>
 		                <li><a href="#Protab2" data-toggle="tab">Ventas</a></li>
+		                <li><a href="#Protab3" data-toggle="tab">F. Tecnica</a></li>
                     </ul>
 
 	                <div class="tab-content">
@@ -768,11 +778,11 @@
                         </div>
                         <%--FINAL PROVEEDOR 2--%>
                          <%--FICHA TECNICA--%>
-                        <div class="tab-pane fade in active" id="Div1">
+                        <div class="tab-pane fade in active" id="Protab3">
                         <div class="panel-body">
-        
+        <%--
                           <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-                            <ContentTemplate>
+                            <ContentTemplate>--%>
                                 <div>
                                     <table style="width: 100%; border-bottom-style: solid; border-bottom-color: #3366FF;">
                                         <tr>
@@ -791,47 +801,50 @@
                                     </table>
                                    <td width="10%">
                                               <br />
-                                                </td>
+                                                <textarea ID="T_Ficha_Tecnica" name="S1" rows="2" runat="server" 
+                                                  class="form-control"></textarea></td>
                                     <table style="width:100%;">
                                         <tr>
-                                            <td width="5%">
-                                                &nbsp;</td>
-                                            <td height="40" style="text-align: left" width="20%">
-                                                <asp:Label ID="Label68" runat="server" AssociatedControlId="files" 
-                                                    CssClass="Textos_Azules" Text="Seleccionar una imagen:" />
+                                            <td>
                                             </td>
                                             <td style="text-align: left">
-                                                <input ID="files" runat="server" type="file" name="files[]"></input>
+                                                
+                                                <asp:Label ID="Label68" runat="server" AssociatedControlId="files" 
+                                                    CssClass="Textos_Azules" Text="Seleccionar una imagen:" />
                                                 <br />
-                                                </td>
-                                            <td width="5%">
+                                            </td>
+                                            <td class="style15" style="text-align: left">
+                                                <input ID="files" runat="server" name="files[]" type="file"></input></td>
+                                            <td>
                                                 &nbsp;</td>
+                                            <td>
+                                                <asp:HiddenField ID="Nombre_Imagen" runat="server" />
+                                            </td>
                                         </tr>
                                         
                                         <tr>
-                                            <td>
-                                            </td>
+                                            <td width="5%">
+                                                &nbsp;</td>
+                                            <td style="text-align: left" height="40" width="20%">
+                                                &nbsp;</td>
                                             <td style="text-align: left">
                                                 &nbsp;</td>
-                                            <td class="style15" style="text-align: left">
-                                                <asp:Label ID="Nom_Imagen" runat="server" CssClass="Textos_Azules"></asp:Label>
-                                            </td>
-                                            <td>
-                                                &nbsp;<asp:HiddenField ID="Nombre_Imagen" runat="server" />
-                                            </td>
-                                            <td>
+                                            <td width="5%">
                                                 &nbsp;</td>
                                         </tr>
                                     </table>
-                                    
-                                    <div ID="list">
+                                    <div ID="list" runat="server">
+                                <%--   <asp:Image ID='Image2' ImageUrl='Handler.ashx?img=C:/Fichas_Tecnicas/el sueño.jpg' runat='server'/>--%>
+                                        
                                     </div>
-                                    
+                                   
+                                    <asp:Label ID="Nom_Imagen" runat="server" CssClass="Textos_Azules"></asp:Label>
+                                   
                                     <br />
                                     
                                 </div>
-                                  </ContentTemplate>
-                                </asp:UpdatePanel>
+                                 <%-- </ContentTemplate>
+                                </asp:UpdatePanel>--%>
                             </div>
                         </div>
                         <%--FINAL FICHA TECNICA--%>
@@ -882,8 +895,7 @@
            document.getElementById('files').addEventListener('change', archivo, false);
 
        });
-                                 
-                                            
+                                  
                                         
       </script>
 </body>
