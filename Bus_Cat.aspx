@@ -110,11 +110,11 @@
                 window.close();
             }
 
-//            function Articulo(value1, value2, value3) {
-//                var retvalue1 = value1;
-//                window.opener.Articulo(value1, value2, value3);
-//                window.close();
-//            }
+            function Articulo(value1, value2, value3) {
+                var retvalue1 = value1;
+                window.opener.Articulo(value1, value2, value3);
+                window.close();
+            }
             function Economico(value1, value2) {
                 var retvalue1 = value1;
                 window.opener.Economico(value1, value2);
@@ -138,16 +138,6 @@
             function Req_Economico(value1) {
                 var retvalue1 = value1;
                 window.opener.Req_Economico(value1);
-                window.close();
-            }
-            function cliente(value1,value2) {
-                var retvalue1 = value1;
-                window.opener.cliente(value1,value2);
-                window.close();
-            }
-            function articulo(value1, value2) {
-                var retvalue1 = value1;
-                window.opener.articulo(value1, value2);
                 window.close();
             }
             function Salida_elemento(value1, value2, Funcion) {
