@@ -52,9 +52,9 @@ Partial Class Catalogo_Articulo_Proveedor
         T_Precio_Lista.Attributes.Add("onkeypress", "javascript: ValidaSoloNumeros('" & T_Precio_Lista.ClientID & "');")
         T_Proveedor.Attributes.Add("onkeypress", "javascript: ValidaSoloNumeros('" & T_Proveedor.ClientID & "');")
         TB_Proveedor.Attributes.Add("onkeypress", "javascript: ValidaSoloNumeros('" & TB_Proveedor.ClientID & "');")
-        T_IVA.Attributes.Add("onkeypress", "javascript: ValidaSoloNumero('" & T_IVA.ClientID & "');")
+        T_IVA.Attributes.Add("onkeypress", "javascript: ValidaSoloNumeros('" & T_IVA.ClientID & "');")
         T_Dias_Entrega.Attributes.Add("onkeypress", "javascript: ValidaSoloNumeros('" & T_Dias_Entrega.ClientID & "');")
-        T_Moneda.Attributes.Add("onkeypress", "javascript: ValidaSoloNumero('" & T_Moneda.ClientID & "');")
+        T_Moneda.Attributes.Add("onkeypress", "javascript: ValidaSoloNumeros('" & T_Moneda.ClientID & "');")
 
         T_Proveedor.Attributes.Add("onkeydown", "javascript: PierdeFoco('" & T_Unidad_Medida.ClientID & "');")
         T_Unidad_Medida.Attributes.Add("onkeydown", "javascript: PierdeFoco('" & T_Dias_Entrega.ClientID & "');")

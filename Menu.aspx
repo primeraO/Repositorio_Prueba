@@ -78,6 +78,7 @@
                              <a href="C_Acceso.aspx?form=Catalogo_Lugar_Entrega">Lugar Entrega</a>
                              <a href="C_Acceso.aspx?form=Catalogo_Proveedores">Proveedor</a>
                              <a href="C_Acceso.aspx?form=Cat_Articulo_Proveedor">Articulo - Proveedor</a>
+                             <a href="C_Acceso.aspx?form=Cotizacion">Cotizacion</a>
                              <a href="C_Acceso.aspx?form=Catalogo_Cliente">Cliente</a>
                              <a href="C_Acceso.aspx?form=Catalogo_Agente">Agente</a>
                         </li>                        
