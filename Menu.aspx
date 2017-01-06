@@ -135,20 +135,20 @@
 
           <li class="dropdow">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-             Procesos<span class="caret"></span>
+             Cotizacion<span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
              
-              <li><a href="C_Acceso.aspx?form=C_Entradas">Entradas</a></li>
-              <li><a href="C_Acceso.aspx?form=C_Entradas_IEPS">Entradas IEPS</a></li>
+              <li><a href="C_Acceso.aspx?form=C_Entradas">Cotizacion</a></li>
+              <li><a href="C_Acceso.aspx?form=C_Entradas_IEPS"></a></li>
              <%-- <li><a href="C_Acceso.aspx?form=C_Entradas_XML">Entradas por XML</a></li>--%>
-               <li><a href="C_Acceso.aspx?form=Salidas_Almacen">Salidas</a></li>
-               <li><a href="C_Acceso.aspx?form=Salidas_Multiples">Salidas Multiples</a></li>
+               <li><a href="C_Acceso.aspx?form=Salidas_Almacen"></a></li>
+               <li><a href="C_Acceso.aspx?form=Salidas_Multiples"></a></li>
               <%-- <li><a href="C_Acceso.aspx?form=Salidas_Clasificacion">Codificación de Salidas</a></li>    --%>                          
             </ul>
           </li>
 
-           <li class="dropdow">
+           <li class="dropdow">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
              Compras<span class="caret"></span>
             </a>
