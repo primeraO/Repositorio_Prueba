@@ -64,6 +64,14 @@ Partial Class Bus_Cat
                 col1.DataField = "Descripcion"
                 GridView1.Columns.Add(col1)
                 Cabecera.Columns.Add(col1)
+            Case "CLIENTE"
+                G.dt2.Columns.Add("Numero", Type.GetType("System.Int16")) : G.dt2.Columns("Numero").DefaultValue = 0
+                G.dt2.Columns.Add("Descripcion", Type.GetType("System.String")) : G.dt2.Columns("Descripcion").DefaultValue = ""
+                Dim col1 As New BoundField
+                col1.HeaderText = "Grupo"
+                col1.DataField = "Descripcion"
+                GridView1.Columns.Add(col1)
+                Cabecera.Columns.Add(col1)
 
                 'G.dt2.Columns.Add("Aplicacion", Type.GetType("System.String")) : G.dt2.Columns("Aplicacion").DefaultValue = ""
                 'Dim col As New BoundField
@@ -349,6 +357,18 @@ Partial Class Bus_Cat
                         G.Tsql &= Es_Where(G.Tsql)
                         G.Tsql &= " and Razon_Social like '%" & T_Descipcion.Text & "%'"
                     End If
+                Case "CLIENTE"
+                    G.Tsql = "Select TOP(200)  Numero,Razon_Social as Descripcion"
+                    G.Tsql &= " from Cliente"
+                    'G.Tsql &= " and Obra=" & Val(Session("Obra"))
+                    If Val(T_Numero.Text) > 0 Then
+                        G.Tsql &= Es_Where(G.Tsql)
+                        G.Tsql &= " and Numero=" & Val(T_Numero.Text)
+                    End If
+                    If T_Descipcion.Text.Trim <> "" Then
+                        G.Tsql &= Es_Where(G.Tsql)
+                        G.Tsql &= " and Razon_Social like '%" & T_Descipcion.Text & "%'"
+                    End If
                 Case "RESPONSABLE"
                     G.Tsql = "Select TOP(200) Responsable as Numero,Nombre as Descripcion"
                     G.Tsql &= " from Responsable Where Numero_Compañia=" & Val(Session("Cia"))
@@ -444,7 +464,7 @@ Partial Class Bus_Cat
                     End If
                 Case "ARTICULO"
                     G.Tsql = "Select Top 200 Numero,Art_Descripcion as Descripcion"
-                    G.Tsql &= " from Articulos Where  baja<>'*' and Obra=" & Pone_Apos(G.Sucursal) & " and Cia=" & Val(Session("Cia"))
+                    G.Tsql &= " from Articulos Where  baja<>'*' "
 
                     If T_Numero.Text.Trim > "" Then
                         G.Tsql &= " and Numero like '%" & T_Numero.Text & "%'"
@@ -849,6 +869,8 @@ Partial Class Bus_Cat
             Select Case Catalogo
                 Case "COMPAÑIA"
                     Hiper.Attributes.Add("onclick", "javascript:Compañia(" + e.Row.Cells(1).Text + ",'" + HttpUtility.HtmlDecode(e.Row.Cells(2).Text) + "')")
+                Case "CLIENTE"
+                    Hiper.Attributes.Add("onclick", "javascript:cliente(" + e.Row.Cells(1).Text + ",'" + HttpUtility.HtmlDecode(e.Row.Cells(2).Text) + "')")
 
 
                 Case "RESPONSABLE"
@@ -1004,9 +1026,9 @@ Partial Class Bus_Cat
                     Hiper.Attributes.Add("onclick", "javascript:Lugar_Entrega(" + e.Row.Cells(1).Text + ",'" + HttpUtility.HtmlDecode(e.Row.Cells(2).Text) + "')")
                 Case "ARTICULO"
                     If Numero = "" Then
-                        Hiper.Attributes.Add("onclick", "javascript:Articulo('" + HttpUtility.HtmlDecode(e.Row.Cells(1).Text) + "','" + HttpUtility.HtmlDecode(e.Row.Cells(2).Text) + "','" + HttpUtility.HtmlDecode(e.Row.Cells(3).Text) + "')")
+                        Hiper.Attributes.Add("onclick", "javascript:articulo('" + HttpUtility.HtmlDecode(e.Row.Cells(1).Text) + "','" + HttpUtility.HtmlDecode(e.Row.Cells(2).Text) + "','" + HttpUtility.HtmlDecode(e.Row.Cells(3).Text) + "')")
                     Else
-                        Hiper.Attributes.Add("onclick", "javascript:Articulos('" + HttpUtility.HtmlDecode(e.Row.Cells(1).Text) + "','" + HttpUtility.HtmlDecode(e.Row.Cells(2).Text) + "','" + HttpUtility.HtmlDecode(e.Row.Cells(3).Text) + "','" + Numero + "')")
+                        Hiper.Attributes.Add("onclick", "javascript:articulo('" + HttpUtility.HtmlDecode(e.Row.Cells(1).Text) + "','" + HttpUtility.HtmlDecode(e.Row.Cells(2).Text) + "','" + HttpUtility.HtmlDecode(e.Row.Cells(3).Text) + "','" + Numero + "')")
                     End If
                 Case "CVE_MOVIMIENTO"
                     Hiper.Attributes.Add("onclick", "javascript:Clave_Movimientos_Inventario(" + e.Row.Cells(1).Text + ",'" + HttpUtility.HtmlDecode(e.Row.Cells(2).Text) + "')")
