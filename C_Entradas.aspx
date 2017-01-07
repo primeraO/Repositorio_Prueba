@@ -263,7 +263,7 @@
                         <td width="12%">
                             <asp:TextBox  ID="T_Cliente" runat="server" CssClass="form-control" 
                                 MaxLength="10" style="top: 550px; left: 155px; right: 66px; bottom: 70px;" 
-                                TabIndex="5" Width="39px" AutoPostBack="True" ></asp:TextBox>
+                                TabIndex="5" Width="150px" AutoPostBack="True" ></asp:TextBox>
                         </td>
                         <td style="text-align: left" width="1%">
                             <asp:HyperLink ID="H_Cliente" runat="server" 
@@ -291,8 +291,15 @@
                         <td class="style28">
                             <asp:TextBox ID="T_Agente" runat="server" 
                       style="top: 550px; left: 155px; right: 66px; bottom: 70px;" 
-                    MaxLength="10" TabIndex="5" CssClass="form-control" Width="80px" ReadOnly="True"></asp:TextBox>
+                    MaxLength="10" TabIndex="5" CssClass="form-control" Width="80px" ReadOnly="True" 
+                                Visible="False"></asp:TextBox>
                             </td>
+                             <td class="style28">
+                            <asp:TextBox ID="T_Agente_Desc" runat="server" 
+                      style="top: 550px; bottom: 70px; margin-left:-180px!important;" 
+                    MaxLength="10" TabIndex="5" CssClass="form-control" Width="250px" ReadOnly="True"></asp:TextBox>
+                            </td>
+
                         <td align="left" class="style25">
                             <asp:Label ID="Label2" runat="server" BorderStyle="None" Text="Ejecutivo" 
                                 CssClass="Textos_Azules" Width="92px"></asp:Label>
@@ -300,7 +307,12 @@
                         <td class="style28">
                             <asp:TextBox ID="T_Ejecutivo" runat="server" 
                       style="top: 550px; left: 155px; right: 66px; bottom: 70px;" 
-                    MaxLength="10" TabIndex="5" CssClass="form-control" Width="80px" ReadOnly="True"></asp:TextBox>
+                    MaxLength="10" TabIndex="5" CssClass="form-control" Width="80px" ReadOnly="True" Visible="False"></asp:TextBox>
+                            </td>
+                             <td class="style28">
+                            <asp:TextBox ID="T_Ejecutivo_Desc" runat="server" 
+                      style="top: 550px; bottom: 70px; margin-left:-390px!important;" 
+                    MaxLength="10" TabIndex="5" CssClass="form-control" Width="250px" ReadOnly="True"></asp:TextBox>
                             </td>
                         <td>
                             &nbsp;</td>
@@ -379,7 +391,7 @@
                         </td>
                         <td class="style28">
                             <asp:TextBox ID="T_Precio_Unitario" runat="server" 
-                      style="top: 550px; left: 155px; right: 66px; bottom: 70px;" 
+                      style="top: 550px; left: 155px; right: 66px; bottom: 70px; text-align: right;" 
                     MaxLength="10" TabIndex="5" CssClass="form-control" Width="80px" ReadOnly="True"></asp:TextBox>
                             </td>
                             <td align="left" class="style25">
@@ -388,29 +400,31 @@
                         </td>
                         <td class="style28">
                             <asp:TextBox ID="T_Iva" runat="server" 
-                      style="top: 550px; left: 155px; right: 66px; bottom: 70px;" 
+                      style="top: 550px; left: 155px; right: 66px; bottom: 70px; text-align: right;" 
                     MaxLength="10" TabIndex="5" CssClass="form-control" Width="80px" ReadOnly="True"></asp:TextBox>
+                            </td>
+                              <td align="left" class="style25">
+                            <asp:Label ID="Label9" runat="server" BorderStyle="None" Text="Cantidad" 
+                                CssClass="Textos_Azules" style="margin-left:-250px !important;" Width="92px"></asp:Label>
+                        </td>
+                        <td class="style28">
+                            <asp:TextBox ID="T_Cantidad_Pedida" runat="server" 
+                      style="top: 550px; margin-left:-250px !important; left: 155px; right: 66px; bottom: 70px; text-align: right;" 
+                    MaxLength="10" TabIndex="5" CssClass="form-control" Width="80px" ></asp:TextBox>
                             </td>
                     </tr>
                     <tr>   <td>
                             &nbsp;</td>
-                    <td align="left" class="style25">
-                            <asp:Label ID="Label9" runat="server" BorderStyle="None" Text="Cantidad" 
-                                CssClass="Textos_Azules" Width="92px"></asp:Label>
-                        </td>
-                        <td class="style28">
-                            <asp:TextBox ID="T_Cantidad_Pedida" runat="server" 
-                      style="top: 550px; left: 155px; right: 66px; bottom: 70px;" 
-                    MaxLength="10" TabIndex="5" CssClass="form-control" Width="80px" ></asp:TextBox>
-                            </td>
+                  
                             <td align="left" class="style25">
                             <asp:Label ID="Label10" runat="server" BorderStyle="None" Text="Partida" 
-                                CssClass="Textos_Azules" Width="92px"></asp:Label>
+                                CssClass="Textos_Azules" Width="92px" Visible="False"></asp:Label>
                         </td>
                         <td class="style28">
                             <asp:TextBox ID="T_Partida" runat="server" 
-                      style="top: 550px; left: 155px; right: 66px; bottom: 70px;" 
-                    MaxLength="10" TabIndex="5" CssClass="form-control" Width="80px" ReadOnly="True" ></asp:TextBox>
+                      style="top: 550px; left: 155px; right: 66px; bottom: 70px; text-align: right;" 
+                    MaxLength="10" TabIndex="5" CssClass="form-control" Width="80px"  ReadOnly="True" 
+                                Visible="False" ></asp:TextBox>
                             </td>
                     </tr>
                     
@@ -474,6 +488,8 @@
                                             <asp:BoundField  HeaderText="Total" >
                                             <HeaderStyle Width="60px" HorizontalAlign="Center"/>
                                             </asp:BoundField>
+                                                <asp:BoundField HeaderText="Cambio" />
+                                                <asp:BoundField HeaderText="Baja" />
                                             </Columns>
                                             <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
                                             </asp:GridView>
@@ -513,6 +529,14 @@
                     <asp:BoundField DataField="Total" DataFormatString="{0:N2}" HeaderText="Total">
                     <ItemStyle HorizontalAlign="Right"  Width="60px"/>
                     </asp:BoundField>
+                   <asp:ButtonField ButtonType="Image" CommandName="Cambio" HeaderText="Cambio" 
+                                        ImageUrl="~/Imagenes/M_Cambio_50.png" Text="Cambio">
+                                    <ItemStyle HorizontalAlign="Center" Width="50px" />
+                                    </asp:ButtonField>
+                                    <asp:ButtonField ButtonType="Image" CommandName="Baja" HeaderText="Baja" 
+                                        ImageUrl="~/Imagenes/M_Baja_50.png" Text="Baja">
+                                    <ItemStyle HorizontalAlign="Center" Width="40px" />
+                                    </asp:ButtonField>
                 </Columns>
                 <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
                 <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />

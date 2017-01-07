@@ -80,10 +80,14 @@ Partial Class C_Entradas
         Msg_Err.Visible = True
     End Sub
     Private Sub LimpiaCampos()
-        T_Cliente.Text = 0
-        T_Cliente_Desc.Text = ""
-        T_Agente.Text = ""
-        T_Ejecutivo.Text = ""
+        T_Articulo.Text = 0
+        T_Articulo_Desc.Text = ""
+        T_Iva.Text = ""
+        T_Precio_Unitario.Text = ""
+        T_Cantidad_Pedida.Text = ""
+        T_Marca_Desc.Text = ""
+        T_Marca.Text = ""
+        T_Unidad_Medida.Text = ""
 
     End Sub
     Private Sub CrearCamposTabla()
@@ -96,7 +100,8 @@ Partial Class C_Entradas
         Session("dt").Columns.Add("Total", GetType(System.Double)) : Session("dt").Columns("Total").DefaultValue = 0
 
         Session("dt").Columns.Add("Cantidad", GetType(System.Double)) : Session("dt").Columns("Cantidad").DefaultValue = 0
-
+        Session("dt").Columns.Add("Baja", Type.GetType("System.String")) : Session("dt").Columns("Baja").DefaultValue = ""
+        Session("dt").Columns.Add("Cambio", Type.GetType("System.String")) : Session("dt").Columns("Cambio").DefaultValue = ""
         Dim clave(0) As DataColumn
         clave(0) = Session("dt").Columns("Partida")
         Session("dt").PrimaryKey = clave
@@ -124,7 +129,9 @@ Partial Class C_Entradas
         If T_Pedido.Text = "" Or Val(T_Pedido.Text) = 0 Then
             Msg_Error("Pedido  Inválida") : Exit Function
         End If
-        If T_Precio_Unitario.Text = "" Or Val(T_Precio_Unitario.Text) <= 0 Then
+        Dim precio = Convert.ToDouble(Elimina_Comas(T_Precio_Unitario.Text))
+
+        If precio = 0 Or T_Precio_Unitario.Text = "" Then
             Msg_Error("Precio Unitario Invalido") : Exit Function
         End If
         'If Val(T_Fletero.Text.Trim) = 0 Or T_Fletero_Desc.Text.Trim = "" Then
@@ -280,76 +287,104 @@ Partial Class C_Entradas
     '        'T_Referencia.Text = f("Ref_Flete")
     '    End If
     'End Sub
-    'Protected Sub GridView1_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles GridView1.RowCommand
-    '    If (e.CommandName.Equals("Baja")) Or (e.CommandName.Equals("Cambio")) Then
-    '        Dim ind As Integer = Convert.ToInt32(e.CommandArgument)
-    '        Dim Clave(0) As String
-    '        Clave(0) = (GridView1.Rows(ind).Cells(1).Text)
-    '        Dim f As DataRow = Session("dt").Rows.Find(Clave)
-    '        If Not f Is Nothing Then
-    '            T_Entrada.Text = f("Lote")
-    '            T_Fecha_Pedido.Text = f("Fecha_Lote")
-    '            T_Cliente.Text = f("Solicitante")
-    '            T_Cliente_Desc.Text = Busca_Cat(Session("G"), "SOLICITANTE", f("Solicitante"))
-    '            'T_Fletero.Text = f("Fletero")
-    '            'T_Fletero_Desc.Text = f("Fletero_Desc").ToString
-    '            'T_Importe.Text = For_Pan_Lib(f("Importe_Flete"), 2)
-    '            'T_Iva.Text = For_Pan_Lib(f("Iva_Flete"), 2)
-    '            'T_Descuento.Text = For_Pan_Lib(f("Descuento"), 2)
-    '            'T_Referencia.Text = f("Ref_Flete")
-    '        End If
-    '        If (e.CommandName.Equals("Baja")) Then
-    '            Movimiento.Value = "Baja"
-    '            Habilita()
-    '        End If
+    Protected Sub GridView1_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles GridView1.RowCommand
+        If (e.CommandName.Equals("Baja")) Then
+            Dim G As Glo = CType(Session("G"), Glo)
+            Dim Tsql As String = ""
 
-    '        If (e.CommandName.Equals("Cambio")) Then
-    '            Movimiento.Value = "Cambio"
-    '            T_Entrada.Enabled = False
-    '            T_Fecha_Pedido.Focus()
-    '            Habilita()
-    '        End If
-    '    ElseIf e.CommandName.Equals("Partidas") Then
-    '        Dim ind As Integer = Convert.ToInt32(e.CommandArgument)
-    '        Dim G As Glo = CType(Session("G"), Glo)
-    '        Dim Clave(0) As String
-    '        Clave(0) = (GridView1.Rows(ind).Cells(1).Text)
-    '        Dim f As DataRow = Session("dt").Rows.Find(Clave)
-    '        If Not f Is Nothing Then
-    '            T_Entrada.Text = f("Lote")
-    '            T_Fecha_Pedido.Text = f("Fecha_Lote")
-    '            T_Cliente.Text = f("Solicitante")
-    '        End If
-    '        G.Tsql = "Select * from Movimientos_Entradas where Lote=" & Val(Clave(0)) & " and Compania=" & Val(Session("Cia")) & " and Obra=" & Pone_Apos(G.Obra)
-    '        G.Tsql &= " and E_S='E' and Almacen=" & Val(G.Almacen)
-    '        G.cn.Open()
-    '        G.com.CommandText = G.Tsql
-    '        If IsNothing(G.com.ExecuteScalar) Then
-    '            G.cn.Close()
-    '            LLenaGrid()
-    '        Else
-    '            G.cn.Close()
+            Dim ind As Integer = Convert.ToInt32(e.CommandArgument)
+            Dim Clave(0) As String
+            Clave(0) = (GridView1.Rows(ind).Cells(1).Text)
+            Dim f As DataRow = Session("dt").Rows.Find(Clave)
+            If Not f Is Nothing Then
+                G.cn.Open()
+                G.Tsql = "Delete from Cotiza_Detalle where Numero_Pedido =" & Pone_Apos(T_Pedido.Text) & "  and Sucursal=  " & Pone_Apos(G.Sucursal) & " and Partida=" & Pone_Apos(f("Partida"))
 
-    '            Response.Redirect("~/C_Entradas_Detalle.aspx?Lote=" & GridView1.Rows(ind).Cells(1).Text & "&Fecha_Lote=" & T_Fecha_Pedido.Text)
+                G.com.CommandText = G.Tsql
+                G.com.ExecuteNonQuery()
+                G.cn.Close()
+            End If
+            LLenaGrid()
+            Pnl_Grids.Visible = True
+            T_Partida.Text = SiguientePartida()
+            '    If Not f Is Nothing Then
+            '        T_Entrada.Text = f("Lote")
+            '        T_Fecha_Pedido.Text = f("Fecha_Lote")
+            '        T_Cliente.Text = f("Solicitante")
+            '        T_Cliente_Desc.Text = Busca_Cat(Session("G"), "SOLICITANTE", f("Solicitante"))
+            '        'T_Fletero.Text = f("Fletero")
+            '        'T_Fletero_Desc.Text = f("Fletero_Desc").ToString
+            '        'T_Importe.Text = For_Pan_Lib(f("Importe_Flete"), 2)
+            '        'T_Iva.Text = For_Pan_Lib(f("Iva_Flete"), 2)
+            '        'T_Descuento.Text = For_Pan_Lib(f("Descuento"), 2)
+            '        'T_Referencia.Text = f("Ref_Flete")
+            '    End If
+            '    If (e.CommandName.Equals("Baja")) Then
+            '        Movimiento.Value = "Baja"
+            '        Habilita()
+            '    End If
 
-    '        End If
+            '    If (e.CommandName.Equals("Cambio")) Then
+            '        Movimiento.Value = "Cambio"
+            '        T_Entrada.Enabled = False
+            '        T_Fecha_Pedido.Focus()
+            '        Habilita()
+            '    End If
+            'ElseIf e.CommandName.Equals("Partidas") Then
+            '    Dim ind As Integer = Convert.ToInt32(e.CommandArgument)
+            '    Dim G As Glo = CType(Session("G"), Glo)
+            '    Dim Clave(0) As String
+            '    Clave(0) = (GridView1.Rows(ind).Cells(1).Text)
+            '    Dim f As DataRow = Session("dt").Rows.Find(Clave)
+            '    If Not f Is Nothing Then
+            '        T_Entrada.Text = f("Lote")
+            '        T_Fecha_Pedido.Text = f("Fecha_Lote")
+            '        T_Cliente.Text = f("Solicitante")
+            '    End If
+            '    G.Tsql = "Select * from Movimientos_Entradas where Lote=" & Val(Clave(0)) & " and Compania=" & Val(Session("Cia")) & " and Obra=" & Pone_Apos(G.Obra)
+            '    G.Tsql &= " and E_S='E' and Almacen=" & Val(G.Almacen)
+            '    G.cn.Open()
+            '    G.com.CommandText = G.Tsql
+            '    If IsNothing(G.com.ExecuteScalar) Then
+            '        G.cn.Close()
+            '        LLenaGrid()
+            '    Else
+            '        G.cn.Close()
 
-    '    ElseIf e.CommandName.Equals("Fletero") Then
-    '        Dim ind As Integer = Convert.ToInt32(e.CommandArgument)
-    '        Dim Clave(0) As String
-    '        Clave(0) = (GridView1.Rows(ind).Cells(1).Text)
-    '        Dim f As DataRow = Session("dt").Rows.Find(Clave)
-    '        If Not f Is Nothing Then
-    '            T_Entrada.Text = f("Lote")
-    '            T_Fecha_Pedido.Text = f("Fecha_Lote")
-    '            T_Cliente.Text = f("Solicitante")
+            '        Response.Redirect("~/C_Entradas_Detalle.aspx?Lote=" & GridView1.Rows(ind).Cells(1).Text & "&Fecha_Lote=" & T_Fecha_Pedido.Text)
 
-    '        End If
-    '        Response.Redirect("~/Pop_Proveedor.aspx?Lote=" & GridView1.Rows(ind).Cells(1).Text & "&Fecha_Lote=" & T_Fecha_Pedido.Text)
-    '    End If
+            '    End If
+
+            'ElseIf e.CommandName.Equals("Fletero") Then
+            '    Dim ind As Integer = Convert.ToInt32(e.CommandArgument)
+            '    Dim Clave(0) As String
+            '    Clave(0) = (GridView1.Rows(ind).Cells(1).Text)
+            '    Dim f As DataRow = Session("dt").Rows.Find(Clave)
+            '    If Not f Is Nothing Then
+            '        T_Entrada.Text = f("Lote")
+            '        T_Fecha_Pedido.Text = f("Fecha_Lote")
+            '        T_Cliente.Text = f("Solicitante")
+
+            '    End If
+            '    Response.Redirect("~/Pop_Proveedor.aspx?Lote=" & GridView1.Rows(ind).Cells(1).Text & "&Fecha_Lote=" & T_Fecha_Pedido.Text)
+        End If
+        If (e.CommandName.Equals("Cambio")) Then
+            Movimiento.Value = "Cambio"
+            Dim ind As Integer = Convert.ToInt32(e.CommandArgument)
+            Dim Clave(0) As String
+            Clave(0) = (GridView1.Rows(ind).Cells(1).Text)
+            Dim f As DataRow = Session("dt").Rows.Find(Clave)
+            If Not f Is Nothing Then
+                T_Cantidad_Pedida.Text = f("Cantidad")
+                T_Articulo.Text = f("Articulo")
+                T_Articulo_Desc.Text = f("Descripcion")
+                T_Partida.Text = f("Partida")
+                InformacionArticulo()
+            End If
+        End If
 
 
-    'End Sub
+    End Sub
     Protected Sub Ima_Busca_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles Ima_Busca.Click
         LLenaGrid()
         Pnl_Grids.Visible = True
@@ -377,6 +412,9 @@ Partial Class C_Entradas
         Dim G As Glo = CType(Session("G"), Glo)
         G.Tsql = "Select * from Cliente where Numero=" & Val(T_Cliente.Text)
         G.com.CommandText = G.Tsql
+        If G.cn.State = ConnectionState.Open Then
+            G.cn.Close()
+        End If
         G.cn.Open()
         G.dr = G.com.ExecuteReader
         If G.dr.Read Then
@@ -386,6 +424,8 @@ Partial Class C_Entradas
             'G.mes_proceso = Format(G.dr!mes_proceso, "0#")
         End If
         G.cn.Close()
+        InformacionAgente()
+        InformacionEjecutivo()
     End Sub
     Public Sub InformacionArticulo()
         Dim G As Glo = CType(Session("G"), Glo)
@@ -398,7 +438,7 @@ Partial Class C_Entradas
             If G.dr.Read Then
                 T_Articulo_Desc.Text = G.dr!Art_Descripcion
                 T_Unidad_Medida.Text = G.dr!Unidad_Medida
-                T_Precio_Unitario.Text = G.dr!Pre_Vta_1
+                T_Precio_Unitario.Text = For_Pan_Lib(G.dr!Pre_Vta_1, 2)
                 T_Iva.Text = G.dr!IVA
                 T_Marca.Text = G.dr!Mar_Numero
                 'G.mes_proceso = Format(G.dr!mes_proceso, "0#")
@@ -411,6 +451,7 @@ Partial Class C_Entradas
         Finally
             G.cn.Close()
             InformacionMarca()
+        
         End Try
        
 
@@ -440,10 +481,60 @@ Partial Class C_Entradas
 
 
     End Sub
+
+    Public Sub InformacionAgente()
+        Dim G As Glo = CType(Session("G"), Glo)
+        Try
+            G.cn.Open()
+            G.Tsql = "Select * from Agente where Numero=" & Pone_Apos(T_Agente.Text) & " and Sucursal=" & Pone_Apos(G.Sucursal) & " and Compañia =" & Pone_Apos(G.Empresa_Numero)
+            G.com.CommandText = G.Tsql
+
+            G.dr = G.com.ExecuteReader
+            If G.dr.Read Then
+
+                T_Agente_Desc.Text = G.dr!Nombre
+                'G.mes_proceso = Format(G.dr!mes_proceso, "0#")
+
+            End If
+
+
+        Catch ex As Exception
+            Msg_Error(ex.ToString)
+        Finally
+            G.cn.Close()
+        End Try
+
+
+    End Sub
+    Public Sub InformacionEjecutivo()
+        Dim G As Glo = CType(Session("G"), Glo)
+        Try
+            G.cn.Open()
+            G.Tsql = "Select * from Ejecutivo where Numero=" & Pone_Apos(T_Ejecutivo.Text)
+            G.com.CommandText = G.Tsql
+
+            G.dr = G.com.ExecuteReader
+            If G.dr.Read Then
+
+                T_Ejecutivo_Desc.Text = G.dr!Nombre
+                'G.mes_proceso = Format(G.dr!mes_proceso, "0#")
+
+            End If
+
+
+        Catch ex As Exception
+            Msg_Error(ex.ToString)
+        Finally
+            G.cn.Close()
+        End Try
+
+
+    End Sub
     Protected Sub Ima_Restaura_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles Ima_Restaura.Click
 
         LimpiaCampos()
-
+        Movimiento.Value = ""
+        T_Partida.Text = SiguientePartida()
 
     End Sub
     Protected Sub Ima_Guarda_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles Ima_Guarda.Click
@@ -457,48 +548,66 @@ Partial Class C_Entradas
 
 
             G.cn.Open()
-            If T_Partida.Text = "1" Then
-                G.Tsql = "Insert into  Cotiza_Encab (Situacion,Pedido,Sucursal,Tipo_Documento,Cliente,Razon_Social,Fecha_Pedido,Agente,Ejecutivo)"
-                G.Tsql &= " values('Cotiza'," & T_Pedido.Text & "," & Pone_Apos(G.Sucursal) & ",'5' ,"
-                G.Tsql &= " " & Pone_Apos(T_Cliente.Text) & ", "
-                G.Tsql &= " " & Pone_Apos(T_Cliente_Desc.Text) & ", "
-                G.Tsql &= " " & Pone_Apos(T_Fecha_Pedido.Text) & ", "
-                G.Tsql &= " " & Pone_Apos(T_Agente.Text) & ", "
-                G.Tsql &= " " & Pone_Apos(T_Ejecutivo.Text) & ") "
+            If Movimiento.Value <> "Cambio" Then
+                If T_Partida.Text = "1" Then
+                    G.Tsql = "Insert into  Cotiza_Encab (Situacion,Pedido,Sucursal,Tipo_Documento,Cliente,Razon_Social,Fecha_Pedido,Agente,Ejecutivo)"
+                    G.Tsql &= " values('Cotiza'," & T_Pedido.Text & "," & Pone_Apos(G.Sucursal) & ",'5' ,"
+                    G.Tsql &= " " & Pone_Apos(T_Cliente.Text) & ", "
+                    G.Tsql &= " " & Pone_Apos(T_Cliente_Desc.Text) & ", "
+                    G.Tsql &= " " & Pone_Apos(T_Fecha_Pedido.Text) & ", "
+                    G.Tsql &= " " & Pone_Apos(T_Agente.Text) & ", "
+                    G.Tsql &= " " & Pone_Apos(T_Ejecutivo.Text) & ") "
+                    G.com.CommandText = G.Tsql
+                    G.com.ExecuteNonQuery()
+
+
+                End If
+
+
+
+                G.Tsql = "Insert into  Cotiza_Detalle (Sucursal,Numero_Pedido,Partida,Numero_Articulo,Descripcion_Articulo,Marca,Unidad_Medida,Base_Iva,Cantidad_Pedida,Precio_Unitario)"
+                G.Tsql &= " values(" & Pone_Apos(G.Sucursal) & ", "
+                G.Tsql &= " " & Pone_Apos(T_Pedido.Text) & ", "
+                G.Tsql &= " " & Pone_Apos(T_Partida.Text) & ", "
+                G.Tsql &= " " & Pone_Apos(T_Articulo.Text) & ", "
+                G.Tsql &= " " & Pone_Apos(T_Articulo_Desc.Text) & ", "
+                G.Tsql &= " " & Pone_Apos(T_Marca.Text) & ", "
+                G.Tsql &= " " & Pone_Apos(T_Unidad_Medida.Text) & ", "
+                G.Tsql &= " " & Pone_Apos(T_Iva.Text) & ", "
+                G.Tsql &= " " & Pone_Apos(T_Cantidad_Pedida.Text) & ", "
+                G.Tsql &= " " & Val(Elimina_Comas(T_Precio_Unitario.Text)) & ") "
                 G.com.CommandText = G.Tsql
                 G.com.ExecuteNonQuery()
+                desabilita()
+                LimpiaCampos()
+                ' AñadeFilaGrid()
+                'EliminaFilaGrid()
+                'LimpiaCampos()
 
+                'DesHabilita()
+            ElseIf Movimiento.Value = "Cambio" Then
+                G.Tsql = "Update Cotiza_Detalle set Numero_Articulo=" & Pone_Apos(T_Articulo.Text) & " , Descripcion_Articulo=" & Pone_Apos(T_Articulo_Desc.Text) & ","
+                G.Tsql &= " Marca=" & Pone_Apos(T_Marca.Text) & ", "
+                G.Tsql &= " Base_Iva=" & Pone_Apos(T_Iva.Text) & ", "
+                G.Tsql &= " Cantidad_Pedida=" & Pone_Apos(T_Cantidad_Pedida.Text) & ", "
+                G.Tsql &= " Precio_Unitario=" & Pone_Apos(Elimina_Comas(T_Precio_Unitario.Text)) & ", "
+                G.Tsql &= " Unidad_Medida=" & Pone_Apos(T_Unidad_Medida.Text) & " where Numero_Pedido=" & Pone_Apos(T_Pedido.Text) & " and Sucursal=" & Pone_Apos(G.Sucursal) & " and Partida=" & Pone_Apos(T_Partida.Text)
 
+                G.com.CommandText = G.Tsql
+                G.com.ExecuteNonQuery()
+                LimpiaCampos()
             End If
-          
-
-
-            G.Tsql = "Insert into  Cotiza_Detalle (Sucursal,Numero_Pedido,Partida,Numero_Articulo,Descripcion_Articulo,Marca,Unidad_Medida,Base_Iva,Cantidad_Pedida,Precio_Unitario)"
-            G.Tsql &= " values(" & Pone_Apos(G.Sucursal) & ", "
-            G.Tsql &= " " & Pone_Apos(T_Pedido.Text) & ", "
-            G.Tsql &= " " & Pone_Apos(T_partida.Text) & ", "
-            G.Tsql &= " " & Pone_Apos(T_Articulo.Text) & ", "
-            G.Tsql &= " " & Pone_Apos(T_Articulo_Desc.Text) & ", "
-            G.Tsql &= " " & Pone_Apos(T_Marca.Text) & ", "
-            G.Tsql &= " " & Pone_Apos(T_Unidad_Medida.Text) & ", "
-            G.Tsql &= " " & Pone_Apos(T_Iva.Text) & ", "
-            G.Tsql &= " " & Pone_Apos(T_Cantidad_Pedida.Text) & ", "
-            G.Tsql &= " " & Pone_Apos(T_Precio_Unitario.Text) & ") "
-            G.com.CommandText = G.Tsql
-            G.com.ExecuteNonQuery()
-            ' AñadeFilaGrid()
-            'EliminaFilaGrid()
-            'LimpiaCampos()
-
-
-            'DesHabilita()
+           
         Catch ex As Exception
             Msg_Error(ex.Message.ToString)
         Finally
+
             G.cn.Close()
-            desabilita()
+
             InformacionCliente()
-           
+            T_Partida.Text = SiguientePartida()
+            Movimiento.Value = ""
+
         End Try
         LLenaGrid()
         Pnl_Grids.Visible = True
@@ -509,7 +618,7 @@ Partial Class C_Entradas
         T_Cliente.Enabled = False
         T_Cliente_Desc.Enabled = False
         H_Cliente.Enabled = False
-        T_Partida.Text = SiguientePartida()
+
         T_Articulo.Text = ""
         T_Articulo_Desc.Text = ""
         T_Cantidad_Pedida.Text = 0
