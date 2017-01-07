@@ -598,6 +598,14 @@ Partial Class C_Acceso
                         Inserta_Seguimiento(CType(Session("G"), Glo), Accion_ES, Punto_Desc)
                         Response.Redirect("~/C_Ap_Cont_Inv.aspx")
                     End If
+                Case "Cotizacion"
+                    Punto_Menu(Catalogo, "Catálogo de Cotizacion", AT)
+                    If AT = True Then
+                        Punto_Desc = "Catálogo de Cotizacion"
+                        Accion_ES = "E"
+                        Inserta_Seguimiento(CType(Session("G"), Glo), Accion_ES, Punto_Desc)
+                        Response.Redirect("~/Cotizacion.aspx")
+                    End If
             End Select
         End If
 

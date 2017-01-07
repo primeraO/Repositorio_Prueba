@@ -1,0 +1,1328 @@
+﻿Imports System
+Imports System.Data
+Imports System.Data.SqlClient
+Imports System.Globalization
+Imports CrystalDecisions.Shared
+Imports System.IO
+
+Partial Class C_Entradas_Detalle
+    Inherits System.Web.UI.Page
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Response.AddHeader("Refresh", Convert.ToString((Session.Timeout * 60) + 5))
+        If Session("SesionActiva") Is Nothing Then
+            Response.Redirect("Default.aspx")
+        End If
+        If IsPostBack = False Then
+            Dim G As Glo = CType(Session("G"), Glo)
+            Lbl_Compañia.Text = "Compañia: " & G.Empresa_Numero & " - " & G.RazonSocial
+            Lbl_Obra.Text = "Proyecto: " & G.Obra & " - " & G.Obra_Desc
+            Lbl_Usuario.Text = "Usuario: " & G.UsuarioReal
+            Session("dt") = New DataTable
+            CrearCamposTabla()
+            GridView1.DataSource = Session("dt")
+            GridView1.DataBind()
+            LLenaGrid()
+            L_Lote.Text = Request.QueryString("Lote")
+            L_Fecha_Lote.Text = Request.QueryString("Fecha_Lote")
+            T_Fecha.Text = Request.QueryString("Fecha_Lote")
+            Image1.ImageUrl = "~/Trabajo/" & Session("Imagen")
+            Image1.Style("Height") = Int(Session("Logo_Height")) & "px"
+            Image1.Style("Width") = Int(Session("Logo_Width")) & "px"
+            DesHabilita()
+        End If
+        'H_Centro_Costos.Attributes.Add("onclick", "window.open('Bus_Cat.aspx?Catalogo=CENTRO_COSTOS',null,'left=400, top=100, height=450, width= 800, status=no, resizable=no, scrollbars=no, toolbar=no,location= no, menubar=no');")
+        'H_Centro_Costos.Attributes.Add("style", "cursor:pointer;")
+        'H_Almacen_Destino.Attributes.Add("onclick", "window.open('Bus_Cat.aspx?Catalogo=ALMACEN_DESTINO',null,'left=400, top=100, height=450, width= 800, status=no, resizable=no, scrollbars=no, toolbar=no,location= no, menubar=no');")
+        'H_Almacen_Destino.Attributes.Add("style", "cursor:pointer;")
+
+        'H_Imprimir2.Attributes.Add("onclick", "window.open('C_Imp_Entradas.aspx?Catalogo=ALMACEN_DESTINO',null,'left=400, top=100, height=450, width= 990, status=no, resizable=no, scrollbars=no, toolbar=no,location= no, menubar=no');")
+        'H_Imprimir2.Attributes.Add("style", "cursor:pointer;")
+
+        'T_Cantidad.Attributes.Add("onblur", "javascript: FormatNumber('" & T_Cantidad.ClientID & "'," & 2 & ",'" & True & "','" & True & "');")
+        T_Cantidad.Attributes.Add("onblur", "javascript: FormatNumber('" & T_Cantidad.ClientID & "'," & 2 & ",'" & True & "','" & True & "');")
+        T_Cantidad.Attributes.Add("onkeypress", "javascript: ValidaSoloNumeros('" & T_Cantidad.ClientID & "');")
+        T_Cantidad.Attributes.Add("onFocus", "javascript: QuitaComas('" & T_Cantidad.ClientID & "');")
+
+        T_Subtotal.Attributes.Add("onblur", "javascript: FormatNumber('" & T_Subtotal.ClientID & "'," & 2 & ",'" & True & "','" & True & "');")
+        T_Subtotal.Attributes.Add("onkeypress", "javascript: ValidaSoloNumeros('" & T_Subtotal.ClientID & "');")
+        T_Subtotal.Attributes.Add("onFocus", "javascript: QuitaComas('" & T_Subtotal.ClientID & "');")
+        T_IVA_Importe.Attributes.Add("onblur", "javascript: FormatNumber('" & T_IVA_Importe.ClientID & "'," & 2 & ",'" & True & "','" & True & "');")
+        T_IVA_Importe.Attributes.Add("onkeypress", "javascript: ValidaSoloNumeros('" & T_IVA_Importe.ClientID & "');")
+        T_IVA_Importe.Attributes.Add("onFocus", "javascript: QuitaComas('" & T_IVA_Importe.ClientID & "');")
+        T_Tipo_Cambio.Attributes.Add("onblur", "javascript: FormatNumber('" & T_Tipo_Cambio.ClientID & "'," & 4 & ",'" & True & "','" & True & "');")
+        T_Tipo_Cambio.Attributes.Add("onkeypress", "javascript: ValidaSoloNumeros('" & T_Tipo_Cambio.ClientID & "');")
+        T_Tipo_Cambio.Attributes.Add("onFocus", "javascript: QuitaComas('" & T_Tipo_Cambio.ClientID & "');")
+        T_Precio_Unitario.Attributes.Add("onblur", "javascript: FormatNumber('" & T_Precio_Unitario.ClientID & "'," & 4 & ",'" & True & "','" & True & "','" & True & "','" & True & "');")
+        T_Precio_Unitario.Attributes.Add("onkeypress", "javascript: ValidaSoloNumeros('" & T_Precio_Unitario.ClientID & "');")
+        T_Precio_Unitario.Attributes.Add("onFocus", "javascript: QuitaComas('" & T_Precio_Unitario.ClientID & "');")
+        T_PU_Moneda.Attributes.Add("onblur", "javascript: FormatNumber('" & T_PU_Moneda.ClientID & "'," & 2 & ",'" & True & "','" & True & "');")
+        T_PU_Moneda.Attributes.Add("onkeypress", "javascript: ValidaSoloNumeros('" & T_PU_Moneda.ClientID & "');")
+        T_PU_Moneda.Attributes.Add("onFocus", "javascript: QuitaComas('" & T_PU_Moneda.ClientID & "');")
+
+        T_Articulo_Desc.Attributes.Add("onfocus", "this.select();")
+        T_Moneda_Desc.Attributes.Add("onfocus", "this.select();")
+        T_Cantidad.Attributes.Add("onfocus", "this.select();")
+        T_Subtotal.Attributes.Add("onfocus", "this.select();")
+        T_IVA_Importe.Attributes.Add("onfocus", "this.select();")
+        T_Precio_Unitario.Attributes.Add("onfocus", "this.select();")
+
+        T_Articulo_Desc.Attributes.Add("readonly", "true")
+        T_Moneda_Desc.Attributes.Add("readonly", "true")
+        L_Partida.Attributes.Add("readonly", "true")
+        L_Porc_IVA.Attributes.Add("readonly", "true")
+        L_Subtotal.Attributes.Add("readonly", "true")
+        L_IVA.Attributes.Add("readonly", "true")
+        L_Total.Attributes.Add("readonly", "true")
+
+        Msg_Err.Visible = False
+        DibujaSpan()
+    End Sub
+
+    Private Sub DibujaSpan()
+        Dim dtspan As New DataTable
+        dtspan = Session("dt").Copy
+        If Session("dt").Rows.Count = 0 Then
+            Dim f As DataRow = dtspan.NewRow()
+            f("Partida") = 0
+            f("Fecha_Lote") = ""
+            f("Solicitante") = 0
+            dtspan.Rows.Add(f)
+            GridView1.DataSource = dtspan
+            GridView1.DataBind()
+            Dim TotalColumnas As Integer = GridView1.Rows(0).Cells.Count
+            GridView1.Rows(0).Cells.Clear()
+            GridView1.Rows(0).Cells.Add(New TableCell)
+            GridView1.Rows(0).Cells(0).ColumnSpan = TotalColumnas
+            GridView1.Rows(0).Cells(0).Text = ""
+            Cabecera.DataSource = New List(Of String)
+            Cabecera.DataBind()
+        End If
+    End Sub
+    Protected Sub Msg_Error(ByVal Txw_Msg As String)
+        Msg_Err.Text = "..... " & Txw_Msg & " ....."
+        Msg_Err.Visible = True
+    End Sub
+    Private Sub LimpiaCampos()
+        'T_Movimiento.Text = "0"
+        'T_Movimiento_Desc.Text = ""
+        T_Articulo.Text = ""
+        T_Articulo_Desc.Text = ""
+        L_Porc_IVA.Text = "0.00"
+        T_Cantidad.Text = "0.00"
+        T_Subtotal.Text = "0.00"
+        T_IVA_Importe.Text = "0.00"
+        'T_Almacen.Text = "0"
+        'T_Almacen_Desc.Text = ""
+        'T_Remision_Factura.Text = ""
+        'T_Referencia.Text = ""
+        'T_Moneda.Text = "0"
+        'T_Moneda_Desc.Text = "Peso"
+        T_Precio_Unitario.Text = "0.0000"
+        T_Tipo_Cambio.Text = "0.0000"
+        T_PU_Moneda.Text = "0.00"
+        'L_UUID.Text = ""
+        'T_Proveedor.Text = "0"
+        'T_Proveedor_Desc.Text = ""
+    End Sub
+    Private Sub CrearCamposTabla()
+        Session("dt").Columns.Add("Partida", GetType(System.Int64)) : Session("dt").Columns("Partida").DefaultValue = 0
+        Session("dt").Columns.Add("Movimiento", GetType(System.Int64)) : Session("dt").Columns("Movimiento").DefaultValue = 0
+        Session("dt").Columns.Add("Articulo", GetType(System.String)) : Session("dt").Columns("Articulo").DefaultValue = ""
+        Session("dt").Columns.Add("Descripcion", GetType(System.String)) : Session("dt").Columns("Descripcion").DefaultValue = ""
+        Session("dt").Columns.Add("Fecha_Lote", GetType(System.String)) : Session("dt").Columns("Fecha_Lote").DefaultValue = ""
+        Session("dt").Columns.Add("Cantidad", GetType(System.Double)) : Session("dt").Columns("Cantidad").DefaultValue = 0
+        Session("dt").Columns.Add("Iva", GetType(System.Double)) : Session("dt").Columns("Iva").DefaultValue = 0
+        Session("dt").Columns.Add("Iva_Importe", GetType(System.Double)) : Session("dt").Columns("Iva_Importe").DefaultValue = 0
+        Session("dt").Columns.Add("Almacen", GetType(System.Int64)) : Session("dt").Columns("Almacen").DefaultValue = 0
+        Session("dt").Columns.Add("Remision_Factura", GetType(System.String)) : Session("dt").Columns("Remision_Factura").DefaultValue = ""
+        Session("dt").Columns.Add("Referencia", GetType(System.String)) : Session("dt").Columns("Referencia").DefaultValue = ""
+        Session("dt").Columns.Add("Moneda", GetType(System.Int64)) : Session("dt").Columns("Moneda").DefaultValue = 0
+        Session("dt").Columns.Add("Precio_Unitario", GetType(System.Double)) : Session("dt").Columns("Precio_Unitario").DefaultValue = 0
+        Session("dt").Columns.Add("Tipo_Cambio", GetType(System.Double)) : Session("dt").Columns("Tipo_Cambio").DefaultValue = 0
+        Session("dt").Columns.Add("Proveedor", GetType(System.Int64)) : Session("dt").Columns("Proveedor").DefaultValue = 0
+        Session("dt").Columns.Add("Centro_Costos", GetType(System.Int64)) : Session("dt").Columns("Centro_Costos").DefaultValue = 0
+        Session("dt").Columns.Add("Costo_total", GetType(System.Double)) : Session("dt").Columns("Costo_total").DefaultValue = 0
+        Session("dt").Columns.Add("PU_Moneda", GetType(System.Double)) : Session("dt").Columns("PU_Moneda").DefaultValue = 0
+        Session("dt").Columns.Add("Solicitante", GetType(System.Double)) : Session("dt").Columns("Solicitante").DefaultValue = 0
+        Session("dt").Columns.Add("Numero_Orden", GetType(System.String)) : Session("dt").Columns("Numero_Orden").DefaultValue = 0
+        Session("dt").Columns.Add("UUID", GetType(System.String)) : Session("dt").Columns("UUID").DefaultValue = ""
+        Session("dt").Columns.Add("unidad", GetType(System.String)) : Session("dt").Columns("unidad").DefaultValue = ""
+        Dim clave(0) As DataColumn
+        clave(0) = Session("dt").Columns("Partida")
+        Session("dt").PrimaryKey = clave
+    End Sub
+    Private Function validar() As Boolean
+        validar = False
+        Dim G As Glo = CType(Session("G"), Glo)
+        If Val(T_Movimiento.Text.Trim) = 0 Or T_Movimiento_Desc.Text.Trim = "" Then
+            Msg_Error("Movimiento Inválido") : Exit Function
+        End If
+        If T_Articulo.Text.Trim = "" Or T_Articulo_Desc.Text.Trim = "" Then
+            Msg_Error("Articulo Inválido") : Exit Function
+        End If
+        'If Movimiento.Value = "Alta" Then
+        '    For Each f As DataRow In Session("dt").rows
+        '        If T_Articulo.Text.Trim = f("Articulo") Then Msg_Error("Artículo ya existe en la lista") : Exit Function
+        '    Next
+        'End If
+        If Val(Elimina_Comas(T_Cantidad.Text.Trim)) = 0 Then
+            Msg_Error("Cantidad Inválida") : Exit Function
+        End If
+        If Val(Elimina_Comas(T_Precio_Unitario.Text.Trim)) = 0 Then
+            Msg_Error("Precio Unitario Inválido") : Exit Function
+        End If
+        If Val(Elimina_Comas(T_Subtotal.Text)) = 0 Then
+            Msg_Error("Subtotal Invalido") : Exit Function
+        End If
+        'Try
+        '    G.cn.Open()
+        '    G.com.CommandText = "Select Linea from Articulo_Almacen Where Art_Numero=" & Pone_Apos(T_Articulo.Text.Trim)
+        '    G.com.CommandText &= " and Alm_Numero=" & Val(G.Almacen)
+        '    If IsNothing(G.com.ExecuteScalar) Then
+        '        Msg_Error("Artículo no existe en el almacen") : Exit Function
+        '    End If
+        'Catch ex As Exception
+        '    Msg_Error(ex.Message)
+        'Finally
+        '    G.cn.Close()
+        'End Try
+
+        If Not IsDate(T_Fecha.Text.Trim) Then
+            Msg_Error("Fecha Lote Inválida") : Exit Function
+        End If
+        If Val(T_Movimiento.Text.Trim) = 0 Or T_Movimiento_Desc.Text.Trim = "" Then
+            Msg_Error("Fletero inválido") : Exit Function
+        End If
+        'If Val(Elimina_Comas(T_Importe.Text)) = 0 Then
+        '    Msg_Error("Abreviatura inválida") : Exit Function
+        'End If
+        Return True
+    End Function
+    Private Function Busca_Cat(ByVal Catalogo As String, ByVal Clave As String) As String
+        Busca_Cat = ""
+        Dim G As Glo = CType(Session("G"), Glo)
+        Try
+            G.cn.Open()
+            Select Case Catalogo.ToUpper
+                Case "ALMACEN"
+                    G.Tsql = "Select b.Descripcion"
+                    G.Tsql &= " from Compañias a left join Almacen b on a.Almacen=b.Almacen and a.Cia=b.Cia and b.Obra=" & Pone_Apos(Session("Obra"))
+                    G.Tsql &= " Where a.Cia=" & Session("Cia") & " and Obra=" & Pone_Apos(Session("Obra")) & " and a.Almacen=" & Val(Clave)
+               
+                Case "ARTICULO"
+                    G.Tsql = "Select Art_Descripcion,Iva "
+                    G.Tsql &= " from Articulos Where Baja<>'*' and Numero=" & Pone_Apos(Clave) & " and Obra=" & Pone_Apos(G.Obra) & " and Cia=" & Session("Cia")
+                    G.com.CommandText = G.Tsql
+                    G.dr = G.com.ExecuteReader
+                    If G.dr.Read Then
+                        Busca_Cat = G.dr("Art_Descripcion")
+                        L_Porc_IVA.Text = For_Pan_Lib(G.dr("Iva"), 2)
+                    End If
+                    If G.dr.IsClosed = False Then G.dr.Close()
+                    Exit Function
+                Case "MONEDA"
+                    G.Tsql = "Select Descripcion "
+                    G.Tsql &= ",(Select Top 1 Cambio from Tipo_Cambio b Where a.Moneda=b.Mon_Numero Order by b.Fecha desc) as Cambio "
+                    G.Tsql &= " from Moneda a Where a.Baja<>'*' and a.Moneda=" & Val(Clave)
+                    G.com.CommandText = G.Tsql
+                    G.dr = G.com.ExecuteReader
+                    If G.dr.Read Then
+                        Busca_Cat = G.dr("Descripcion")
+                        T_Tipo_Cambio.Text = For_Pan_Lib(Val(G.dr("Cambio").ToString), 7)
+                        If Val(G.dr("Cambio").ToString) > 0 Then
+                            T_PU_Moneda.Text = For_Pan_Lib(Val(Elimina_Comas(T_Precio_Unitario.Text)) / Val(G.dr("Cambio").ToString), 2)
+                        Else
+                            T_PU_Moneda.Text = "0.00"
+                        End If
+                    End If
+                    If G.dr.IsClosed = False Then G.dr.Close()
+                    Exit Function
+                Case "PROVEEDOR"
+                    G.Tsql = "Select Razon_Social "
+                    G.Tsql &= " from Proveedor Where Baja<>'*' and Numero=" & Val(Clave)
+                    G.com.CommandText = G.Tsql
+                Case "PROVEEDOR_RFC"
+                    G.Tsql = "Select Rfc "
+                    G.Tsql &= " from Proveedor Where Baja<>'*' and Numero=" & Val(Clave)
+                    G.com.CommandText = G.Tsql
+                Case "MOVIMIENTO"
+                    G.Tsql = "Select Descripcion from Clave_Movimiento_Inventario where Numero=" & Val(Clave) & " and Entradas=1"
+                    G.com.CommandText = G.Tsql
+            End Select
+            If G.Tsql <> "" Then
+                G.com.CommandText = G.Tsql
+                Busca_Cat = G.com.ExecuteScalar
+            End If
+        Catch ex As Exception
+            Msg_Error(ex.Message.ToString)
+        Finally
+            G.cn.Close()
+        End Try
+    End Function
+    Private Sub AñadeFilaGrid()
+        Dim dt As DataTable = Session("dt")
+        Dim f As DataRow = dt.NewRow()
+        Dim Partida As Integer = 1
+        If dt.Rows.Count > 0 Then Partida = (dt.Compute("max(Partida)", "")) + 1
+        f("Partida") = Partida
+        f("Movimiento") = Val(T_Movimiento.Text.Trim)
+        f("Movimiento_Desc") = T_Movimiento_Desc.Text.Trim
+        f("Articulo") = T_Articulo.Text.Trim
+        f("Iva") = Val(Elimina_Comas(L_Porc_IVA.Text.Trim))
+        f("Descripcion") = T_Articulo_Desc.Text.Trim
+        f("Fecha_Lote") = T_Fecha.Text.Trim
+        f("Cantidad") = Val(Elimina_Comas(T_Cantidad.Text))
+        f("Iva_Importe") = Val(Elimina_Comas(T_IVA_Importe.Text))
+        f("Remision_Factura") = T_Remision_Factura.Text.Trim
+        f("Referencia") = T_Referencia.Text.Trim
+        f("Moneda") = Val(T_Moneda.Text.Trim)
+        f("Moneda_Desc") = T_Moneda_Desc.Text.Trim
+        f("Precio_Unitario") = Val(Elimina_Comas(T_Precio_Unitario.Text.Trim))
+        f("Tipo_Cambio") = Val(T_Tipo_Cambio.Text.Trim)
+        f("Proveedor") = Val(T_Proveedor.Text.Trim)
+        f("Razon_Social") = T_Proveedor_Desc.Text.Trim
+        f("Costo_total") = Val(Elimina_Comas(T_Subtotal.Text.Trim))
+        f("PU_Moneda") = Val(Elimina_Comas(T_PU_Moneda.Text.Trim))
+        Session("dt").Rows.Add(f)
+        GridView1.PageIndex = Int((Session("dt").Rows.Count) / 10)
+        GridView1.DataSource = Session("dt")
+        GridView1.DataBind()
+    End Sub
+    Private Sub CambiaFilaGrid()
+        Dim clave(0) As String
+        clave(0) = Val(L_Partida.Text)
+        Dim f As DataRow = Session("dt").Rows.Find(clave)
+        If Not f Is Nothing Then
+            f("Movimiento") = Val(T_Movimiento.Text.Trim)
+            f("Articulo") = T_Articulo.Text.Trim
+            f("Iva") = Val(Elimina_Comas(L_IVA.Text.Trim))
+            f("Descripcion") = T_Articulo_Desc.Text.Trim
+            f("Fecha_Lote") = T_Fecha.Text.Trim
+            f("Cantidad") = Val(Elimina_Comas(T_Cantidad.Text))
+            f("Iva_Importe") = Val(Elimina_Comas(T_IVA_Importe.Text))
+            f("Remision_Factura") = T_Remision_Factura.Text.Trim
+            f("Referencia") = T_Referencia.Text.Trim
+            f("Moneda") = Val(T_Moneda.Text.Trim)
+            f("Precio_Unitario") = Val(Elimina_Comas(T_Precio_Unitario.Text.Trim))
+            f("Tipo_Cambio") = Val(T_Tipo_Cambio.Text.Trim)
+            f("Proveedor") = Val(T_Proveedor.Text.Trim)
+            f("Costo_total") = Val(Elimina_Comas(T_Subtotal.Text.Trim))
+            f("PU_Moneda") = Val(Elimina_Comas(T_PU_Moneda.Text.Trim))
+        End If
+        GridView1.DataSource = Session("dt")
+        GridView1.DataBind()
+    End Sub
+    Private Sub EliminaFilaGrid(ByVal Partida As Integer)
+        Dim G As Glo = CType(Session("G"), Glo)
+        Dim clave(0) As String
+        clave(0) = Partida
+        Try
+            G.cn.Open()
+            G.Tsql = "Delete from Movimientos_Entradas Where Compania=" & Session("Cia") & " and Obra=" & Pone_Apos(G.Obra)
+            G.Tsql &= " and E_S='E'"
+            G.Tsql &= " and Lote=" & Val(L_Lote.Text.Trim)
+            G.Tsql &= " and Partida=" & Val(Partida)
+            G.Tsql &= " and Almacen=" & Val(G.Almacen)
+            G.com.CommandText = G.Tsql
+            G.com.ExecuteNonQuery()
+        Catch ex As Exception
+            Msg_Error(ex.Message)
+        Finally
+            G.cn.Close()
+        End Try
+        Dim f As DataRow = Session("dt").Rows.Find(clave)
+        If Not f Is Nothing Then
+            f.Delete()
+        End If
+        GridView1.DataSource = Session("dt")
+        GridView1.DataBind()
+    End Sub
+    Private Sub LLenaGrid()
+        dt = LLena_Datatable()
+        If Session("dt").Rows.Count > 0 Then
+            GridView1.DataSource = Session("dt")
+            GridView1.DataBind()
+            Cabecera.DataSource = New List(Of String)
+            Cabecera.DataBind()
+        Else
+            DibujaSpan()
+        End If
+    End Sub
+    Private Function LLena_Datatable() As DataTable
+        Dim G As Glo = CType(Session("G"), Glo)
+        Dim dt As DataTable = Session("dt")
+        Dim Lote As String = Request.QueryString("Lote")
+        Try
+            G.cn.Open()
+            dt.Rows.Clear()
+            G.Tsql = "Select a.Partida,a.Movimiento,a.Articulo,a.Descripcion,a.Fecha_Lote,a.Cantidad,a.Iva_Importe,a.Almacen,a.Remision_Factura,a.Referencia,a.Moneda,a.Precio_Unitario"
+            G.Tsql &= ",a.Tipo_Cambio,a.Proveedor,b.Razon_Social,c.Descripcion as Movimiento_Desc,d.Descripcion as Almacen_Desc,a.Centro_Costos,e.Descripcion as Centro_Costos_Desc"
+            G.Tsql &= ",f.Descripcion as Moneda_Desc,a.Costo_total,a.PU_Moneda,a.Iva,a.Solicitante,a.Numero_Orden,a.UUID"
+            G.Tsql &= ", (Select top 1 Descripcion from Almacen h Where h.Almacen=a.Almacen and h.Cia=" & Session("Cia") & " and h.Obra=" & Pone_Apos(Session("Obra")) & ") as Almacen_Destino_Desc"
+            G.Tsql &= ",(Select r.Unidad_Medida from Articulos r Where r.Cia=" & Session("Cia") & " and r.Obra=" & Pone_Apos(Session("Obra")) & " and r.Numero=a.Articulo) as unidad "
+            G.Tsql &= " From Movimientos_Entradas a left join Proveedor b on a.Proveedor=b.Numero"
+            G.Tsql &= " left join Clave_Movimiento_Inventario c on c.Numero=a.Movimiento "
+            G.Tsql &= " left join Almacen d on d.Almacen=a.Almacen and d.Cia=" & Session("Cia") & " and d.Obra=" & Pone_Apos(Session("Obra"))
+            G.Tsql &= " left join Centro_Costos e on e.Centro_Costos=a.Centro_Costos and d.Cia=" & Session("Cia") & " and d.Obra=" & Pone_Apos(Session("Obra"))
+            G.Tsql &= " left join Moneda f on f.Moneda=a.Moneda "
+            G.Tsql &= " where a.Compania=" & Session("Cia") & " and a.Obra=" & Pone_Apos(G.Obra) & " and a.E_S='E' and Lote=" & Lote & " and a.Partida>0 "
+            G.Tsql &= " and a.Almacen=" & Val(G.Almacen)
+            G.Tsql &= " Order by a.Lote"
+            G.com.CommandText = G.Tsql
+            G.dr = G.com.ExecuteReader
+            dt.Load(G.dr)
+            If G.dr.IsClosed = False Then G.dr.Close()
+            'Datos para parametros de informe
+            G.Tsql = "Select a.Fletero,b.Razon_Social as Fletero_Desc,a.Flete,a.UUID"
+            G.Tsql &= " From Movimientos_Entradas a left join Proveedor b on a.Fletero=b.Numero"
+            G.Tsql &= " where a.Compania=" & Session("Cia")
+            G.Tsql &= " and a.Obra=" & Pone_Apos(G.Obra)
+            G.Tsql &= " and a.Almacen=" & Val(G.Almacen)
+            G.Tsql &= " and a.E_S='E' and a.Partida=0 "
+            G.Tsql &= " and a.Lote=" & Val(Request.QueryString("Lote"))
+            G.Tsql &= " Order by a.Lote"
+            G.com.CommandText = G.Tsql
+            G.dr = G.com.ExecuteReader
+            If G.dr.Read Then
+                G.Fletero = G.dr("Fletero")
+                G.Fletero_Desc = G.dr("Fletero_Desc").ToString
+                G.Importe_Flete = G.dr("Flete")
+                G.UUID = G.dr("UUID")
+            Else
+                G.Fletero = 0
+                G.Fletero_Desc = ""
+                G.Importe_Flete = 0
+                G.Solicitante_Desc = ""
+                G.UUID = ""
+            End If
+            If G.dr.IsClosed = False Then G.dr.Close()
+            'Proveedor
+            If dt.Rows.Count > 0 Then
+                G.Proveedor = dt(0)("Proveedor")
+                G.Proveedor_Desc = dt(0)("Razon_Social").ToString
+                G.Solicitante = dt(0)("Solicitante")
+                G.Referencia = dt(0)("Referencia")
+                G.Orden_Compra = dt(0)("Numero_Orden")
+            Else
+                G.Proveedor = 0
+                G.Proveedor_Desc = ""
+                G.Solicitante = 0
+                G.Referencia = ""
+                G.Orden_Compra = ""
+            End If
+            'Solicitante
+            G.Tsql = "Select Solicitante,Nombre"
+            G.Tsql &= " from Solicitante Where Cia=" & Val(Session("Cia"))
+            G.Tsql &= " and Obra=" & Pone_Apos(Session("Obra"))
+            G.Tsql &= " and Solicitante=" & G.Solicitante
+            G.com.CommandText = G.Tsql
+            G.dr = G.com.ExecuteReader
+            If G.dr.Read Then
+                G.Solicitante = G.dr("Solicitante")
+                G.Solicitante_Desc = G.dr("Nombre").ToString
+            Else
+                G.Solicitante = 0
+                G.Solicitante_Desc = ""
+            End If
+            If G.dr.IsClosed = False Then G.dr.Close()
+
+
+            L_Subtotal.Text = For_Pan_Lib(dt.Compute("Sum(Costo_Total)", ""), 2)
+            L_IVA.Text = For_Pan_Lib(dt.Compute("Sum(Iva_Importe)", ""), 2)
+            L_Total.Text = For_Pan_Lib(CDbl(L_Subtotal.Text) + CDbl(L_IVA.Text), 2)
+        Catch ex As Exception
+            Msg_Error(ex.Message)
+        Finally
+            G.cn.Close()
+        End Try
+        Return dt
+    End Function
+
+    Private Function unidadarticulo(ByVal numero As String) As String
+        Dim G As Glo = CType(Session("G"), Glo)
+        Dim unidad As String
+        Try
+            G.cn.Open()
+            G.Tsql = "Select Unidad_Medida from Articulos Where Cia=" & Session("Cia")
+            G.Tsql &= " and Obra=" & Pone_Apos(G.Obra)
+            G.Tsql &= " and Numero=" & Pone_Apos(numero)
+            G.com.CommandText = G.Tsql
+            unidad = G.com.ExecuteScalar.ToString
+            '  MsgBox(unidad)
+
+            'MsgBox(Val(G.com.ExecuteScalar.ToString))
+            Return unidad
+
+        Catch ex As Exception
+            ' Msg_Error(ex.Message.ToString)
+        Finally
+            G.cn.Close()
+        End Try
+
+    End Function
+
+    Protected Sub GridView1_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles GridView1.PageIndexChanging
+        If Me.IsPostBack Then
+            GridView1.PageIndex = e.NewPageIndex
+            LLenaGrid()
+        End If
+    End Sub
+    Private Sub DesHabilita()
+        Pnl_Registro.Visible = False
+        Pnl_Grids.Visible = True
+        T_Movimiento.Enabled = False
+        desboton(H_Movimiento)
+        T_Movimiento_Desc.Enabled = False
+        T_Articulo.Enabled = False
+        desboton(H_Articulo)
+        T_Articulo_Desc.Enabled = False
+        T_Fecha.Enabled = False
+        T_Cantidad.Enabled = False
+        T_Subtotal.Enabled = False
+        T_IVA_Importe.Enabled = False
+        T_Remision_Factura.Enabled = False
+        T_Referencia.Enabled = False
+        T_Moneda.Enabled = False
+        desboton(H_Moneda)
+        T_Moneda_Desc.Enabled = False
+        T_Precio_Unitario.Enabled = False
+        T_Tipo_Cambio.Enabled = False
+        T_PU_Moneda.Enabled = False
+        T_Proveedor.Enabled = False
+        desboton(H_Proveedor)
+        T_Proveedor_Desc.Enabled = False
+        fileUploader1.Enabled = False
+        Movimiento.Value = ""
+        Ima_Incorporar.Enabled = True : Ima_Incorporar.CssClass = "Btn_Azul"
+        Ima_Imprimir.Enabled = True : Ima_Imprimir.CssClass = "Btn_Azul"
+        Ima_Restaura.Enabled = False : Ima_Restaura.CssClass = "Btn_Rojo"
+        Ima_Guarda.Enabled = False : Ima_Guarda.CssClass = "Btn_Rojo"
+        Ima_Alta.Enabled = True : Ima_Alta.CssClass = "Btn_Azul"
+        Ima_Procesar.Enabled = True : Ima_Procesar.CssClass = "Btn_Azul"
+        Ima_Regresa.Enabled = True : Ima_Regresa.CssClass = "Btn_Azul"
+        GridView1.Enabled = True
+        'Ch_Baja.Enabled = True
+    End Sub
+    Private Sub desboton(ByRef boton As HyperLink)
+        boton.Attributes.Add("style", "cursor:not-allowed;")
+        boton.Attributes.Add("onclick", "")
+    End Sub
+    Private Sub Habilita()
+        Pnl_Registro.Visible = True
+        Pnl_Grids.Visible = False
+        T_Movimiento.Enabled = True
+        T_Movimiento_Desc.Enabled = True
+        T_Articulo.Enabled = True
+        T_Articulo_Desc.Enabled = True
+        T_Fecha.Enabled = True
+        T_Cantidad.Enabled = True
+        T_Subtotal.Enabled = True
+        T_IVA_Importe.Enabled = True
+        'T_Almacen.Enabled = True
+        'T_Almacen_Desc.Enabled = True
+        T_Remision_Factura.Enabled = True
+        T_Referencia.Enabled = True
+        T_Moneda.Enabled = True
+        T_Moneda_Desc.Enabled = True
+        T_Precio_Unitario.Enabled = True
+        T_Tipo_Cambio.Enabled = True
+        T_PU_Moneda.Enabled = True
+        T_Proveedor.Enabled = True
+        T_Proveedor_Desc.Enabled = True
+        fileUploader1.Enabled = True
+        H_Movimiento.Attributes.Add("onclick", "window.open('Bus_Cat.aspx?Catalogo=CLAVE_MOVIMIENTOS_INVENTARIO_ENTRADAS',null,'left=400, top=100, height=450, width= 800, status=no, resizable=no, scrollbars=no, toolbar=no,location= no, menubar=no');")
+        H_Movimiento.Attributes.Add("style", "cursor:pointer;")
+        H_Articulo.Attributes.Add("onclick", "window.open('Bus_Cat_Articulos.aspx?Catalogo=ARTICULO',null,'left=400, top=100, height=450, width= 800, status=no, resizable=no, scrollbars=no, toolbar=no,location= no, menubar=no');")
+        H_Articulo.Attributes.Add("style", "cursor:pointer;")
+        'H_Almacen.Attributes.Add("onclick", "window.open('Bus_Cat.aspx?Catalogo=ALMACEN',null,'left=400, top=100, height=450, width= 800, status=no, resizable=no, scrollbars=no, toolbar=no,location= no, menubar=no');")
+        'H_Almacen.Attributes.Add("style", "cursor:pointer;")
+        H_Moneda.Attributes.Add("onclick", "window.open('Bus_Cat.aspx?Catalogo=MONEDA',null,'left=400, top=100, height=450, width= 800, status=no, resizable=no, scrollbars=no, toolbar=no,location= no, menubar=no');")
+        H_Moneda.Attributes.Add("style", "cursor:pointer;")
+        H_Proveedor.Attributes.Add("onclick", "window.open('Bus_Cat_Proveedor.aspx?Catalogo=PROVEEDOR&Num=',null,'left=400, top=100, height=450, width= 800, status=no, resizable=no, scrollbars=no, toolbar=no,location= no, menubar=no');")
+        H_Proveedor.Attributes.Add("style", "cursor:pointer;")
+
+        Ima_Incorporar.Enabled = False : Ima_Incorporar.CssClass = "Btn_Rojo"
+        Ima_Imprimir.Enabled = False : Ima_Imprimir.CssClass = "Btn_Rojo"
+        Ima_Restaura.Enabled = True : Ima_Restaura.CssClass = "Btn_Azul"
+        Ima_Guarda.Enabled = True : Ima_Guarda.CssClass = "Btn_Azul"
+        Ima_Alta.Enabled = False : Ima_Alta.CssClass = "Btn_Rojo"
+        Ima_Procesar.Enabled = False : Ima_Procesar.CssClass = "Btn_Rojo"
+        Ima_Regresa.Enabled = False : Ima_Regresa.CssClass = "Btn_Rojo"
+        'Ima_Busca.CssClass = "Btn_Rojo"
+        GridView1.Enabled = False
+        ' Ch_Baja.Enabled = False
+    End Sub
+    Protected Sub GridView1_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles GridView1.SelectedIndexChanged
+        Dim G As Glo = CType(Session("G"), Glo)
+        Dim clave(0) As String
+        clave(0) = GridView1.DataKeys(GridView1.SelectedIndex).Item("Partida").ToString
+        Dim f As DataRow = Session("dt").Rows.Find(clave)
+        If Not f Is Nothing Then
+            L_Partida.Text = f("Partida")
+            T_Fecha.Text = f("Fecha_Lote")
+            T_Movimiento.Text = f("Movimiento")
+            T_Movimiento_Desc.Text = f("Movimiento_Desc").ToString
+            T_Articulo.Text = f("Articulo")
+            T_IVA_Importe.Text = For_Pan_Lib(f("Iva"), 2)
+            T_Articulo_Desc.Text = f("Descripcion")
+            T_Cantidad.Text = For_Pan_Lib(f("Cantidad"), 2)
+            T_IVA_Importe.Text = For_Pan_Lib(f("Iva_Importe"), 2)
+            T_Remision_Factura.Text = f("Remision_Factura")
+            T_Referencia.Text = f("Referencia")
+            T_Moneda.Text = f("Moneda")
+            T_Moneda_Desc.Text = f("Moneda_Desc").ToString
+            T_Precio_Unitario.Text = For_Pan_Lib(f("Precio_Unitario"), 7)
+            T_Tipo_Cambio.Text = For_Pan_Lib(("Tipo_Cambio"), 7)
+            T_Tipo_Cambio.Text = For_Pan_Lib(("Tipo_Cambio"), 7)
+            T_PU_Moneda.Text = f("PU_Moneda")
+            T_Proveedor_Desc.Text = f("Razon_Social").ToString
+        End If
+    End Sub
+    Protected Sub GridView1_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles GridView1.RowCommand
+        If (e.CommandName.Equals("Baja")) Or (e.CommandName.Equals("Cambio")) Then
+            Dim ind As Integer = Convert.ToInt32(e.CommandArgument)
+            Dim Clave(0) As String
+            Clave(0) = (GridView1.Rows(ind).Cells(1).Text)
+            Dim f As DataRow = Session("dt").Rows.Find(Clave)
+            If Not f Is Nothing Then
+                L_Partida.Text = f("Partida")
+                T_Fecha.Text = f("Fecha_Lote")
+                T_Movimiento.Text = f("Movimiento")
+                T_Movimiento_Desc.Text = f("Movimiento_Desc").ToString
+                T_Articulo.Text = f("Articulo")
+                L_Porc_IVA.Text = For_Pan_Lib(f("Iva"), 2)
+                T_Articulo_Desc.Text = f("Descripcion").ToString
+                T_Cantidad.Text = For_Pan_Lib(f("Cantidad"), 2)
+                T_IVA_Importe.Text = For_Pan_Lib(f("Iva_Importe"), 2)
+                'T_Almacen.Text = f("Almacen")
+                'T_Almacen_Desc.Text = f("Almacen_Desc").ToString
+                T_Remision_Factura.Text = f("Remision_Factura")
+                T_Referencia.Text = f("Referencia")
+                T_Moneda.Text = f("Moneda")
+                T_Moneda_Desc.Text = f("Moneda_Desc").ToString
+                T_Precio_Unitario.Text = For_Pan_Lib(f("Precio_Unitario"), 7)
+                T_Tipo_Cambio.Text = For_Pan_Lib(f("Tipo_Cambio"), 7)
+                T_PU_Moneda.Text = For_Pan_Lib(f("PU_Moneda"), 2)
+                T_Proveedor.Text = f("Proveedor")
+                T_Proveedor_Desc.Text = f("Razon_Social").ToString
+                T_Subtotal.Text = For_Pan_Lib(f("Costo_total"), 2)
+                L_UUID.Text = f("UUID")
+                T_RFC.Text = Busca_Cat("PROVEEDOR_RFC", f("Proveedor"))
+            End If
+            If (e.CommandName.Equals("Baja")) Then
+                Movimiento.Value = "Baja"
+                'Habilita()
+                EliminaFilaGrid(GridView1.Rows(ind).Cells(1).Text)
+                DibujaSpan()
+                LimpiaCampos()
+            End If
+
+            If (e.CommandName.Equals("Cambio")) Then
+                Movimiento.Value = "Cambio"
+                T_Movimiento.Enabled = False
+                T_Fecha.Focus()
+                Habilita()
+            End If
+
+        End If
+    End Sub
+    Protected Sub Ima_Alta_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles Ima_Alta.Click
+        Dim G As Glo = CType(Session("G"), Glo)
+        Dim dt_Datos = New DataTable
+        Dim f As DataRow
+        LimpiaCampos()
+        Habilita()
+        Movimiento.Value = "Alta"
+        Siguiente()
+        If Val(T_Movimiento.Text.Trim) = 0 Then
+            T_Movimiento.Focus()
+        Else
+            T_Articulo.Focus()
+        End If
+        T_Tipo_Cambio.Enabled = False
+        If L_Partida.Text = 1 Then
+            LimpiaCampos()
+        Else
+            G.Tsql = "Select Movimiento,Remision_Factura,Referencia,Moneda,Proveedor from Movimientos_Entradas where Compania=" & Val(Session("Cia"))
+            G.Tsql &= " and Obra=" & Pone_Apos(G.Obra) & " and Almacen=" & Val(G.Almacen) & " and Lote=" & Val(L_Lote.Text) & " and Partida=1"
+            G.cn.Open()
+            G.com.CommandText = G.Tsql
+            G.dr = G.com.ExecuteReader()
+
+            If G.dr.Read Then
+                T_Movimiento.Text = G.dr("Movimiento")
+                T_Remision_Factura.Text = G.dr("Remision_Factura")
+                T_Referencia.Text = G.dr("Referencia")
+                T_Moneda.Text = G.dr("Moneda")
+                T_Proveedor.Text = G.dr("Proveedor")
+            End If
+            G.cn.Close()
+            T_Movimiento_Desc.Text = Busca_Cat("MOVIMIENTO", T_Movimiento.Text)
+            T_Moneda_Desc.Text = Busca_Cat("MONEDA", T_Moneda.Text)
+            T_Proveedor_Desc.Text = Busca_Cat("PROVEEDOR", T_Proveedor.Text)
+            T_RFC.Text = Busca_Cat("PROVEEDOR_RFC", T_Proveedor.Text)
+        End If
+
+    End Sub
+    Private Function Verifica_Errores_Detalle() As Boolean
+        Verifica_Errores_Detalle = False
+        If T_Articulo.Text.Trim = "" Or T_Articulo_Desc.Text.Trim = "" Then
+        End If
+    End Function
+    Protected Sub Ima_Restaura_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles Ima_Restaura.Click
+        DesHabilita()
+        LimpiaCampos()
+    End Sub
+    Private Function SubirXML(ByRef xml As C_XML, ByRef String_XML As String) As Boolean
+        SubirXML = False
+        Dim ext As String = ""
+        If Not fileUploader1.HasFile Then
+            SubirXML = True
+            Exit Function
+        End If
+        Dim NombreArchXML As String = fileUploader1.PostedFile.FileName
+        Dim formatos() As String = {"xml"}
+        If fileUploader1.HasFile Then
+            ext = NombreArchXML.Substring(NombreArchXML.LastIndexOf(".") + 1).ToLower()
+            If Array.IndexOf(formatos, ext) < 0 Then
+                Msg_Error("Solo se admiten archivos XML.") : Exit Function
+            Else
+                Try
+                    GuardarArchivo(fileUploader1.PostedFile)
+                    Subir()
+                    xml = New C_XML
+                    Dim mRutaArch As String = Server.MapPath("~/XML/" & NombreArchXML)
+                    If xml.LeerXML(mRutaArch) = False Then
+                        xml.convierteXMLaUTF8(mRutaArch)
+                        If xml.LeerXML(xml.Xml_NuevaRuta) = False Then
+                            Msg_Error("Error en lectura de XML") : Exit Function
+                        End If
+                    End If
+                    String_XML = xml.Convierte_XML_String(mRutaArch)
+                    L_UUID.Text = xml.Xml_UUID
+                Catch ex As Exception
+                    Msg_Error(ex.Message)
+                End Try
+            End If
+        End If
+        SubirXML = True
+    End Function
+    Private Sub Subir()
+        Dim clsRequest As System.Net.FtpWebRequest = DirectCast(System.Net.WebRequest.Create("ftp://inter-op.com.mx/Inventarios_XML/" + fileUploader1.FileName), System.Net.FtpWebRequest)
+        clsRequest.Credentials = New System.Net.NetworkCredential("bfernand", "Ale2336")
+        clsRequest.Method = System.Net.WebRequestMethods.Ftp.UploadFile
+        Dim bFile As Byte() = fileUploader1.FileBytes
+        Dim clsStream As System.IO.Stream = clsRequest.GetRequestStream()
+        clsStream.Write(bFile, 0, bFile.Length)
+        clsStream.Close()
+        clsStream.Dispose()
+    End Sub
+    Protected Sub Ima_Guarda_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles Ima_Guarda.Click
+        Dim G As Glo = CType(Session("G"), Glo)
+        Dim Tsql As String = ""
+        If validar() = False Then Exit Sub
+        Dim dt As DataTable = Session("dt")
+        Dim Lote As String = Request.QueryString("Lote")
+        Dim otransaccion As SqlClient.SqlTransaction = Nothing
+        Dim Partida As Integer = 0
+        Dim Num_Sec As Integer = 0
+        Dim Linea As Integer = 0
+        Dim SubLinea As Integer = 0
+        Dim Marca As Integer = 0
+        Dim String_XML As String = ""
+        Dim xml As C_XML = Nothing
+        Dim Lista As New ArrayList
+
+
+        Try
+            G.cn.Open()
+            'Subimos el XML y Añadimos al insert si no existe
+            If String_XML.Trim <> "" Then
+                If SubirXML(xml, String_XML) = False Then Exit Sub
+                If Not IsNothing(xml) Then
+                    If xml.Xml_UUID.Trim <> "" Then
+                        L_UUID.Text = xml.Xml_UUID
+                        Tsql = "Select UUID from Facturas_XML Where UUID=" & Pone_Apos(L_UUID.Text.Trim)
+                        G.com.CommandText = Tsql
+                        If IsNothing(G.com.ExecuteScalar) Then
+                            G.Tsql = "Insert into Facturas_XML(UUID,RFC_Emisor,RFC_Receptor,Fecha_Timbre,Subtotal,Iva,Total,Serie,Folio,Tasa_Iva,"
+                            G.Tsql &= "IEPS,Tasa_IEPS,XML) values "
+                            G.Tsql &= "(" & Pone_Apos(xml.Xml_UUID)
+                            G.Tsql &= "," & Pone_Apos(xml.Xml_Emisor_RFC)
+                            G.Tsql &= "," & Pone_Apos(xml.Xml_Receptor_RFC)
+                            G.Tsql &= "," & Pone_Apos(xml.Xml_FechaTimbrado)
+                            G.Tsql &= "," & xml.xml_subTotal
+                            G.Tsql &= "," & xml.Xml_importe_iva
+                            G.Tsql &= "," & xml.Xml_total
+                            G.Tsql &= "," & Pone_Apos(xml.Xml_serie)
+                            G.Tsql &= "," & xml.Xml_folio
+                            G.Tsql &= "," & xml.Xml_tasa
+                            G.Tsql &= ",0"
+                            G.Tsql &= ",0"
+                            G.Tsql &= "," & Pone_Apos(String_XML) & ")"
+                            G.com.CommandText = G.Tsql
+                            G.com.Transaction = otransaccion
+                            G.com.ExecuteNonQuery()
+                        End If
+                    End If
+                End If
+            End If
+
+
+            Cons_Partida_Secuencia(Partida, Num_Sec)
+            Cons_Linea_Sublinea(Linea, SubLinea)
+            If Movimiento.Value = "Alta" Then
+                Tsql = "Insert into Movimientos_Entradas(Compania,Obra,Almacen,E_S,Lote,Partida,Numero_Secuencial,Fecha_Lote,Movimiento,Articulo,Descripcion,Cantidad,"
+                Tsql &= "Iva,Iva_Importe,Remision_Factura,Referencia,Moneda,Precio_Unitario,Tipo_Cambio,Proveedor,Costo_total,PU_Moneda,Linea,Sub_Linea,UUID) values "
+                Tsql &= "(" & Session("Cia")
+                Tsql &= "," & Pone_Apos(G.Obra)
+                Tsql &= "," & G.Almacen
+                Tsql &= ",'E'"
+                Tsql &= "," & Lote
+                Tsql &= "," & Partida + 1
+                Tsql &= "," & Num_Sec + 1
+                Tsql &= "," & Pone_Apos(T_Fecha.Text)
+                Tsql &= "," & Val(T_Movimiento.Text)
+                Tsql &= "," & Pone_Apos(T_Articulo.Text)
+                Tsql &= "," & Pone_Apos(T_Articulo_Desc.Text)
+                Tsql &= "," & Val(Elimina_Comas(T_Cantidad.Text))
+                Tsql &= "," & Val(Elimina_Comas(L_Porc_IVA.Text))
+                Tsql &= "," & Val(Elimina_Comas(T_IVA_Importe.Text))
+                Tsql &= "," & Pone_Apos(T_Remision_Factura.Text)
+                Tsql &= "," & Pone_Apos(T_Referencia.Text)
+                Tsql &= "," & Val(T_Moneda.Text)
+                Tsql &= "," & Val(Elimina_Comas(T_Precio_Unitario.Text))
+                Tsql &= "," & Val(T_Tipo_Cambio.Text)
+                Tsql &= "," & Val(T_Proveedor.Text)
+                Tsql &= "," & Val(Elimina_Comas(T_Subtotal.Text))
+                Tsql &= "," & Val(Elimina_Comas(T_PU_Moneda.Text))
+                Tsql &= "," & Linea
+                Tsql &= "," & SubLinea
+                Tsql &= "," & Pone_Apos(L_UUID.Text) & ")"
+                G.com.CommandText = Tsql
+                G.com.Transaction = otransaccion
+                G.com.ExecuteNonQuery()
+                Tsql = "Update Movimientos_Entradas set Movimiento=" & Val(T_Movimiento.Text)
+                Tsql &= ",Remision_Factura=" & Pone_Apos(T_Remision_Factura.Text)
+                Tsql &= ",Referencia=" & Pone_Apos(T_Referencia.Text)
+                Tsql &= ",Proveedor=" & Val(T_Proveedor.Text)
+                Tsql &= " Where Compania=" & Session("Cia")
+                Tsql &= " and Obra=" & Pone_Apos(Session("Obra"))
+                Tsql &= " and Almacen=" & G.Almacen
+                Tsql &= " and E_S='E'"
+                Tsql &= " and Lote=" & Val(L_Lote.Text.Trim)
+                G.com.CommandText = Tsql
+                G.com.Transaction = otransaccion
+                G.com.ExecuteNonQuery()
+            ElseIf Movimiento.Value = "Cambio" Then
+                Tsql = "Update Movimientos_Entradas set Fecha_Lote=" & Pone_Apos(T_Fecha.Text.Trim)
+                Tsql &= ",Articulo=" & Pone_Apos(T_Articulo.Text)
+                Tsql &= ",Descripcion=" & Pone_Apos(T_Articulo_Desc.Text)
+                Tsql &= ",Cantidad=" & Val(Elimina_Comas(T_Cantidad.Text))
+                Tsql &= ",Iva=" & Val(Elimina_Comas(L_Porc_IVA.Text))
+                Tsql &= ",Iva_Importe=" & Val(Elimina_Comas(T_IVA_Importe.Text))
+                Tsql &= ",Moneda=" & Val(T_Moneda.Text)
+                Tsql &= ",Precio_Unitario=" & Val(Elimina_Comas(T_Precio_Unitario.Text))
+                Tsql &= ",Tipo_Cambio=" & Val(Elimina_Comas(T_Tipo_Cambio.Text))
+                Tsql &= ",Costo_total=" & Val(Elimina_Comas(T_Subtotal.Text))
+                Tsql &= ",PU_Moneda=" & Val(Elimina_Comas(T_PU_Moneda.Text))
+                Tsql &= ",Linea=" & Linea
+                Tsql &= ",Sub_Linea=" & SubLinea
+                Tsql &= ",UUID=" & Pone_Apos(L_UUID.Text)
+                Tsql &= " Where Compania=" & Session("Cia")
+                Tsql &= " and Obra=" & Pone_Apos(Session("Obra"))
+                Tsql &= " and Almacen=" & G.Almacen
+                Tsql &= " and E_S='E'"
+                Tsql &= " and Lote=" & Val(L_Lote.Text.Trim)
+                Tsql &= " and Partida=" & Val(L_Partida.Text)
+                G.com.CommandText = Tsql
+                G.com.Transaction = otransaccion
+                G.com.ExecuteNonQuery()
+
+                Tsql = "Update Movimientos_Entradas set Movimiento=" & Val(T_Movimiento.Text)
+                Tsql &= ",Remision_Factura=" & Pone_Apos(T_Remision_Factura.Text)
+                Tsql &= ",Referencia=" & Pone_Apos(T_Referencia.Text)
+                Tsql &= ",Proveedor=" & Val(T_Proveedor.Text)
+                Tsql &= " Where Compania=" & Session("Cia")
+                Tsql &= " and Obra=" & Pone_Apos(Session("Obra"))
+                Tsql &= " and Almacen=" & G.Almacen
+                Tsql &= " and E_S='E'"
+                Tsql &= " and Lote=" & Val(L_Lote.Text.Trim)
+                G.com.CommandText = Tsql
+                G.com.Transaction = otransaccion
+                G.com.ExecuteNonQuery()
+            End If
+            'Next
+            If Not IsNothing(otransaccion) Then otransaccion.Commit()
+            DesHabilita()
+        Catch ex As Exception
+            If Not otransaccion Is Nothing Then
+                otransaccion.Rollback() 'deshacer transaccion 
+            End If
+            Msg_Error(ex.Message)
+        Finally
+            G.cn.Close()
+        End Try
+        LLenaGrid()
+    End Sub
+   Private Function GuardarArchivo(file As HttpPostedFile) As String
+        Dim ruta As String = Server.MapPath("~/XML")
+        Dim archivo As String = String.Format("{0}\\{1}", ruta, file.FileName)
+        GuardarArchivo = ""
+        If Directory.Exists(ruta) Then
+            If IO.File.Exists(archivo) Then
+                IO.File.Delete(archivo)
+            End If
+            file.SaveAs(archivo)
+            GuardarArchivo = file.FileName
+        Else
+            Directory.CreateDirectory(ruta)
+        End If
+    End Function
+    Private Sub Cons_Partida_Secuencia(ByRef Partida As Integer, ByRef Num_Sec As Integer)
+        Dim G As Glo = CType(Session("G"), Glo)
+        Dim Tsql As String = ""
+        Tsql = "Select max(Numero_Secuencial) from Movimientos_Entradas Where Compania=" & Session("Cia")
+        Tsql &= " and Obra=" & Pone_Apos(Session("Obra"))
+        Tsql &= " and Almacen=" & G.Almacen
+        Tsql &= " and E_S='E'"
+        G.com.CommandText = Tsql
+        Num_Sec = Val(G.com.ExecuteScalar)
+        Tsql = "Select max(Partida) from Movimientos_Entradas Where Compania=" & Session("Cia")
+        Tsql &= " and Obra=" & Pone_Apos(G.Obra)
+        Tsql &= " and Almacen=" & G.Almacen
+        Tsql &= " and E_S='E'"
+        Tsql &= " and Lote=" & Val(L_Lote.Text)
+        G.com.CommandText = Tsql
+        Partida = Val(G.com.ExecuteScalar)
+    End Sub
+    Private Sub Cons_Linea_Sublinea(ByRef Linea As Integer, ByRef SubLinea As Integer)
+        Dim G As Glo = CType(Session("G"), Glo)
+        Dim Tsql As String = ""
+        Tsql = "Select * from Articulos Where Numero=" & Pone_Apos(T_Articulo.Text)
+        Tsql &= " and Cia=" & Val(Session("Cia")) & " and Obra=" & Pone_Apos(G.Obra)
+        G.com.CommandText = Tsql
+        G.dr = G.com.ExecuteReader
+        If G.dr.Read Then
+            Linea = G.dr("Lin_Numero")
+            SubLinea = G.dr("Sub_Numero")
+        End If
+        If G.dr.IsClosed = False Then G.dr.Close()
+    End Sub
+    Private Function Ult_fila(ByVal Articulo As String) As DataRow
+        Dim dtUltimaFila As New DataTable
+        Dim G As Glo = CType(Session("G"), Glo)
+        G.com.CommandText = "Select Top 1 * from Movimientos_Inventario Where Compania=" & Session("Cia")
+        G.com.CommandText &= " and Obra=" & Pone_Apos(G.Obra)
+        G.com.CommandText &= " and Almacen=" & Pone_Apos(G.Almacen)
+        G.com.CommandText &= " and Articulo=" & Pone_Apos(Articulo)
+        G.com.CommandText &= " and Partida>0"
+        G.com.CommandText &= " order by Numero_Secuencial Desc"
+        G.dr = G.com.ExecuteReader
+        dtUltimaFila.Load(G.dr)
+        If dtUltimaFila.Rows.Count > 0 Then Ult_fila = dtUltimaFila.Rows(0) Else Ult_fila = Nothing
+        If G.dr.IsClosed = False Then G.dr.Close()
+    End Function
+    Private Function Siguiente() As Integer
+        Dim G As Glo = CType(Session("G"), Glo)
+        Siguiente = 0
+        Try
+            G.cn.Open()
+            G.Tsql = "Select max(Partida) from Movimientos_Entradas Where Compania=" & Session("Cia")
+            G.Tsql &= " and Obra=" & Pone_Apos(G.Obra)
+            G.Tsql &= " and Almacen=" & G.Almacen
+            G.Tsql &= " and E_S='E'"
+            G.Tsql &= " and Lote=" & Val(L_Lote.Text)
+            G.com.CommandText = G.Tsql
+            L_Partida.Text = Val(G.com.ExecuteScalar.ToString) + 1
+        Catch ex As Exception
+            ' Msg_Error(ex.Message.ToString)
+        Finally
+            G.cn.Close()
+        End Try
+    End Function
+    Protected Sub Ima_Salir_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles Ima_Regresa.Click
+        Dim atras As String=Request.QueryString("Atras")
+        If atras = "C_Entradas_XML" Then
+            Response.Redirect("~/C_Entradas_XML.aspx")
+        Else
+            Response.Redirect("~/C_Entradas.aspx")
+
+        End If
+    End Sub
+    Private Sub Calcula_Unitario()
+        Dim Tw_Trabajo1 As Double
+        Dim Tw_Trabajo As Double
+        Tw_Trabajo = Elimina_Comas(T_Subtotal.Text)
+        Tw_Trabajo1 = Elimina_Comas(T_Cantidad.Text)
+        If Tw_Trabajo1 > 0 Then
+            Tw_Trabajo = For_Pan_Lib(Tw_Trabajo / Tw_Trabajo1, 2)
+        Else
+            Tw_Trabajo = 0
+        End If
+        T_Precio_Unitario.Text = Tw_Trabajo
+    End Sub
+    Protected Sub T_Cantidad_TextChanged(sender As Object, e As System.EventArgs) Handles T_Cantidad.TextChanged, T_Subtotal.TextChanged
+        Dim Foc As TextBox = CType(sender, TextBox)
+        T_Precio_Unitario.Text = For_Pan_Lib(Val(Elimina_Comas(T_Subtotal.Text.Trim)) / Val(Elimina_Comas(T_Cantidad.Text.Trim)), 7)
+        T_IVA_Importe.Text = For_Pan_Lib(Val(Elimina_Comas(T_Subtotal.Text.Trim)) * (Val(Elimina_Comas(L_Porc_IVA.Text.Trim)) / 100), 2)
+        If Val(T_Moneda.Text) = 0 Then
+            T_Tipo_Cambio.Text = 0
+            T_PU_Moneda.Text = 0
+        Else
+            Dim PU_Moneda As Double = Val(Elimina_Comas(T_PU_Moneda.Text))
+            Dim Tipo_Cambio As Double = Val(Elimina_Comas(T_Tipo_Cambio.Text))
+            Dim Precio_Unitario As Double = PU_Moneda * Tipo_Cambio
+            Dim Cantidad As Double = Val(Elimina_Comas(T_Cantidad.Text))
+            Dim Subtotal As Double = Val(Elimina_Comas(T_Subtotal.Text.Trim))
+            Dim Porc_Iva As Double = Val(Elimina_Comas(L_Porc_IVA.Text)) / 100
+            'T_Precio_Unitario.Text = For_Pan_Lib(Precio_Unitario, 7)
+            T_Precio_Unitario.Text = For_Pan_Lib((Val(Elimina_Comas(T_Subtotal.Text.Trim)) * Tipo_Cambio) / Val(Elimina_Comas(T_Cantidad.Text.Trim)), 7)
+            T_Subtotal.Text = For_Pan_Lib(Subtotal, 2)
+            T_IVA_Importe.Text = For_Pan_Lib(Subtotal * Porc_Iva, 2)
+        End If
+        If Foc Is T_Cantidad Then
+            T_Subtotal.Focus()
+        Else
+            T_IVA_Importe.Focus()
+        End If
+        'T_IVA_Importe = For_Pan_Lib((Elimina_Comas(T_Subtotal.Text)) * (T_IVA_Importe.Text / 100), 2)
+        'Calcula_Unitario()
+    End Sub
+    Protected Sub T_PU_Moneda_TextChanged(sender As Object, e As System.EventArgs) Handles T_PU_Moneda.TextChanged, T_Tipo_Cambio.TextChanged
+        If Val(T_Moneda.Text) > 0 Then
+            Dim PU_Moneda As Double = Val(Elimina_Comas(T_PU_Moneda.Text))
+            Dim Tipo_Cambio As Double = Val(Elimina_Comas(T_Tipo_Cambio.Text))
+            Dim Precio_Unitario As Double = PU_Moneda * Tipo_Cambio
+            Dim Cantidad As Double = Val(Elimina_Comas(T_Cantidad.Text))
+            Dim Subtotal As Double = Precio_Unitario * Cantidad
+            Dim Porc_Iva As Double = Val(Elimina_Comas(L_Porc_IVA.Text)) / 100
+            T_Precio_Unitario.Text = For_Pan_Lib(Precio_Unitario, 7)
+
+            T_Subtotal.Text = For_Pan_Lib(Subtotal, 2)
+            T_IVA_Importe.Text = For_Pan_Lib(Subtotal * Porc_Iva, 2)
+        End If
+    End Sub
+    Protected Sub T_Moneda_TextChanged(sender As Object, e As System.EventArgs) Handles T_Moneda.TextChanged
+        T_Moneda_Desc.Text = Busca_Cat("MONEDA", T_Moneda.Text)
+        T_Precio_Unitario.Focus()
+        If Val(T_Moneda.Text) <> 0 Then
+            T_Tipo_Cambio.Enabled = True
+        Else
+            T_Tipo_Cambio.Enabled = False
+
+        End If
+    End Sub
+    Protected Sub T_Movimiento_TextChanged(sender As Object, e As System.EventArgs) Handles T_Movimiento.TextChanged
+        Dim G As Glo = CType(Session("G"), Glo)
+        Try
+            G.cn.Open()
+            G.Tsql = "Select Numero,Descripcion,Proveedor,Centro_Costos,Almacen_Destino "
+            G.Tsql &= "from Clave_Movimiento_Inventario "
+            G.Tsql &= "Where Entradas=1 and baja<>'*' and Numero=" & Val(T_Movimiento.Text)
+            G.com.CommandText = G.Tsql
+            G.dr = G.com.ExecuteReader()
+            If G.dr.Read Then
+                T_Movimiento_Desc.Text = G.dr("Descripcion")
+                If G.dr("Proveedor") = True Then
+                    divProveedor.Visible = True
+                Else
+                    divProveedor.Visible = False
+                    T_Proveedor.Text = "0"
+                    T_Proveedor_Desc.Text = ""
+                End If
+            Else
+                T_Proveedor.Text = "0"
+                T_Proveedor_Desc.Text = ""
+            End If
+            T_Fecha.Focus()
+        Catch ex As Exception
+            Msg_Error(ex.Message.ToString)
+        Finally
+            G.cn.Close()
+        End Try
+    End Sub
+
+    Protected Sub Ima_Imprimir_Click(sender As Object, e As System.EventArgs) Handles Ima_Imprimir.Click
+        Dim G As Glo = CType(Session("G"), Glo)
+        Dim dt As New DataTable
+        Try
+            G.cn.Open()
+            G.com.CommandText = "Select Lote,Partida,Fecha_Lote,Articulo,Descripcion,Cantidad,Almacen,Centro_Costos,Referencia"
+            G.com.CommandText &= " from Movimientos_Entradas Where Partida>0 and E_S='E' and Compania=" & Session("Cia") & " and Obra=" & Pone_Apos(G.Obra)
+            G.com.CommandText &= " and Lote=" & Val(L_Lote.Text.Trim)
+            G.com.CommandText &= " and E_S='E'"
+            G.dr = G.com.ExecuteReader
+            dt.Load(G.dr)
+            If G.dr.IsClosed = False Then G.dr.Close()
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        Finally
+            G.cn.Close()
+        End Try
+        If dt.Rows.Count = 0 Then Exit Sub
+        Dim Reporte As New R_Movimientos
+        Reporte.SetDataSource(dt)
+        Reporte.SetParameterValue("Fecha", Fecha_AMD(Now))
+        Reporte.SetParameterValue("Hora", Format(Now, "HH:mm:ss"))
+        Reporte.SetParameterValue("Empresa", G.RazonSocial)
+        'Response.Buffer = False
+        'Response.Clear()  'ClearContent, ClearHeaders'
+        Reporte.ExportToHttpResponse(ExportFormatType.PortableDocFormat, Response, True, "Movimientos_Entradas")
+        'Reporte.ExportToDisk(ExportFormatType.PortableDocFormat, Server.MapPath("./Trabajo/Movimientos_Entradas.pdf"))
+        'Response.Redirect("~/Descarga.aspx?filename=" & "./Trabajo/Movimientos_Entradas.pdf")
+    End Sub
+    Protected Sub Imprimir(ByVal Lote As Integer)
+        Dim G As Glo = CType(Session("G"), Glo)
+        Dim dt As New DataTable
+        Try
+            G.cn.Open()
+            G.com.CommandText = "Select Lote,Partida,Fecha_Lote,Articulo,Descripcion,Cantidad,Almacen,Centro_Costos,Referencia"
+            G.com.CommandText &= " from Movimientos_Entradas Where Compania=" & Session("Cia")
+            G.com.CommandText &= " and Obra=" & Pone_Apos(G.Obra)
+            G.com.CommandText &= " and Almacen=" & Val(G.Almacen)
+            G.com.CommandText &= " and Partida>0 and E_S='E' "
+            G.com.CommandText &= " and Lote=" & Val(Lote)
+            G.dr = G.com.ExecuteReader
+            dt.Load(G.dr)
+            If G.dr.IsClosed = False Then G.dr.Close()
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        Finally
+            G.cn.Close()
+        End Try
+        If dt.Rows.Count = 0 Then
+            Msg_Error("Lote actual no contiene partidas")
+            Exit Sub
+        End If
+        Dim Reporte As New R_Movimientos
+        Reporte.SetDataSource(dt)
+        Reporte.SetParameterValue("Fecha", Fecha_AMD(Now))
+        Reporte.SetParameterValue("Hora", Format(Now, "HH:mm:ss"))
+        Reporte.SetParameterValue("Empresa", G.RazonSocial)
+        'Response.Buffer = False
+        'Response.Clear()  'ClearContent, ClearHeaders'
+        'Reporte.ExportToHttpResponse(ExportFormatType.PortableDocFormat, Response, True, "Movimientos_Entradas")
+        Reporte.ExportToDisk(ExportFormatType.PortableDocFormat, Server.MapPath("./Trabajo/Entrada_" & Lote & ".pdf"))
+        Response.Redirect("~/Reporte_Descarga.aspx?filename=" & "Entrada_" & Lote)
+    End Sub
+    Protected Sub Ima_Incorporar_Click(sender As Object, e As System.EventArgs) Handles Ima_Incorporar.Click
+        Response.Redirect("~/C_Incorpora_Orden.aspx?Lote=" & Val(L_Lote.Text) & "&Fecha_Lote=" & L_Fecha_Lote.Text.Trim)
+    End Sub
+    Protected Sub T_Articulo_TextChanged(sender As Object, e As System.EventArgs) Handles T_Articulo.TextChanged
+        T_Articulo_Desc.Text = Busca_Cat("ARTICULO", T_Articulo.Text)
+        T_Cantidad.Focus()
+    End Sub
+
+
+
+    Protected Sub T_Proveedor_TextChanged(sender As Object, e As System.EventArgs) Handles T_Proveedor.TextChanged
+        T_Proveedor_Desc.Text = Busca_Cat("PROVEEDOR", T_Proveedor.Text)
+        T_RFC.Text = Busca_Cat("PROVEEDOR_RFC", T_Proveedor.Text)
+        T_Articulo.Focus()
+    End Sub
+
+    Protected Sub Ima_Procesar_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles Ima_Procesar.Click
+        Archivo_Imprimir = "Partidas"
+        Pnl_Preguntas.Visible = True
+        Div.Attributes.Add("Class", "Bloque_Fondo")
+        ''Dim sUrl As String = "Visor_Reporte.aspx?REPORTE=ENTRADAS_ALMACEN&LOTE=" & Val(L_Lote.Text) & ""
+        ''Dim sScript As String = "<script language =javascript> "
+        ''sScript += "window.open('" & sUrl & "');"
+        ''sScript += "</script> "
+        ''Response.Write(sScript)
+
+
+        'Dim G As Glo = CType(Session("G"), Glo)
+        'Dim dtLote As New DataTable
+        'Dim Tsql As String = ""
+        'Dim Partida, Num_Sec As Integer
+        'Dim Lista As New ArrayList
+        ' Dim NLote As Integer = 0
+        'Dim UUID As String = ""
+        'Try
+        '    G.cn.Open()
+        '    G.com.CommandText = "Select * from Movimientos_Entradas "
+        '    G.com.CommandText &= " Where Compania=" & Session("Cia")
+        '    G.com.CommandText &= " and Obra=" & Pone_Apos(G.Obra)
+        '    G.com.CommandText &= " and Almacen=" & Val(G.Almacen)
+        '    G.com.CommandText &= " and E_S='E'"
+        '    G.com.CommandText &= " and Lote=" & Val(L_Lote.Text.Trim)
+        '    G.dr = G.com.ExecuteReader
+        '    dtLote.Load(G.dr)
+        '    If G.dr.IsClosed = False Then G.dr.Close()
+
+        '    Tsql = "Select max(Numero_Secuencial) from Movimientos_Inventario Where Compania=" & Session("Cia")
+        '    Tsql &= " and Obra=" & Pone_Apos(Session("Obra"))
+        '    Tsql &= " and Almacen=" & G.Almacen
+        '    G.com.CommandText = Tsql
+        '    Num_Sec = Val(G.com.ExecuteScalar.ToString)
+
+        '    If dtLote.Rows.Count > 1 Then
+        '        For Each f As DataRow In dtLote.Rows
+        '            If f("Partida") = 0 Then UUID = f("UUID")
+        '            Dim fila As DataRow = Ult_fila(f("Articulo"))
+        '            Num_Sec += 1
+        '            Tsql = "Insert into Movimientos_Inventario(Compania,Obra,Almacen,E_S,Lote,Partida,Numero_Secuencial,Fecha_Lote,Movimiento,Articulo,Descripcion,Cantidad,"
+        '            Tsql &= "Iva,Iva_Importe,Remision_Factura,Referencia,Moneda,Precio_Unitario,Tipo_Cambio,Proveedor,Costo_total,PU_Moneda,Linea,Sub_Linea,Existencia,Valor_Inventario"
+        '            Tsql &= ",Centro_Costos,UUID) values "
+        '            Tsql &= "(" & f("Compania")
+        '            Tsql &= "," & Pone_Apos(f("Obra"))
+        '            Tsql &= "," & f("Almacen")
+        '            Tsql &= "," & Pone_Apos(f("E_S"))
+        '            Tsql &= "," & f("Lote")
+        '            NLote = f("Lote")
+        '            Tsql &= "," & Partida
+        '            Tsql &= "," & Num_Sec
+        '            Tsql &= "," & Pone_Apos(f("Fecha_Lote"))
+        '            Tsql &= "," & Val(f("Movimiento"))
+        '            Tsql &= "," & Pone_Apos(f("Articulo"))
+        '            Tsql &= "," & Pone_Apos(f("Descripcion"))
+        '            Tsql &= "," & Val(Elimina_Comas(f("Cantidad")))
+        '            Tsql &= "," & Val(Elimina_Comas(f("Iva")))
+        '            Tsql &= "," & Val(Elimina_Comas(f("IVA_Importe")))
+        '            Tsql &= "," & Pone_Apos(f("Remision_Factura"))
+        '            Tsql &= "," & Pone_Apos(f("Referencia"))
+        '            Tsql &= "," & Val(f("Moneda"))
+        '            Tsql &= "," & Val(Elimina_Comas(f("Precio_Unitario")))
+        '            Tsql &= "," & Val(f("Tipo_Cambio"))
+        '            Tsql &= "," & Val(f("Proveedor"))
+        '            Tsql &= "," & Val(Elimina_Comas(f("Costo_total")))
+        '            Tsql &= "," & Val(Elimina_Comas(f("PU_Moneda")))
+        '            Tsql &= "," & Val(Elimina_Comas(f("Linea")))
+        '            Tsql &= "," & Val(Elimina_Comas(f("Sub_Linea")))
+        '            If IsNothing(fila) Then
+        '                Tsql &= "," & f("Cantidad")
+        '                Tsql &= "," & Format(f("Cantidad") * f("Precio_Unitario"), "00.0000")
+        '                Tsql &= "," & f("Centro_Costos")
+        '            Else
+        '                Tsql &= "," & fila("Existencia") + f("Cantidad")
+        '                Tsql &= "," & Format((f("Cantidad") * f("Precio_Unitario")) + fila("Valor_Inventario"), "00.0000")
+        '                Tsql &= "," & f("Centro_Costos")
+        '            End If
+        '            Tsql &= "," & Pone_Apos(UUID) & ")"
+        '            Lista.Add(Tsql)
+        '            Partida += 1
+        '        Next
+        '        Tsql = "Delete from Movimientos_Entradas "
+        '        Tsql &= " Where Compania=" & Session("Cia")
+        '        Tsql &= " and Obra=" & Pone_Apos(G.Obra)
+        '        Tsql &= " and Almacen=" & G.Almacen
+        '        Tsql &= " and E_S='E'"
+        '        Tsql &= " and Lote=" & Val(L_Lote.Text.Trim)
+        '        Lista.Add(Tsql)
+        '    Else
+        '        Msg_Error("No existen entradas") : Exit Sub
+        '    End If
+        '    If EjecutaTransaccion(Lista, G.cn) = False Then
+        '        Msg_Error("No se actualizaron las entradas")
+        '    Else
+        '        Msg_Error("Se procesaron con éxito las Entradas")
+        '    End If
+        'Catch ex As Exception
+        '    Msg_Error("Error " + ex.Message)
+        'Finally
+        '    G.cn.Close()
+        'End Try
+        'Imprimir(NLote)
+
+        'Imprimir(Val(L_Lote.Text))
+    End Sub
+    Public Function EjecutaTransaccion(ByVal ListaSentencias As ArrayList, ByRef cn As SqlConnection) As Boolean
+        EjecutaTransaccion = False
+        Dim com As New SqlCommand("", cn)
+        Dim otransaccion As SqlTransaction = Nothing
+        Dim sentencia As String
+        Try
+            otransaccion = cn.BeginTransaction
+            com.Transaction = otransaccion
+            For Each strSentencia In ListaSentencias
+                sentencia = strSentencia.ToString()
+                com.CommandText = sentencia.ToString()
+                com.Transaction = otransaccion
+                com.ExecuteNonQuery()
+            Next
+            otransaccion.Commit()
+            Return True
+        Catch ex As Exception
+            If Not otransaccion Is Nothing Then
+                otransaccion.Rollback() 'deshacer transaccion 
+            End If
+            Return False
+        End Try
+    End Function
+
+
+    Protected Sub Ima_Imp_Entrada_Click(sender As Object, e As System.EventArgs) Handles Ima_Imp_Entrada.Click
+        Archivo_Imprimir = "Detalle"
+        Pnl_Preguntas.Visible = True
+        Div.Attributes.Add("Class", "Bloque_Fondo")
+    End Sub
+
+    Protected Sub RB_Tipo_Impresion_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles RB_Tipo_Impresion.SelectedIndexChanged
+        'Dim G As Glo = CType(Session("G"), Glo)
+        'Dim curItem As String = RB_Tipo_Impresion.SelectedItem.Value
+        'If curItem = ("Impresora") Then
+        '    MsgBox("Impresora")
+        '    Div.Attributes.Remove("Class")
+        'End If
+        'If curItem = ("Excel") Then
+        '    MsgBox("Excel")
+        '    Div.Attributes.Remove("Class")
+        'End If
+        'If curItem = ("Vista_Previa") Then
+        '    'MsgBox("Vista Previa")
+        '    Div.Attributes.Remove("Class")
+        '    Response.Redirect("~/Visor_Reporte.aspx?REPORTE=NOTA_ENTRADA&LOTE=" & Val(L_Lote.Text))
+        'End If
+        'Pnl_Preguntas.Visible = False
+    End Sub
+
+    Protected Sub Btn_Cancelar_Lib_Click(sender As Object, e As System.EventArgs) Handles Btn_Cancelar_Lib.Click
+        Pnl_Preguntas.Visible = False
+        Div.Attributes.Remove("Class")
+    End Sub
+
+    Protected Sub Btn_Aceptar_Lib_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles Btn_Aceptar_Lib.Click
+        Dim curItem As String = RB_Tipo_Impresion.SelectedItem.Value
+        If curItem Is Nothing Then
+            MsgBox("No se ha seleccionado una opción de Impresión")
+            Exit Sub
+        End If
+        Pnl_Preguntas.Visible = False
+        Dim Impresora As String = ""
+        If curItem = ("Vista_Previa") Then
+            Impresora = ""
+            Div.Attributes.Remove("Class")
+            If Archivo_Imprimir = "Detalle" Then
+                Dim sUrl As String = "Visor_Reporte.aspx?REPORTE=NOTA_ENTRADA&LOTE=" & Val(L_Lote.Text) & ""
+                Dim sScript As String = "<script language =javascript> "
+                sScript += "window.open('" & sUrl & "');"
+                sScript += "</script> "
+                Response.Write(sScript)
+            Else
+                Dim sUrl As String = "Visor_Reporte.aspx?REPORTE=ENTRADAS_ALMACEN&LOTE=" & Val(L_Lote.Text) & ""
+                Dim sScript As String = "<script language =javascript> "
+                sScript += "window.open('" & sUrl & "');"
+                sScript += "</script> "
+                Response.Write(sScript)
+            End If
+        Else
+            Div.Attributes.Remove("Class")
+            Impresora &= "Impresora=S&"
+            If Archivo_Imprimir = "Detalle" Then
+                Dim sUrl As String = "Visor_Reporte.aspx?" & Impresora & "REPORTE=NOTA_ENTRADA&LOTE=" & Val(L_Lote.Text) & ""
+                Dim sScript As String = "<script language =javascript> "
+                sScript += "window.open('" & sUrl & "');"
+                sScript += "</script> "
+                Response.Write(sScript)
+            Else
+                Dim sUrl As String = "Visor_Reporte.aspx?" & Impresora & "REPORTE=ENTRADAS_ALMACEN&LOTE=" & Val(L_Lote.Text) & ""
+                Dim sScript As String = "<script language =javascript> "
+                sScript += "window.open('" & sUrl & "');"
+                sScript += "</script> "
+                Response.Write(sScript)
+            End If
+        End If
+    End Sub
+End Class
