@@ -50,7 +50,7 @@ Partial Class Bus_Cat
         Select Case Catalogo
             Case "RESPONSABLE"
                 G.dt2.Columns.Add("Numero", Type.GetType("System.Int16")) : G.dt2.Columns("Numero").DefaultValue = 0
-                G.dt2.Columns.Add("Descripcion", Type.GetType("System.String")) : G.dt2.Columns("Descripcion").DefaultValue = ""
+                G.dt2.Columns.Add("Descrteipcion", Type.GetType("System.String")) : G.dt2.Columns("Descripcion").DefaultValue = ""
                 Dim col1 As New BoundField
                 col1.HeaderText = "Nombre"
                 col1.DataField = "Descripcion"
@@ -161,6 +161,14 @@ Partial Class Bus_Cat
                 Cabecera.Columns.Add(col1)
             Case "PROVEEDOR"
                 G.dt2.Columns.Add("Numero", Type.GetType("System.Int64")) : G.dt2.Columns("Numero").DefaultValue = 0
+                G.dt2.Columns.Add("Descripcion", Type.GetType("System.String")) : G.dt2.Columns("Descripcion").DefaultValue = ""
+                Dim col1 As New BoundField
+                col1.HeaderText = "Razon_Social"
+                col1.DataField = "Descripcion"
+                GridView1.Columns.Add(col1)
+                Cabecera.Columns.Add(col1)
+            Case "PEDIDO"
+                G.dt2.Columns.Add("Numero", Type.GetType("System.String")) : G.dt2.Columns("Numero").DefaultValue = 0
                 G.dt2.Columns.Add("Descripcion", Type.GetType("System.String")) : G.dt2.Columns("Descripcion").DefaultValue = ""
                 Dim col1 As New BoundField
                 col1.HeaderText = "Razon_Social"
@@ -547,6 +555,12 @@ Partial Class Bus_Cat
                     If T_Descipcion.Text.Trim <> "" Then
                         G.Tsql &= " and Razon_Social like '%" & T_Descipcion.Text & "%'"
                     End If
+                Case "PEDIDO"
+                    G.Tsql = "Select TOP(200) Pedido as Numero,Razon_Social as Descripcion"
+                    G.Tsql &= " from Encab_Pedido "
+                    If Val(T_Numero.Text) > 0 Then
+                        G.Tsql &= " where Pedido =" & Val(T_Numero.Text)
+                    End If
                 Case "TERCERO"
                     G.Tsql = "Select TOP(200) Tercero as Numero,Descripcion"
                     G.Tsql &= " from Terceros Where Cia=" & Val(Session("Cia"))
@@ -871,11 +885,10 @@ Partial Class Bus_Cat
                     Hiper.Attributes.Add("onclick", "javascript:Compañia(" + e.Row.Cells(1).Text + ",'" + HttpUtility.HtmlDecode(e.Row.Cells(2).Text) + "')")
                 Case "CLIENTE"
                     Hiper.Attributes.Add("onclick", "javascript:cliente(" + e.Row.Cells(1).Text + ",'" + HttpUtility.HtmlDecode(e.Row.Cells(2).Text) + "')")
-
-
+                Case "PEDIDO"
+                    Hiper.Attributes.Add("onclick", "javascript:Pedido(" + e.Row.Cells(1).Text + ",'" + HttpUtility.HtmlDecode(e.Row.Cells(2).Text) + "')")
                 Case "RESPONSABLE"
                     Hiper.Attributes.Add("onclick", "javascript:Responsable(" + e.Row.Cells(1).Text + ",'" + HttpUtility.HtmlDecode(e.Row.Cells(2).Text) + "')")
-
                 Case "AREA"
                     If Numero = "" Then
                         Hiper.Attributes.Add("onclick", "javascript:Area(" + e.Row.Cells(1).Text + ",'" + HttpUtility.HtmlDecode(e.Row.Cells(2).Text) + "')")

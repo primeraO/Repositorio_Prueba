@@ -381,6 +381,10 @@ Public Module Cla_Inf
                     Tsql &= " and Almacen=" & Val(Clave)
                 Case "MOVIMIENTO"
                     Tsql = "Select Descripcion from Clave_Movimiento_Inventario where Numero=" & Pone_Apos(Clave)
+                Case "CLIENTE"
+                    Tsql = "Select Razon_Social from Cliente where Numero = " & Pone_Apos(Clave)
+                Case "PEDIDO"
+                    Tsql = "Select Razon_Social from Encab_Pedido where Pedido = " & Pone_Apos(Clave)
                 Case "MONEDA"
                     Tsql = "Select Descripcion"
                     Tsql &= " from Moneda"

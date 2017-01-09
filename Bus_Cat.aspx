@@ -18,6 +18,11 @@
     window.onunload = OnClose;
 </script> --%>
         <script type="text/javascript">
+            function Pedido(value1, value2) {
+                var retvalue1 = value1;
+                window.opener.Pedido(value1, value2);
+                window.close();
+            }
             function Responsable(value1, value2) {
                 var retvalue1 = value1;
                 var retvalue2 = value2;
