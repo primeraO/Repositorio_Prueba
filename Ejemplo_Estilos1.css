@@ -342,6 +342,9 @@ ol ol {
   margin-right: 2px;
   border: 1px solid transparent;
   border-radius: 4px 4px 0 0;
+    top: 0px;
+    left: 0px;
+    width: 75px;
 }
 .nav-tabs > li > a:hover {
   border-color: #eee #eee #ddd;

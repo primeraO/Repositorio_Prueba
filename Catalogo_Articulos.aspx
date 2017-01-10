@@ -15,46 +15,72 @@
         alert("Error al abrir archivo.js");
        </script>
        <script type="text/javascript">
-           function Linea(elemValue1, elemValue2) {
-               document.getElementById('<%= T_Linea.ClientID %>').value = elemValue1;
-               document.getElementById('<%= T_Desc_Linea.ClientID %>').value = elemValue2;
-              __doPostBack("T_Linea", "TextChanged");
-           }
-           function Marca(elemValue1, elemValue2) {
-               document.getElementById('<%= T_Marca.ClientID %>').value = elemValue1;
-               document.getElementById('<%= T_Desc_Marca.ClientID %>').value = elemValue2;
-               __doPostBack("T_Marca", "TextChanged");
-           }
-           function Sub_Linea(elemValue1, elemValue2) {
-               document.getElementById('<%= T_SubLinea.ClientID %>').value = elemValue1;
-               document.getElementById('<%= T_Desc_SubLinea.ClientID %>').value = elemValue2;
-               __doPostBack("T_SubLinea", "TextChanged");
-           }
-           function Articulo(elemValue1, elemValue2) {
-               document.getElementById('<%= T_Referencia_Sustituta.ClientID %>').value = elemValue1;
-               document.getElementById('<%= T_Referencia_Sustituta_Desc.ClientID %>').value = elemValue2;
-               __doPostBack("T_Referencia_Sustituta", "TextChanged");
-           }
-           function Lineas(elemValue1, elemValue2) {
-               document.getElementById('<%= TB_Grupo.ClientID %>').value = elemValue1;
-               __doPostBack("TB_Grupo", "TextChanged");
-           }
-           function Sub_Linea2(elemValue1, elemValue2) {
-               document.getElementById('<%= TB_SubGrupo.ClientID %>').value = elemValue1;
-               __doPostBack("TB_SubGrupo", "TextChanged");
-           }
-          function Monedas(elemValue1, elemValue2, Num_Prov) {
-            if (Num_Prov == "1") {
-                document.getElementById('<%= T_Moneda1.ClientID %>').value = elemValue1;
-                document.getElementById('<%= T_Moneda_Desc1.ClientID %>').value = elemValue2;
-                __doPostBack("T_Moneda1", "TextChanged");
-            }
+          
+               function showimagepreview(input) {
 
-        }
+                   if (input.files && input.files[0]) {
+                       var reader = new FileReader();
+                       reader.onload = function (e) {
+
+                           document.getElementById("list").innerHTML = ['<img class="thumb" Width="500px" Height="500px" src="', e.target.result, '" />'].join('');
+                       }
+                       reader.readAsDataURL(input.files[0]);
+                   }
+               }
+
+               function showimagepreview2(input) {
+
+                   if (input.files && input.files[0]) {
+                       var reader = new FileReader();
+                       reader.onload = function (e) {
+
+                           document.getElementById("list2").innerHTML = ['<img class="thumb" Width="500px" Height="500px" src="', e.target.result, '" />'].join('');
+                       }
+                       reader.readAsDataURL(input.files[0]);
+                   }
+               }  
+        
+               </script>
+     <script type="text/javascript">
+         function Linea(elemValue1, elemValue2) {
+             document.getElementById('<%= T_Linea.ClientID %>').value = elemValue1;
+             document.getElementById('<%= T_Desc_Linea.ClientID %>').value = elemValue2;
+             __doPostBack("T_Linea", "TextChanged");
+         }
+         function Marca(elemValue1, elemValue2) {
+             document.getElementById('<%= T_Marca.ClientID %>').value = elemValue1;
+             document.getElementById('<%= T_Desc_Marca.ClientID %>').value = elemValue2;
+             __doPostBack("T_Marca", "TextChanged");
+         }
+         function Sub_Linea(elemValue1, elemValue2) {
+             document.getElementById('<%= T_SubLinea.ClientID %>').value = elemValue1;
+             document.getElementById('<%= T_Desc_SubLinea.ClientID %>').value = elemValue2;
+             __doPostBack("T_SubLinea", "TextChanged");
+         }
+         function Articulo(elemValue1, elemValue2) {
+             document.getElementById('<%= T_Referencia_Sustituta.ClientID %>').value = elemValue1;
+             document.getElementById('<%= T_Referencia_Sustituta_Desc.ClientID %>').value = elemValue2;
+             __doPostBack("T_Referencia_Sustituta", "TextChanged");
+         }
+         function Lineas(elemValue1, elemValue2) {
+             document.getElementById('<%= TB_Grupo.ClientID %>').value = elemValue1;
+             __doPostBack("TB_Grupo", "TextChanged");
+         }
+         function Sub_Linea2(elemValue1, elemValue2) {
+             document.getElementById('<%= TB_SubGrupo.ClientID %>').value = elemValue1;
+             __doPostBack("TB_SubGrupo", "TextChanged");
+         }
+         function Monedas(elemValue1, elemValue2, Num_Prov) {
+             if (Num_Prov == "1") {
+                 document.getElementById('<%= T_Moneda1.ClientID %>').value = elemValue1;
+                 document.getElementById('<%= T_Moneda_Desc1.ClientID %>').value = elemValue2;
+                 __doPostBack("T_Moneda1", "TextChanged");
+             }
+
+         }
           
     </script>
-    
-      <script type="text/javascript" src="jquery.min.js"></script>
+      
     <link rel="shortcut icon"  href="~/Imagenes/interop.ico"/>
     
     <style type="text/css">
@@ -124,7 +150,7 @@
     </head>
 <body>
     <center>    
-        <form id="form1" runat="server" style="width: 984px" method="post" enctype="multipart/form-data" >
+        <form id="form1" runat="server" style="width: 984px">
            <asp:ScriptManager ID="ScriptManager1" runat="server">
                 </asp:ScriptManager>
         
@@ -374,11 +400,12 @@
 		                <li class="active"><a href="#Protab1" data-toggle="tab">Articulos</a></li>
 		                <li><a href="#Protab2" data-toggle="tab">Ventas</a></li>
 		                <li><a href="#Protab3" data-toggle="tab">F. Tecnica</a></li>
+		                <li><a href="#Protab4" data-toggle="tab">Foto</a></li>
                     </ul>
 
 	                <div class="tab-content">
                         <%--PROVEEDOR 1--%>
-		                <div class="tab-pane fade " id="Protab1">
+		                <div class="tab-pane fade in active" id="Protab1">
                         <div class="panel-body">
                         <asp:UpdatePanel ID="UpdatePane2" runat="server" UpdateMode="Conditional">
                                             <ContentTemplate>
@@ -740,35 +767,11 @@
                                                         <td>
                                                             <asp:TextBox ID="T_Multiplos" runat="server" CssClass="form-control" 
                                                                 placeholder="" TabIndex="13" Width="63px"></asp:TextBox>
-                                                        </td>
-                                                        <td>
-                                                            &nbsp;</td>
-                                                        <td>
-
-                                                        </td>
-                                                        <td width="90">
-                                                            &nbsp;</td>
-                                                        <td width="110">
-                                                            &nbsp;</td>
-                                                        <td width="90">
-                                                            &nbsp;</td>
-                                                        <td>
-                                                            &nbsp;</td>
+                                                        </td>                                             
+                                                       
+                                                       
                                                     </tr>
-                                                    <tr>
-                                                        <td>
-                                                            &nbsp;</td>
-                                                        <td>
-                                                            &nbsp;</td>
-                                                        <td>
-                                                            &nbsp;</td>
-                                                        <td>
-                                                            &nbsp;</td>
-                                                        <td>
-                                                            &nbsp;</td>
-                                                        <td>
-                                                            &nbsp;</td>
-                                                    </tr>
+                                                 
                                                 </table>
                                                 </td>
                                 </div>
@@ -778,7 +781,7 @@
                         </div>
                         <%--FINAL PROVEEDOR 2--%>
                          <%--FICHA TECNICA--%>
-                        <div class="tab-pane fade in active" id="Protab3">
+                        <div class="tab-pane fade " id="Protab3">
                         <div class="panel-body">
         <%--
                           <asp:UpdatePanel ID="UpdatePanel1" runat="server">
@@ -801,24 +804,25 @@
                                     </table>
                                    <td width="10%">
                                               <br />
-                                                <textarea ID="T_Ficha_Tecnica" name="S1" rows="2" runat="server" 
-                                                  class="form-control"></textarea></td>
+                                                </td>
                                     <table style="width:100%;">
                                         <tr>
                                             <td>
                                             </td>
                                             <td style="text-align: left">
                                                 
-                                                <asp:Label ID="Label68" runat="server" AssociatedControlId="files" 
+                                                <asp:Label ID="Label68" runat="server" AssociatedControlId="Ficha_Tecnica" 
                                                     CssClass="Textos_Azules" Text="Seleccionar una imagen:" />
                                                 <br />
                                             </td>
                                             <td class="style15" style="text-align: left">
-                                                <input ID="files" runat="server" name="files[]" type="file"></input></td>
+                                                                            
+                                                <input type="file" id="Ficha_Tecnica" runat="server"  onchange="showimagepreview(this)" /> 
+                                               </td>
                                             <td>
                                                 &nbsp;</td>
                                             <td>
-                                                <asp:HiddenField ID="Nombre_Imagen" runat="server" />
+                                                <asp:HiddenField ID="Nombre_Ficha" runat="server" />
                                             </td>
                                         </tr>
                                         
@@ -833,12 +837,18 @@
                                                 &nbsp;</td>
                                         </tr>
                                     </table>
-                                    <div ID="list" runat="server">
-                                <%--   <asp:Image ID='Image2' ImageUrl='Handler.ashx?img=C:/Fichas_Tecnicas/el sueño.jpg' runat='server'/>--%>
-                                        
-                                    </div>
+                                    <table style="width:100%;">
+                                        <tr>
+                                            <td>
+                                                <div ID="list" runat="server">
+                                                  
+                                                    <%--   <asp:Image ID='Image2' ImageUrl='Handler.ashx?img=C:/Fichas_Tecnicas/el sueño.jpg' runat='server'/>--%>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
                                    
-                                    <asp:Label ID="Nom_Imagen" runat="server" CssClass="Textos_Azules"></asp:Label>
+                                    <asp:Label ID="Nom_ficha" runat="server" CssClass="Textos_Azules"></asp:Label>
                                    
                                     <br />
                                     
@@ -848,9 +858,96 @@
                             </div>
                         </div>
                         <%--FINAL FICHA TECNICA--%>
+                        <%--inicio foto--%>
+                         <div class="tab-pane fade " id="Protab4">
+                        <div class="panel-body">
+                            <%--
+                          <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                            <ContentTemplate>--%>
+                                <div>
+                                    <table style="width: 100%; border-bottom-style: solid; border-bottom-color: #3366FF;">
+                                        <tr>
+                                            <td width="432px">
+                                                &nbsp;
+                                            </td>
+                                            <td width="150px">
+                                                <asp:Label ID="Label3" runat="server" CssClass="Textos_Azules" 
+                                                    Text="Foto"></asp:Label>
+                                                &nbsp;
+                                            </td>
+                                            <td width="432px">
+                                                &nbsp;
+                                            </td>
+                                        </tr>
+                                    </table>
+                                   <td width="10%">
+                                              <br />
+                                             </td>
+                                    <table style="width:100%;">
+                                        <tr>
+                                            <td>
+                                            </td>
+                                            <td style="text-align: left">
+                                                
+                                                <asp:Label ID="Label4" runat="server" AssociatedControlId="file_fotos" 
+                                                    CssClass="Textos_Azules" Text="Seleccionar una imagen:" />
+                                                <br />
+                                            </td>
+                                            <td class="style15" style="text-align: left">
+                                            <input type="file" ID="file_fotos" runat="server"  onchange="showimagepreview2(this)" /> 
+                                                </td>
+                                            <td>
+                                                &nbsp;</td>
+                                            <td>
+                                                <asp:HiddenField ID="Nombre_Foto" runat="server" />
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td width="5%">
+                                                &nbsp;</td>
+                                            <td style="text-align: left" height="40" width="20%">
+                                                &nbsp;</td>
+                                            <td style="text-align: left">
+                                                &nbsp;</td>
+                                            <td width="5%">
+                                                &nbsp;</td>
+                                        </tr>
+                                    </table>
+                                    <table style="width:100%;">
+                                        <tr>
+                                            <td>
+                                                <div ID="list2" runat="server">
+                                                    
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                   
+                                    <asp:Label ID="Nom_Foto" runat="server" CssClass="Textos_Azules"></asp:Label>
+                                   
+                                    <br />
+                                    
+                                </div>
+                            <%-- </ContentTemplate>
+                                </asp:UpdatePanel>--%>
+                            </div>
+                        </div>
+                      <%--  final foto--%>
                     <br />
                 </asp:Panel>
              <asp:HiddenField ID="Movimiento" runat="server" />
+
+            </div>
+        
+        </div>
+
+
+       
+           <%--FINAL FICHA TECNICA--%>
+                    <br />
+                </asp:Panel>
+             <asp:HiddenField ID="HiddenField2" runat="server" />
 
             </div>
         
@@ -865,39 +962,10 @@
             </div>
         </ProgressTemplate>
     </asp:UpdateProgress>--%>
+   
         </form>
     </center>
-   <script type="text/javascript" language="javascript">
-       $(document).ready(function (evt) {
-           function archivo(evt) {
-               var files = evt.target.files; // FileList object
-
-               // Obtenemos la imagen del campo "file".
-               for (var i = 0, f; f = files[i]; i++) {
-                   //Solo admitimos imágenes.
-                   if (!f.type.match('image.*')) {
-                       continue;
-                   }
-
-                   var reader = new FileReader();
-
-                   reader.onload = (function (theFile) {
-                       return function (e) {
-                           // Insertamos la imagen
-                           document.getElementById("list").innerHTML = ['<img class="thumb" src="', e.target.result, '" title="', escape(theFile.name), '"/>'].join('');
-                       };
-                   })(f);
-
-                   reader.readAsDataURL(f);
-               }
-
-           }
-           document.getElementById('files').addEventListener('change', archivo, false);
-
-       });
-                                  
-                                        
-      </script>
+   
 </body>
 </html>
  

@@ -325,7 +325,9 @@ Partial Class Catalogo_Articulos
         T_Moneda1.Text = 0
         T_Lote_Minimo.Text = ""
         T_Multiplos.Text = ""
-        T_Ficha_Tecnica.InnerText = ""
+
+        Nombre_Ficha.Value = ""
+        Nombre_Foto.Value = ""
     End Sub
     'Private Function Siguiente() As Integer
     '    Dim G As Glo = CType(Session("G"), Glo)
@@ -351,7 +353,7 @@ Partial Class Catalogo_Articulos
         End If
         Return True
     End Function
-    Private Sub AñadeFilaGrid(ByVal Numero As String, ByVal Descripcion As String, ByVal Unidad_Medida As String, ByVal IVA As String, ByVal ruta As String)
+    Private Sub AñadeFilaGrid(ByVal Numero As String, ByVal Descripcion As String, ByVal Unidad_Medida As String, ByVal IVA As String, ByVal ruta_foto As String, ByVal ruta_ficha As String)
         Dim f As DataRow = Session("dt").NewRow()
         f("Numero") = Numero
         f("Art_Descripcion") = Descripcion
@@ -369,8 +371,8 @@ Partial Class Catalogo_Articulos
         f("Mon_Numero") = T_Moneda1.Text
         f("Lote_Minimo") = T_Lote_Minimo.Text
         f("Multiplos") = T_Multiplos.Text
-        f("Ruta_Foto") = ruta
-        f("Ficha_Tecnica") = T_Ficha_Tecnica.InnerText
+        f("Ruta_Foto") = ruta_foto
+        f("Ficha_Tecnica") = ruta_ficha
 
         'If CH_IEPS.Checked = True Then f("IEPS") = RB_Opciones.SelectedValue.ToString
         Session("dt").Rows.Add(f)
@@ -378,7 +380,7 @@ Partial Class Catalogo_Articulos
         GridView1.DataSource = Session("dt")
         GridView1.DataBind()
     End Sub
-    Private Sub CambiaFilaGrid(ByVal Numero As String, ByVal Descripcion As String, ByVal Unidad_Medida As String, ByVal IVA As String, ByVal ruta As String)
+    Private Sub CambiaFilaGrid(ByVal Numero As String, ByVal Descripcion As String, ByVal Unidad_Medida As String, ByVal IVA As String, ByVal ruta_foto As String, ByVal ruta_ficha As String)
         Dim clave(0) As String
         clave(0) = Numero
         Dim f As DataRow = Session("dt").Rows.Find(clave)
@@ -400,8 +402,8 @@ Partial Class Catalogo_Articulos
             f("Mon_Numero") = T_Moneda1.Text
             f("Lote_Minimo") = T_Lote_Minimo.Text
             f("Multiplos") = T_Multiplos.Text
-            f("Ruta_Foto") = ruta
-            f("Ficha_Tecnica") = T_Ficha_Tecnica.InnerText
+            f("Ruta_Foto") = ruta_foto
+            f("Ficha_Tecnica") = ruta_ficha
         End If
         GridView1.DataSource = Session("dt")
         GridView1.DataBind()
@@ -449,35 +451,77 @@ Partial Class Catalogo_Articulos
         GridView1.Visible = True
         Pnl_Grids.Visible = True
     End Sub
-   
 
+   
+    Private Sub Guardar_Ficha()
+        Dim ruta As String = "C:/images"
+        If Ficha_Tecnica.PostedFile Is Nothing Then
+            Msg_Error("Elija una imagen de ficha tecnica antes de guardar") : Exit Sub
+
+        End If
+        Dim mi_imagen As HttpPostedFile = Ficha_Tecnica.PostedFile
+
+        Dim ext As String
+        If Ficha_Tecnica.PostedFile Is Nothing Then
+            ext = ""
+        Else
+            ext = Ficha_Tecnica.PostedFile.FileName
+        End If
+        Dim formatos() As String = {"jpg", "jpeg", "bmp", "png", "gif"}
+        Nombre_Ficha.Value = mi_imagen.FileName.ToString
+
+        If mi_imagen.ContentLength > 0 Then
+            ext = ext.Substring(ext.LastIndexOf(".") + 1).ToLower()
+            If Array.IndexOf(formatos, ext) < 0 Then
+                Msg_Error("Formato de imagen inválido.") : Exit Sub
+            Else
+                Directory.CreateDirectory(ruta)
+                Dim tamaño As Integer = mi_imagen.ContentLength
+                Dim datos_img As Byte() = New Byte(tamaño) {}
+                mi_imagen.InputStream.Read(datos_img, 0, tamaño)
+                Guardar_Archivo(ruta & "/" & mi_imagen.FileName, datos_img)
+            End If
+        End If
+    End Sub
+    Private Sub Guardar_Foto()
+        If file_fotos.PostedFile Is Nothing Then
+            Msg_Error("Elija una imagen de articulo antes de guardar") : Exit Sub
+
+        End If
+        Dim ruta As String = "C:/images"
+        Dim mi_imagen As HttpPostedFile = file_fotos.PostedFile
+        Dim ext As String
+        If mi_imagen.ContentLength > 0 Then
+            ext = mi_imagen.FileName
+        Else
+            ext = ""
+        End If
+        Dim formatos() As String = {"jpg", "jpeg", "bmp", "png", "gif"}
+        Nombre_Foto.Value = mi_imagen.FileName.ToString
+
+        If mi_imagen.ContentLength > 0 Then
+            ext = ext.Substring(ext.LastIndexOf(".") + 1).ToLower()
+            If Array.IndexOf(formatos, ext) < 0 Then
+                Msg_Error("Formato de imagen inválido.") : Exit Sub
+            Else
+                Directory.CreateDirectory(ruta)
+                Dim tamaño As Integer = mi_imagen.ContentLength
+                Dim datos_img As Byte() = New Byte(tamaño) {}
+                mi_imagen.InputStream.Read(datos_img, 0, tamaño)
+                Guardar_Archivo(ruta & "/" & mi_imagen.FileName, datos_img)
+            End If
+        End If
+    End Sub
 
     Protected Sub Ima_Guarda_Click(sender As Object, e As System.EventArgs) Handles Ima_Guarda.Click
         Dim G As Glo = CType(Session("G"), Glo)
         Dim Tsql As String = ""
-        Dim ruta As String = "C:/Fichas_Tecnicas"
-        Dim mi_imagen As HttpPostedFile = files.PostedFile
-
         Try
-            
             If validar() = False Then Exit Sub
             If Movimiento.Value = "Alta" Then
-                If files.Value > "" Then
-                    'Msg_Error("Guardalo")
-                    Directory.CreateDirectory(ruta)
-                    Dim tamaño As Integer = mi_imagen.ContentLength
-                    Dim datos_img As Byte() = New Byte(tamaño) {}
-                    mi_imagen.InputStream.Read(datos_img, 0, tamaño)
-                    Guardar_Archivo(ruta & "/" & mi_imagen.FileName, datos_img)
-                Else
-                    Msg_Error("Seleccione una imagen antes de guardar.") : Exit Sub
-                End If
+                Guardar_Ficha()
+                Guardar_Foto()
                 G.cn.Open()
-                'Tsql = "Select Art_Descripcion from Articulos where Art_Descripcion=" & Pone_Apos(T_Descripcion.Text)
-                'G.com.CommandText = Tsql
-                'If Not G.com.ExecuteScalar Is Nothing Then
-                '    Msg_Error("Ya existe el Nombre del Articulos") : Exit Sub
-                'End If
                 Tsql = "Select Numero from Articulos where Numero=" & Pone_Apos(T_Numero.Text) & " and Empresa=" & Val(G.Empresa_Numero)
                 G.com.CommandText = Tsql
                 If Not G.com.ExecuteScalar Is Nothing Then
@@ -487,8 +531,8 @@ Partial Class Catalogo_Articulos
                 G.Tsql &= Val(G.Empresa_Numero)
                 G.Tsql &= "," & Pone_Apos(T_Numero.Text.Trim)
                 G.Tsql &= "," & Pone_Apos(T_Descripcion.Text.Trim)
-                G.Tsql &= "," & Pone_Apos(T_Ficha_Tecnica.InnerText.ToString)
-                G.Tsql &= "," & Pone_Apos(ruta & "/" & mi_imagen.FileName)
+                G.Tsql &= "," & Pone_Apos(Nombre_Ficha.Value.ToString)
+                G.Tsql &= "," & Pone_Apos(Nombre_Foto.Value.ToString)
                 G.Tsql &= "," & Val(T_Marca.Text.Trim)
                 G.Tsql &= "," & Val(T_Linea.Text.Trim)
                 G.Tsql &= "," & Val(T_SubLinea.Text.Trim)
@@ -508,19 +552,12 @@ Partial Class Catalogo_Articulos
                 G.Tsql &= "," & "''" & ")"
                 G.com.CommandText = G.Tsql
                 G.com.ExecuteNonQuery()
-                AñadeFilaGrid(T_Numero.Text.Trim, T_Descripcion.Text.Trim, T_UMedida.Text.Trim, T_IVA.Text.Trim, ruta & "/" & mi_imagen.FileName)
+                AñadeFilaGrid(T_Numero.Text.Trim, T_Descripcion.Text.Trim, T_UMedida.Text.Trim, T_IVA.Text.Trim, Nombre_Foto.Value, Nombre_Ficha.Value.ToString)
                 LimpiaCampos()
             End If
             If Movimiento.Value = "Cambio" Then
-                If files.Value > "" Then
-                    'Msg_Error("Guardalo")
-
-                    Directory.CreateDirectory(ruta)
-                    Dim tamaño As Integer = mi_imagen.ContentLength
-                    Dim datos_img As Byte() = New Byte(tamaño) {}
-                    mi_imagen.InputStream.Read(datos_img, 0, tamaño)
-                    Guardar_Archivo(ruta & "/" & mi_imagen.FileName, datos_img)
-                End If
+                If Ficha_Tecnica.PostedFile.FileName > "" Then Guardar_Ficha()
+                If file_fotos.PostedFile.FileName > "" Then Guardar_Foto()
                 G.cn.Open()
                 G.Tsql = "Update Articulos set Art_Descripcion=" & Pone_Apos(T_Descripcion.Text.Trim)
                 G.Tsql &= ",Mar_Numero=" & Val(T_Marca.Text.Trim)
@@ -539,14 +576,14 @@ Partial Class Catalogo_Articulos
                 G.Tsql &= ",Mon_Numero=" & Val(T_Moneda1.Text)
                 G.Tsql &= ",Lote_Minimo=" & Val(T_Lote_Minimo.Text)
                 G.Tsql &= ",Multiplos=" & Val(T_Multiplos.Text)
-                G.Tsql &= ",Ficha_Tecnica=" & Pone_Apos(T_Ficha_Tecnica.InnerText)
-                If files.Value > "" Then G.Tsql &= ",Ruta_Foto=" & Pone_Apos(ruta & "/" & mi_imagen.FileName)
+                If file_fotos.PostedFile.FileName > "" Then G.Tsql &= ",Ficha_Tecnica=" & Pone_Apos(Nombre_Ficha.Value.ToString)
+                If Ficha_Tecnica.PostedFile.FileName > "" Then G.Tsql &= ",Ruta_Foto=" & Pone_Apos(Nombre_Foto.Value)
                 G.Tsql &= ",Baja=" & "''"
                 G.Tsql &= " WHERE Numero = " & Pone_Apos(T_Numero.Text.Trim)
                 G.Tsql &= " and Empresa = " & Val(G.Empresa_Numero)
                 G.com.CommandText = G.Tsql
                 G.com.ExecuteNonQuery()
-                CambiaFilaGrid(T_Numero.Text.Trim, T_Descripcion.Text.Trim, T_UMedida.Text.Trim, T_IVA.Text.Trim, ruta & "/" & mi_imagen.FileName)
+                CambiaFilaGrid(T_Numero.Text.Trim, T_Descripcion.Text.Trim, T_UMedida.Text.Trim, T_IVA.Text.Trim, Nombre_Foto.Value.ToString, Nombre_Ficha.Value.ToString)
                 If Ch_Baja.Checked = True Then
                     EliminaFilaGrid(T_Numero.Text.Trim)
                 End If
@@ -616,10 +653,21 @@ Partial Class Catalogo_Articulos
                     Dim g As New System.Web.UI.WebControls.Image
                     g.ID = "Image2"
                     g.ImageUrl = "Handler.ashx?img=" & f.Item("Ruta_Foto")
-                    list.Controls.Add(g)
-                End If
-                T_Ficha_Tecnica.InnerText = f.Item("Ficha_Tecnica")
+                    g.Width = 400
+                    g.Height = 400
+                    list2.Controls.Add(g)
+                    Nombre_Foto.Value = f.Item("Ruta_Foto")
 
+                End If
+                If f.Item("Ficha_Tecnica") <> "" Then
+                    Dim h As New System.Web.UI.WebControls.Image
+                    h.ID = "Image3"
+                    h.ImageUrl = "Handler.ashx?img=" & f.Item("Ficha_Tecnica")
+                    h.Width = 400
+                    h.Height = 400
+                    list.Controls.Add(h)
+                    Nombre_Ficha.Value = f.Item("Ficha_Tecnica")
+                End If
 
 
                 T_Descuento_1.Text = f.Item("Descuento_1")
@@ -656,8 +704,9 @@ Partial Class Catalogo_Articulos
                 H_SubLinea.Attributes.Add("onclick", "")
                 H_SubLinea.Attributes.Add("style", "cursor:not-allowed;")
                 Pnl_Registro.Enabled = False
-                T_Ficha_Tecnica.Disabled = True
-                files.Disabled = True
+
+                Ficha_Tecnica.Disabled = True
+                file_fotos.Disabled = True
             End If
             If (e.CommandName.Equals("Seleccion")) Then
 
@@ -675,8 +724,9 @@ Partial Class Catalogo_Articulos
                 H_Articulo.Attributes.Add("onclick", "")
                 H_Articulo.Attributes.Add("style", "cursor:not-allowed;")
 
-                T_Ficha_Tecnica.Disabled = True
-                files.Disabled = True
+
+                Ficha_Tecnica.Disabled = True
+                file_fotos.Disabled = True
             End If
             If (e.CommandName.Equals("Cambio")) Then
                 Movimiento.Value = "Cambio"
@@ -694,9 +744,13 @@ Partial Class Catalogo_Articulos
                 Session("Linea") = Val(T_Linea.Text.Trim)
                 H_SubLinea.Attributes.Add("onclick", "window.open('Bus_Cat.aspx?Catalogo=SUB_LINEA',null,'left=400, top=100, height=450, width= 800, status=no, resizable=no, scrollbars=no, toolbar=no,location= no, menubar=no');")
                 H_SubLinea.Attributes.Add("style", "cursor:pointer;")
-                T_Ficha_Tecnica.Disabled = False
-                files.Disabled = False
-                Nombre_Imagen.Value = f.Item("Ruta_Foto")
+
+                Ficha_Tecnica.Disabled = False
+                Nombre_Ficha.Value = f.Item("Ficha_Tecnica")
+
+                file_fotos.Disabled = False
+                Nombre_Foto.Value = f.Item("Ruta_Foto")
+
             End If
 
         End If
@@ -823,8 +877,8 @@ Partial Class Catalogo_Articulos
         T_Moneda_Desc1.Text = Busca_Cat(Session("G"), "MONEDA", T_Moneda1.Text)
     End Sub
 
-  
-  
+
+
     Private Sub Guardar_Archivo(strPath As String, ByRef Buffer As Byte())
         Try
             Dim newFile As New FileStream(strPath, FileMode.Create)
