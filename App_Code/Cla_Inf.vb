@@ -33,6 +33,7 @@ Public Module Cla_Inf
     ' Public Conexion As String = "Server=JAVIER-F7A71147;uid=bernardo;pwd=ale2336;database=Bitacora"
     ' Public Conexion As String = "Data Source=facturacionweb.db.4903432.hostedresource.com;initial Catalog=facturacionweb;Use ID=facturacionweb; Password=B150958m"
     Public dt As DataTable
+    Public dtt As DataTable
     'Public Tsql As String
     'Public cn As New SqlConnection
     'Public dr As SqlDataReader
@@ -139,6 +140,9 @@ Public Module Cla_Inf
         Public Numero_Lote As Integer = 0
         Public Fecha_Lote As String = ""
         Public Sucursal As String = ""
+        Public Busqueda As String = ""
+        Public salida As String = ""
+        Public total_pedido As Double = 0
         Public Sucursal_Desc As String = ""
         Public Almacen As Integer
         Public Almacen_Desc As String

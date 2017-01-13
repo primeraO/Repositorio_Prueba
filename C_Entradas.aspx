@@ -25,7 +25,48 @@
          function regresa(elemValue1) {
              __doPostBack();
          }
-         
+         function KeyDownHandler(btn) {
+             if (event.keyCode == 13) {
+                 event.returnValue = false;
+                 event.cancel = true;
+                 // aca llamas al evento click del boton que queres que actue, en tu caso es como si apretara el boton de conseguir los datos.
+                 btn.click();
+             }
+         }
+             function KeyDownHandlerGuardaArticulo(btn) {
+              if (event.keyCode == 13) {
+                 event.returnValue = false;
+                 event.cancel = true;
+                 if (document.getElementById("T_Articulo")=="")
+                 {
+                        alert("");
+                 }
+                 else
+                 {
+                 btn.click();
+                }
+         }
+
+
+
+
+     }
+     function SoloNumeros(evt) {
+         if (window.event) {//asignamos el valor de la tecla a keynum
+             keynum = evt.keyCode; //IE
+         }
+         else {
+             keynum = evt.which; //FF
+         }
+         //comprobamos si se encuentra en el rango numérico y que teclas no recibirá.
+         if ((keynum > 47 && keynum < 58) || keynum == 8 || keynum == 13 || keynum == 6) {
+             return true;
+         }
+         else {
+             return false;
+         }
+     }
+
     </script>
     <style type="text/css">
         .style22
@@ -210,6 +251,44 @@
                     </tr>
                 </table>--%>
                 <table style="width:100%;">
+                <tr>
+                <td align="left" class="style25">
+                            <asp:Label ID="Label12" runat="server" BorderStyle="None" Text="Cliente" 
+                                CssClass="Textos_Azules" Width="92px"></asp:Label>
+                        </td>
+                        <td>
+                            <asp:TextBox ID="TB_Descripcion" runat="server" CssClass="form-control" 
+                                placeholder="" onkeydown="KeyDownHandler(Ima_Buscar)" TabIndex="1" Width="320px" 
+                               ></asp:TextBox>
+                        </td>
+                  <td align="left" class="style25">
+                            <asp:Label ID="Label11" runat="server" BorderStyle="None" Text="Fecha Pedido" 
+                                CssClass="Textos_Azules" Width="92px"></asp:Label>
+                        </td>
+                        <td class="style28">
+                            <asp:TextBox ID="T_Fecha_Inicial" onkeydown="KeyDownHandler(Ima_Buscar)" runat="server" 
+                      style="top: 550px; bottom: 70px;" 
+                    MaxLength="10" TabIndex="5" CssClass="form-control" Width="80px" AutoPostBack="True" ></asp:TextBox>
+                            </td>
+                        <td align="left" class="style22">
+                            <rjs:PopCalendar ID="PopCalendar2" runat="server" Control="T_Fecha_Inicial" 
+                                Format="yyyy mm dd" Separator="/" />
+                        </td>
+                        
+                        <td class="style28">
+                            <asp:TextBox ID="T_Fecha_Final" onkeydown="KeyDownHandler(Ima_Buscar)" runat="server" 
+                      style="top: 550px; bottom: 70px;" 
+                    MaxLength="10" TabIndex="5" CssClass="form-control" Width="80px" AutoPostBack="True" ></asp:TextBox>
+                            </td>
+                        <td align="left" class="style22">
+                            <rjs:PopCalendar ID="PopCalendar3" runat="server" Control="T_Fecha_Final" 
+                                Format="yyyy mm dd" Separator="/" />
+                               
+                        </td>
+                        <td align="left" class="style22"> <asp:CheckBox ID="Check" runat="server" 
+                                AutoPostBack="True" Checked="True" /></td>
+                        
+                </tr>
                     <tr>
                         <td width="11%">
                             &nbsp;</td>
@@ -225,25 +304,35 @@
                         </td>--%>
                         <td align="left" class="style25">
                             <asp:Label ID="Label3" runat="server" BorderStyle="None" Text="Pedido" 
-                                CssClass="Textos_Azules" Width="92px"></asp:Label>
+                                CssClass="Textos_Azules" Width="92px" Visible="False"></asp:Label>
                         </td>
                         <td class="style28">
                             <asp:TextBox ID="T_Pedido" runat="server" 
                       style="top: 550px; left: 40px;  bottom: 70px;" 
-                    MaxLength="10" TabIndex="5" CssClass="form-control" Width="80px" ReadOnly="True"></asp:TextBox>
+                    MaxLength="10" TabIndex="5" CssClass="form-control" Width="80px" ReadOnly="True" 
+                                Visible="False"></asp:TextBox>
                             </td>
                         <td align="left" class="style25">
                             <asp:Label ID="Label17" runat="server" BorderStyle="None" Text="Fecha Pedido" 
-                                CssClass="Textos_Azules" Width="92px"></asp:Label>
+                                CssClass="Textos_Azules" Width="92px" Visible="False"></asp:Label>
                         </td>
                         <td class="style28">
                             <asp:TextBox ID="T_Fecha_Pedido" runat="server" 
                       style="top: 550px; bottom: 70px;" 
-                    MaxLength="10" TabIndex="5" CssClass="form-control" Width="80px" ReadOnly="True"></asp:TextBox>
+                    MaxLength="10" TabIndex="5" CssClass="form-control" Width="80px" ReadOnly="True" 
+                                Visible="False"></asp:TextBox>
                             </td>
                         <td align="left" class="style22">
                             <rjs:PopCalendar ID="PopCalendar1" runat="server" Control="T_Fecha_Lote" 
-                                Format="yyyy mm dd" Separator="/" />
+                                Format="yyyy mm dd" Separator="/" Visible="False" />
+                        </td>
+                         <td align="left" class="style25">
+                            <asp:Label ID="label_total" runat="server" BorderStyle="None" Text="Total Pedido" 
+                                CssClass="Textos_Azules" Width="92px" Visible="False"></asp:Label>
+                        </td>
+                         <td align="left" class="style25">
+                            <asp:Label ID="label_total_cantidad" runat="server" BorderStyle="None" Text="Total Pedido" 
+                                CssClass="Textos_Azules" Width="92px" Visible="False"></asp:Label>
                         </td>
                         
                         <td align="left">
@@ -261,9 +350,9 @@
                                 CssClass="Textos_Azules" Text="Cliente"></asp:Label>
                         </td>
                         <td width="12%">
-                            <asp:TextBox  ID="T_Cliente" runat="server" CssClass="form-control" 
-                                MaxLength="10" style="top: 550px; left: 155px; right: 66px; bottom: 70px;" 
-                                TabIndex="5" Width="150px" AutoPostBack="True" ></asp:TextBox>
+                            <asp:TextBox  ID="T_Cliente" runat="server" CssClass="form-control" onKeyPress="return SoloNumeros(event);"
+                                MaxLength="20" style="top: 550px; left: 155px; right: 66px; bottom: 70px;" 
+                                TabIndex="5" Width="150px" onkeydown="KeyDownHandler(Ima_Guarda)" AutoPostBack="True" ></asp:TextBox>
                         </td>
                         <td style="text-align: left" width="1%">
                             <asp:HyperLink ID="H_Cliente" runat="server" 
@@ -272,7 +361,7 @@
                         <td>
                             <asp:TextBox ID="T_Cliente_Desc" runat="server" CssClass="form-control" 
                                 placeholder="" TabIndex="1" Width="360px" BackColor="SkyBlue" 
-                                ReadOnly="True"></asp:TextBox>
+                                ReadOnly="True" MaxLength="60"></asp:TextBox>
                         </td>
                         <td width="30%">
                             &nbsp;</td>
@@ -330,8 +419,8 @@
                         </td>
                         <td width="8%">
                             <asp:TextBox ID="T_Articulo" runat="server" CssClass="form-control" 
-                                MaxLength="10" style="top: 550px; left: 155px; right: 66px; bottom: 70px;" 
-                                TabIndex="5" Width="150px" AutoPostBack="True"></asp:TextBox>
+                                MaxLength="20" style="top: 550px; left: 155px; right: 66px; bottom: 70px;" 
+                                TabIndex="5" Width="150px" onkeydown="KeyDownHandlerGuardaArticulo(Ima_Guarda)" AutoPostBack="True"></asp:TextBox>
                         </td>
                         <td style="text-align: left" width="5%">
                             <asp:HyperLink ID="H_Articulo" runat="server" 
@@ -340,7 +429,7 @@
                         <td>
                             <asp:TextBox ID="T_Articulo_Desc" runat="server" CssClass="form-control" 
                                 placeholder="" TabIndex="1" Width="360px" BackColor="SkyBlue" 
-                                ReadOnly="True"></asp:TextBox>
+                                ReadOnly="True" MaxLength="70"></asp:TextBox>
                         </td>
 
                       
@@ -401,16 +490,17 @@
                         <td class="style28">
                             <asp:TextBox ID="T_Iva" runat="server" 
                       style="top: 550px; left: 155px; right: 66px; bottom: 70px; text-align: right;" 
-                    MaxLength="10" TabIndex="5" CssClass="form-control" Width="80px" ReadOnly="True"></asp:TextBox>
+                    MaxLength="10" TabIndex="5" CssClass="form-control" Width="80px" ReadOnly="True" 
+                                AutoPostBack="True"></asp:TextBox>
                             </td>
                               <td align="left" class="style25">
                             <asp:Label ID="Label9" runat="server" BorderStyle="None" Text="Cantidad" 
                                 CssClass="Textos_Azules" style="margin-left:-250px !important;" Width="92px"></asp:Label>
                         </td>
                         <td class="style28">
-                            <asp:TextBox ID="T_Cantidad_Pedida" runat="server" 
+                            <asp:TextBox ID="T_Cantidad_Pedida" runat="server" onKeyPress="return SoloNumeros(event);"   onkeydown="KeyDownHandlerGuardaArticulo(Ima_Guarda)"
                       style="top: 550px; margin-left:-250px !important; left: 155px; right: 66px; bottom: 70px; text-align: right;" 
-                    MaxLength="10" TabIndex="5" CssClass="form-control" Width="80px" ></asp:TextBox>
+                    MaxLength="10" TabIndex="5" CssClass="form-control" Width="80px" AutoPostBack="True" ></asp:TextBox>
                             </td>
                     </tr>
                     <tr>   <td>
@@ -517,14 +607,15 @@
                     <asp:BoundField DataField="Descripcion" HeaderText="Descripcion">
                     <ItemStyle HorizontalAlign="Left"  Width="280px"/>
                     </asp:BoundField>
-                    <asp:BoundField DataField="Precio_Unitario" HeaderText="Precio_Unitario" >
+                    <asp:BoundField DataField="Precio_Unitario" HeaderText="Precio_Unitario" 
+                        DataFormatString="{0:N2}" >
                       <ItemStyle HorizontalAlign="Right" Width="90px" />
                     </asp:BoundField>
                     <asp:BoundField DataField="Iva" DataFormatString="{0:N2}" HeaderText="Iva">
                     <ItemStyle HorizontalAlign="Right" Width="80px" />
                     </asp:BoundField>
                     <asp:BoundField DataField="Cantidad" 
-                        HeaderText="Cantidad"><ItemStyle HorizontalAlign="Right" Width="90px" />
+                        HeaderText="Cantidad" DataFormatString="{0:N2}"><ItemStyle HorizontalAlign="Right" Width="90px" />
                     </asp:BoundField>
                     <asp:BoundField DataField="Total" DataFormatString="{0:N2}" HeaderText="Total">
                     <ItemStyle HorizontalAlign="Right"  Width="60px"/>
@@ -547,6 +638,78 @@
             </asp:GridView>
             </div>
             </asp:Panel>
+
+           <%-- ----------------------------------------------------------------%>
+               <asp:Panel ID="Panel2" runat="server" HorizontalAlign="Left" Visible="false">
+                                  <div style="overflow:hidden; height:35px; width:100%; float:left" >
+                             <asp:GridView id="GridView2" runat="server" 
+                                AutoGenerateColumns="False" CellPadding="1" ForeColor="#333333" 
+                                GridLines="None" ShowHeaderWhenEmpty="True"
+                                 style="top: 152px; left: 86px; " Font-Size="Small" 
+                                         Width="964px" Height="35px" CellSpacing="2">
+                                         <RowStyle BackColor="#EFF3FB" Height="22px" />
+                                            <Columns>
+                                            <asp:BoundField HeaderText="Pedido">
+                                            <HeaderStyle  Width="100px" />
+                                            </asp:BoundField>
+                                            <asp:BoundField HeaderText="Cliente">
+                                            <HeaderStyle  Width="100px" />
+                                                <ItemStyle Width="50px" />
+                                            </asp:BoundField>
+                                            <asp:BoundField HeaderText="Descripcion">
+                                            <HeaderStyle  Width="350px" />
+                                                <ItemStyle Width="350px" />
+                                            </asp:BoundField>
+                                            <asp:BoundField HeaderText="Fecha" >
+                                            <HeaderStyle  Width="50px" />
+                                            </asp:BoundField>
+                                            <asp:BoundField HeaderText="Partidas">
+                                            <HeaderStyle  Width="50px" />
+                                                <ItemStyle Width="50px" />
+                                            </asp:BoundField>
+                                            </Columns>
+                                            <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                            </asp:GridView>
+                            </div>
+           <div style="overflow-y:scroll; overflow-x:hidden; width:100%; height:500px;">
+            <asp:GridView ID="GridView3" runat="server" AutoGenerateColumns="False" CellPadding="1" ForeColor="#333333" GridLines="None" 
+                 style="top: 152px; left: 86px; " DataKeyNames="Pedido" Font-Size="Small" Width="964px" Height="16px" CellSpacing="2" ShowHeader="False">
+                <RowStyle BackColor="#EFF3FB" Height="22px" />
+                <Columns>
+                    <asp:CommandField ShowSelectButton="True" Visible="False" >
+                    <ItemStyle Width="50px" />
+                    </asp:CommandField>
+                    <asp:BoundField DataField="Pedido" HeaderText="Pedido" >
+                    <ItemStyle Width="100px" HorizontalAlign="Right" />
+                    </asp:BoundField>
+                    <asp:BoundField DataField="Cliente" HeaderText="Cliente" >
+                    <ItemStyle HorizontalAlign="Right" Width="100px" />
+                    </asp:BoundField>
+                    <asp:BoundField DataField="Descripcion" HeaderText="Descripcion">
+                    <ItemStyle HorizontalAlign="Left"  Width="350px"/>
+                    </asp:BoundField>
+                    <asp:BoundField DataField="Fecha" HeaderText="Fecha" >
+                      <ItemStyle HorizontalAlign="Right" Width="50px" />
+                    </asp:BoundField>
+                   <asp:ButtonField ButtonType="Image" CommandName="Partida" HeaderText="Partida" 
+                                        ImageUrl="~/Imagenes/M_Cambio_50.png" Text="Baja" 
+                        DataTextField="Partida">
+                                    <ItemStyle HorizontalAlign="Center" Width="50px" />
+                                    </asp:ButtonField>
+                </Columns>
+                <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+                <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+                <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                <EditRowStyle BackColor="#2461BF" />
+                <AlternatingRowStyle BackColor="White" />
+            </asp:GridView>
+            </div>
+            </asp:Panel>
+
+
+          <%-- ----------------------------------------------------------------%>
+
             </asp:Panel>
             <div>
                 

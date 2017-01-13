@@ -471,7 +471,7 @@ Partial Class Bus_Cat
                         G.Tsql &= " and Nombre like '%" & T_Descipcion.Text & "%'"
                     End If
                 Case "ARTICULO"
-                    G.Tsql = "Select Top 200 Numero,Art_Descripcion as Descripcion"
+                    G.Tsql = "Select Top 200 Numero,Art_Descripcion as Descripcion,Pre_Vta_1 as Precio_Unitario"
                     G.Tsql &= " from Articulos Where  baja<>'*' "
 
                     If T_Numero.Text.Trim > "" Then
