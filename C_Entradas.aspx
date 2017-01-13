@@ -578,8 +578,14 @@
                                             <asp:BoundField  HeaderText="Total" >
                                             <HeaderStyle Width="60px" HorizontalAlign="Center"/>
                                             </asp:BoundField>
-                                                <asp:BoundField HeaderText="Cambio" />
-                                                <asp:BoundField HeaderText="Baja" />
+                                                <asp:BoundField HeaderText="Cambio" >
+                                            <HeaderStyle  Width="50px" />
+                                                <ItemStyle Width="50px" />
+                                            </asp:BoundField>
+                                                <asp:BoundField HeaderText="Baja" >
+                                            <HeaderStyle  Width="40px" />
+                                                <ItemStyle Width="40px" />
+                                            </asp:BoundField>
                                             </Columns>
                                             <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
                                             </asp:GridView>
@@ -654,7 +660,7 @@
                                             </asp:BoundField>
                                             <asp:BoundField HeaderText="Cliente">
                                             <HeaderStyle  Width="100px" />
-                                                <ItemStyle Width="50px" />
+                                                <ItemStyle Width="60px" />
                                             </asp:BoundField>
                                             <asp:BoundField HeaderText="Descripcion">
                                             <HeaderStyle  Width="350px" />
