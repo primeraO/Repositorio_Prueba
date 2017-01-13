@@ -12,8 +12,9 @@ Partial Class C_Entradas
         If Session("SesionActiva") Is Nothing Then
             Response.Redirect("Default.aspx")
         End If
+        Dim G As Glo = CType(Session("G"), Glo)
         If IsPostBack = False Then
-            Dim G As Glo = CType(Session("G"), Glo)
+
             Lbl_Compañia.Text = "Compañia: " & G.Empresa_Numero & " - " & G.RazonSocial
             Lbl_Obra.Text = "Sucursal: " & G.Sucursal & " - " & G.Sucursal_Desc
             Lbl_Usuario.Text = "Usuario: " & G.UsuarioReal
@@ -47,8 +48,14 @@ Partial Class C_Entradas
 
 
         End If
-        H_Cliente.Attributes.Add("onclick", "window.open('Bus_Cat.aspx?Catalogo=CLIENTE&Num=2',null,'left=400, top=100, height=450, width= 800, status=no, resizable=no, scrollbars=no, toolbar=no,location= no, menubar=no');")
-        H_Cliente.Attributes.Add("style", "cursor:pointer;")
+
+        If G.Busqueda = "" Then
+            H_Cliente.Attributes.Add("onclick", "window.open('Bus_Cat.aspx?Catalogo=CLIENTE&Num=2',null,'left=400, top=100, height=450, width= 800, status=no, resizable=no, scrollbars=no, toolbar=no,location= no, menubar=no');")
+            H_Cliente.Attributes.Add("style", "cursor:pointer;")
+        Else
+          
+        End If
+       
         H_Articulo.Attributes.Add("onclick", "window.open('Bus_Cat.aspx?Catalogo=ARTICULO&Num=2',null,'left=400, top=100, height=450, width= 800, status=no, resizable=no, scrollbars=no, toolbar=no,location= no, menubar=no');")
         H_Articulo.Attributes.Add("style", "cursor:pointer;")
 
@@ -470,7 +477,6 @@ Partial Class C_Entradas
                 LLenaGrid()
                 Pnl_Grids.Visible = True
                 T_Partida.Text = SiguientePartida()
-
             End If
             If (e.CommandName.Equals("Cambio")) Then
                 Movimiento.Value = "Cambio"
@@ -485,12 +491,15 @@ Partial Class C_Entradas
                     T_Partida.Text = f("Partida")
                     InformacionArticulo()
                 End If
+                LLenaGrid()
+                Pnl_Grids.Visible = True
             End If
         Catch ex As Exception
 
         End Try
        
-
+        H_Cliente.Attributes.Add("onclick", "")
+        H_Cliente.Attributes.Add("style", "cursor:not-allowed;")
 
     End Sub
     Protected Sub GridView3_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles GridView3.RowCommand
@@ -507,7 +516,8 @@ Partial Class C_Entradas
                     T_Fecha_Pedido.Text = f("Fecha")
                     T_Cliente.Enabled = False
                     T_Cliente_Desc.Enabled = False
-                    H_Cliente.Enabled = False
+                    H_Cliente.Attributes.Add("onclick", "")
+                    H_Cliente.Attributes.Add("style", "cursor:not-allowed;")
                     InformacionCliente()
                     InformacionEjecutivo()
                     InformacionAgente()
@@ -548,6 +558,8 @@ Partial Class C_Entradas
             GridView2.Visible = True
         Else
             LLenaGrid()
+            H_Cliente.Attributes.Add("onclick", "")
+            H_Cliente.Attributes.Add("style", "cursor:not-allowed;")
             Pnl_Grids.Visible = True
         End If
 
@@ -752,6 +764,8 @@ Partial Class C_Entradas
         TB_Descripcion.Visible = True
         label_total.Visible = False
         label_total_cantidad.Visible = False
+        H_Cliente.Attributes.Add("onclick", "window.open('Bus_Cat.aspx?Catalogo=CLIENTE&Num=2',null,'left=400, top=100, height=450, width= 800, status=no, resizable=no, scrollbars=no, toolbar=no,location= no, menubar=no');")
+        H_Cliente.Attributes.Add("style", "cursor:pointer;")
     End Sub
     Protected Sub Ima_Guarda_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles Ima_Guarda.Click
         Dim G As Glo = CType(Session("G"), Glo)
@@ -833,6 +847,8 @@ Partial Class C_Entradas
             T_Pedido.Text = Siguiente()
         Else
             LLenaGrid()
+            H_Cliente.Attributes.Add("onclick", "")
+            H_Cliente.Attributes.Add("style", "cursor:not-allowed;")
             Pnl_Grids.Visible = True
             GridView1.Visible = True
             T_Articulo.Focus()
@@ -994,6 +1010,8 @@ Partial Class C_Entradas
             Label12.Visible = True
             Check.Visible = True
             TB_Descripcion.Visible = True
+            H_Cliente.Attributes.Add("onclick", "window.open('Bus_Cat.aspx?Catalogo=CLIENTE&Num=2',null,'left=400, top=100, height=450, width= 800, status=no, resizable=no, scrollbars=no, toolbar=no,location= no, menubar=no');")
+            H_Cliente.Attributes.Add("style", "cursor:pointer;")
            
             Exit Sub
         End If
